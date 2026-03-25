@@ -98,21 +98,23 @@
         .contact-info a:hover { text-decoration: underline; }
 
         /* --- 页面主体容器 --- */
-        main { padding: 120px 5% 60px; max-width: 1300px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; }
+        /* 优化：将 padding-top 从 120px 缩减到 90px，大幅减少顶部的留白 */
+        main { padding: 90px 5% 60px; max-width: 1300px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; }
         .page-view { display: none; }
         .page-view.active { display: block; animation: fadeIn 0.6s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- 首页：极致留白 --- */
-        .hero-home { height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
+        /* 彻底删除了内部文字，仅作为粒子背景的容器 */
+        .hero-home { height: 85vh; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         
         /* --- 二级页面通用居中表头 --- */
         .page-header-centered {
-            text-align: center; margin-bottom: 50px;
+            text-align: center; margin-bottom: 40px; /* 优化：缩小了表头和下方内容的间距 */
             display: flex; flex-direction: column; align-items: center;
         }
         .page-header-centered h2 {
-            font-size: 44px; font-weight: 800; margin-bottom: 18px; letter-spacing: 2px;
+            font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: 2px;
             background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
