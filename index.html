@@ -115,7 +115,8 @@
         .contact-info a:hover { text-decoration: underline; color: #cc66ff; }
 
         /* ================= 页面视图容器 ================= */
-        main { padding: 90px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; }
+        /* 【极限压缩顶部空白】：将 padding-top 从 90px 压缩到了 75px，紧贴导航栏底部 */
+        main { padding: 75px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; }
         .page-view { display: none; }
         .page-view.active { display: block; animation: fadeIn 0.6s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -125,7 +126,7 @@
             background: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255,255,255,0.06);
             border-radius: 20px; padding: 35px;
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            transition: box-shadow 0.4s, border-color 0.4s, background 0.4s, transform 0.1s; /* 优化：分离 transform 过渡以防止 3D 悬浮卡顿 */
+            transition: box-shadow 0.4s, border-color 0.4s, background 0.4s, transform 0.1s;
             position: relative; overflow: hidden;
         }
         /* 卡片内鼠标发光 */
@@ -137,9 +138,11 @@
         .glass-card:hover::before { opacity: 1; }
         .glass-card > * { position: relative; z-index: 1; }
 
-        /* 二级页面通用居中表头 */
+        /* 二级页面通用居中表头 - 去除多余空隙 */
         .page-header-centered { 
-            margin-bottom: 45px; text-align: center; 
+            margin-bottom: 35px; /* 紧凑下方间距 */
+            margin-top: 0; 
+            text-align: center; 
             display: flex; flex-direction: column; align-items: center; 
         }
         .page-header-centered h2 { font-size: 38px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -168,7 +171,7 @@
         .work-time { font-size: 13px; opacity: 0.7; font-weight: 300; }
 
         /* ================= 项目经验视图 ================= */
-        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 45px; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05); }
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05); }
         .filter-btn {
             background: transparent; border: none; color: var(--text-secondary);
             padding: 8px 24px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; font-size: 14px; font-weight: 500;
