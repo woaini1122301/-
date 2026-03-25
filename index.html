@@ -3,206 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人简历 | 空间计算美学</title>
+    <title>DAVID's Space | 空间计算美学</title>
     <style>
-        /* 基础与变量配置 */
+        /* 基础与变量配置 - 更深邃的黑与深红紫 */
         :root {
             --bg-color: #000000;
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.08);
-            --accent-color: #0071e3;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --accent-color: #ff00ff; /* 洋红/深红紫 - 用于发光点缀 */
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --glass-hover: rgba(255, 255, 255, 0.07);
+            --contact-panel-bg: rgba(20, 0, 20, 0.8); /* 联系面板背景，带一点深紫色调 */
+            
+            --work-shadow-hover: 0 15px 50px -10px rgba(128, 0, 128, 0.4); /* 工作履历悬停背光 */
+            --project-shadow-hover: 0 10px 40px -10px rgba(128, 0, 128, 0.3); /* 项目卡片悬停背光 */
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
             overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
             line-height: 1.6;
         }
 
-        /* 深邃黑背景 + 极光流光动效 */
+        /* 空间背景 - 模拟参考图的核心发光数据云 */
         .aurora-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            background: radial-gradient(circle at 15% 50%, rgba(20, 50, 100, 0.4), transparent 50%),
-                        radial-gradient(circle at 85% 30%, rgba(60, 20, 80, 0.3), transparent 50%);
-            filter: blur(60px);
-            animation: auroraMove 20s ease-in-out infinite alternate;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2;
+            overflow: hidden;
         }
-        @keyframes auroraMove {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.2) translate(-50px, 50px); }
+        
+        .aurora-light {
+            position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
+            background: radial-gradient(circle at center, rgba(128, 0, 128, 0.3), transparent 60%),
+                        radial-gradient(circle at 10% 90%, rgba(60, 20, 80, 0.3), transparent 40%),
+                        radial-gradient(circle at 90% 10%, rgba(20, 50, 100, 0.2), transparent 40%);
+            filter: blur(80px);
+            animation: aurora-move 20s ease-in-out infinite alternate;
         }
 
-        /* 文字导航栏 */
+        /* 核心发光体 - 模拟参考图中的亮点 */
+        .core-light {
+            position: absolute; top: 50%; left: 50%;
+            width: 80px; height: 80px;
+            background: #ff00ff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 150px 60px rgba(255, 0, 255, 0.7);
+            filter: blur(10px);
+            animation: breath 4s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes aurora-move {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-20px, 20px); }
+        }
+        @keyframes breath {
+            0%, 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* 顶部导航栏 - 新布局逻辑 */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            z-index: 100;
+            position: fixed; top: 0; width: 100%; z-index: 100;
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--glass-border);
         }
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s;
-            cursor: pointer;
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1400px; margin: 0 auto; padding: 20px 40px;
         }
-        nav a:hover, nav a.active {
-            color: var(--text-primary);
+        
+        /* 导航栏左侧 Logo */
+        .nav-logo {
+            font-size: 16px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
         }
 
-        /* 页面容器与切换逻辑 */
-        main {
-            padding: 100px 5% 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 100vh;
+        /* 导航栏中间 页面链接 */
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 14px; font-weight: 500; transition: color 0.3s; cursor: pointer;
         }
-        .page-view {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        .page-view.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
 
-        /* 微玻璃拟态卡片 (通用) */
+        /* 导航栏右侧 与我联系 + 弹出面板 */
+        .nav-contact-wrapper { position: relative; }
+        .nav-contact-trigger {
+            color: var(--text-secondary); cursor: pointer;
+            font-size: 14px; font-weight: 500; transition: color 0.3s;
+        }
+        .nav-contact-trigger:hover { color: var(--text-primary); }
+        
+        /* 弹出联系面板样式 */
+        .nav-contact-panel {
+            position: absolute; top: calc(100% + 15px); right: 0;
+            width: 280px; padding: 20px;
+            background: var(--contact-panel-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            opacity: 0; pointer-events: none; visibility: hidden;
+            transform: translateY(10px); transition: all 0.3s ease;
+            box-shadow: 0 10px 40px -10px rgba(128, 0, 128, 0.3);
+        }
+        .nav-contact-panel.show {
+            opacity: 1; pointer-events: auto; visibility: visible;
+            transform: translateY(0);
+        }
+        .contact-item { display: flex; gap: 12px; align-items: center; margin-bottom: 15px; }
+        .contact-item:last-child { margin-bottom: 0; }
+        .contact-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(128, 0, 128, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-weight: bold; }
+        .contact-info { font-size: 14px; color: var(--text-primary); }
+        .contact-info a { color: var(--text-primary); text-decoration: none; }
+        .contact-info a:hover { text-decoration: underline; }
+
+        /* 页面容器 */
+        main { padding: 120px 5% 60px; max-width: 1200px; margin: 0 auto; min-height: 100vh; }
+        .page-view { display: none; animation: fadeIn 0.6s ease; }
+        .page-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 通用：微玻璃拟态卡片 + 呼吸光效 */
         .glass-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 30px;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
-        /* 呼吸光效 */
+        /* 鼠标跟随发光效果核心 */
         .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-            z-index: 0;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.05), transparent 40%);
+            opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 0;
         }
         .glass-card:hover::before { opacity: 1; }
         .glass-card > * { position: relative; z-index: 1; }
 
-        /* 首页视图 */
-        .hero {
-            height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .hero h1 { font-size: 64px; font-weight: 700; margin-bottom: 16px; letter-spacing: -1px; }
+        /* 页面表头介绍文本样式 */
+        .page-header { margin-bottom: 50px; text-align: left; }
+        .page-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .page-header p { font-size: 16px; color: var(--text-secondary); }
+
+        /* 首页视图 - 极简 */
+        .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-size: 64px; font-weight: 700; margin-bottom: 16px; letter-spacing: -1.5px; }
         .hero p { font-size: 24px; color: var(--text-secondary); font-weight: 300; }
 
-        /* 工作履历视图 */
+        /* 工作履历视图 - 优化间距与背光 */
+        .work-container { padding-top: 10px; }
         .work-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 30px;
-            margin-bottom: 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 24px 30px; margin-bottom: 25px; /* 增加行间距 */
             cursor: pointer;
         }
-        .work-left { display: flex; align-items: center; gap: 20px; }
-        .company-logo { width: 48px; height: 48px; border-radius: 12px; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .work-title { font-size: 20px; font-weight: 600; }
-        .work-right { text-align: right; color: var(--text-secondary); }
-        .work-desc {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-top: 0;
-        }
-        .work-row:hover .work-desc {
-            max-height: 100px;
-            opacity: 1;
-            margin-top: 16px;
-        }
+        /* 鼠标悬停背光显现 */
+        .work-row:hover { box-shadow: var(--work-shadow-hover); border-color: rgba(128, 0, 128, 0.15); }
 
-        /* 项目经验视图 (Bento Grid) */
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
+        .work-left { display: flex; align-items: center; gap: 20px; flex-grow: 1; }
+        .company-logo { width: 48px; height: 48px; border-radius: 12px; background: rgba(128, 0, 128, 0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--accent-color); font-size: 16px;}
+        .work-info { flex-grow: 1; }
+        .work-title { font-size: 20px; font-weight: 600; margin-bottom: 4px;}
+        .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
+        .work-row:hover .work-desc { max-height: 100px; opacity: 1; margin-top: 10px; }
+
+        .work-right { text-align: right; color: var(--text-secondary); flex-shrink: 0; padding-left: 30px;}
+        .work-role { font-weight: 500; font-size: 16px; color: var(--text-primary);}
+        .work-time { font-size: 14px; opacity: 0.8; }
+
+        /* 项目经验视图 - Bento Grid 优化间距 */
+        .projects-controls { margin-bottom: 40px; }
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 12px; }
         .filter-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            padding: 8px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-secondary);
+            padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s;
+            font-size: 14px;
         }
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--text-primary);
-            color: var(--bg-color);
-        }
+        .filter-btn.active, .filter-btn:hover { background: var(--text-primary); color: var(--bg-color); }
+
         .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 30px; /* 增加卡片间距 */
         }
         .project-card {
-            height: 280px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            transform-style: preserve-3d;
+            height: 300px; display: flex; flex-direction: column; cursor: pointer;
+            transform-style: preserve-3d; /* 用于视差效果 */
         }
+        /* 项目卡片悬停背光 */
+        .project-card:hover { box-shadow: var(--project-shadow-hover); border-color: rgba(128, 0, 128, 0.1); }
+
         .proj-category { font-size: 12px; color: var(--accent-color); font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
         .proj-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
-        .proj-desc { font-size: 14px; color: var(--text-secondary); flex-grow: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
-        .proj-more { align-self: flex-end; font-size: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 4px; opacity: 0; transform: translateX(-10px); transition: 0.3s; }
+        .proj-desc { font-size: 14px; color: var(--text-secondary); flex-grow: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; line-height: 1.6;}
+        .proj-more { align-self: flex-end; font-size: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 4px; opacity: 0; transform: translateX(-10px); transition: 0.3s; padding-top: 10px; }
         .project-card:hover .proj-more { opacity: 1; transform: translateX(0); }
 
-        /* 详情页视图 (三级页面) */
-        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--text-secondary); cursor: pointer; }
+        /* 三级详情页视图 - 保持整体风格 */
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--text-secondary); cursor: pointer; font-size: 14px; }
         .back-btn:hover { color: var(--text-primary); }
         .detail-header { margin-bottom: 40px; }
-        .detail-title { font-size: 40px; margin-bottom: 16px; }
+        .detail-title { font-size: 40px; margin-bottom: 16px; font-weight: 700;}
         .detail-meta { display: flex; gap: 24px; color: var(--text-secondary); font-size: 16px; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; }
         .detail-content { font-size: 16px; color: #ddd; line-height: 1.8; white-space: pre-line; }
 
@@ -210,51 +219,84 @@
 </head>
 <body>
 
-    <div class="aurora-bg"></div>
+    <div class="aurora-bg">
+        <div class="aurora-light"></div>
+        <div class="core-light"></div>
+    </div>
 
     <nav>
-        <a onclick="switchPage('home')" id="nav-home" class="active">首页</a>
-        <a onclick="switchPage('work')" id="nav-work">工作履历</a>
-        <a onclick="switchPage('projects')" id="nav-projects">项目经验</a>
+        <div class="nav-container">
+            <div class="nav-logo">DAVID's Space</div>
+            
+            <div class="nav-links">
+                <a onclick="switchPage('home')" id="nav-home" class="active">首页</a>
+                <a onclick="switchPage('work')" id="nav-work">工作履历</a>
+                <a onclick="switchPage('projects')" id="nav-projects">项目经验</a>
+            </div>
+            
+            <div class="nav-contact-wrapper" id="contact-wrapper">
+                <a class="nav-contact-trigger">与我联系</a>
+                
+                <div class="nav-contact-panel" id="contact-panel">
+                    <div class="contact-item">
+                        <div class="contact-icon">@</div>
+                        <div class="contact-info">
+                            <div>邮件：</div>
+                            <a href="mailto:david@email.com">david@email.com</a> </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">Ph</div>
+                        <div class="contact-info">
+                            <div>手机：</div>
+                            <a href="tel:13800000000">+86 138 0000 0000</a> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </nav>
 
     <main>
         <section id="home" class="page-view active">
             <div class="hero">
-                <h1>你的名字</h1>
-                <p>聚焦营销与增长的实战派，探索商业无限可能。</p>
+                <h1>David Wang</h1> <p>深耕互联网营销与商业化变现，从大厂到创业的全链路实战家。</p>
             </div>
         </section>
 
         <section id="work" class="page-view">
-            <div style="margin-bottom: 40px;">
-                <h2 style="font-size: 32px; margin-bottom: 10px;">工作履历</h2>
-                <p style="color: var(--text-secondary);">深耕互联网营销与商业化变现，从大厂到创业的全链路实战经验。</p>
+            <div class="page-header">
+                <h2>工作履历</h2>
+                <p>沉淀多维度、全链路营销与增长实战经验，涵盖大厂、创业及SaaS产品GTM策略。</p>
             </div>
-            <div id="work-container">
+            
+            <div class="work-container" id="work-container">
                 </div>
         </section>
 
         <section id="projects" class="page-view">
-            <div style="margin-bottom: 30px;">
-                <h2 style="font-size: 32px; margin-bottom: 10px;">项目案例</h2>
+            <div class="page-header">
+                <h2>项目案例</h2>
+                <p>按分类浏览全链条实战案例，涵盖新媒体、整合营销、品牌与增长策略。</p>
             </div>
-            <div class="filter-bar" id="filter-container">
-                <button class="filter-btn active" onclick="filterProjects('全部')">全部</button>
-                <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
-                <button class="filter-btn" onclick="filterProjects('整合营销策划')">整合营销策划</button>
-                <button class="filter-btn" onclick="filterProjects('品牌营销')">品牌营销</button>
-                <button class="filter-btn" onclick="filterProjects('市场营销')">市场营销</button>
-                <button class="filter-btn" onclick="filterProjects('用户运营')">用户运营</button>
-                <button class="filter-btn" onclick="filterProjects('产品运营')">产品运营</button>
+
+            <div class="projects-controls">
+                <div class="filter-bar" id="filter-container">
+                    <button class="filter-btn active" onclick="filterProjects('全部')">全部</button>
+                    <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
+                    <button class="filter-btn" onclick="filterProjects('整合营销')">整合营销</button>
+                    <button class="filter-btn" onclick="filterProjects('品牌营销')">品牌营销</button>
+                    <button class="filter-btn" onclick="filterProjects('市场营销')">市场营销</button>
+                    <button class="filter-btn" onclick="filterProjects('用户运营')">用户运营</button>
+                    <button class="filter-btn" onclick="filterProjects('产品运营')">产品运营</button>
+                </div>
             </div>
+            
             <div class="bento-grid" id="projects-grid">
                 </div>
         </section>
 
         <section id="project-detail" class="page-view">
             <div class="back-btn" onclick="switchPage('projects')">← 返回项目列表</div>
-            <div class="glass-card" style="padding: 50px;">
+            <div class="glass-card detail-card" style="padding: 50px;">
                 <div class="detail-header">
                     <div class="proj-category" id="detail-category">分类</div>
                     <h1 class="detail-title" id="detail-title">标题</h1>
@@ -272,60 +314,82 @@
     </main>
 
     <script>
-        // --- 数据结构区 ---
+        // --- 1. 数据结构区 ---
 
-        // 工作履历数据
+        // A. 工作履历数据 (示例，你需要修改为自己的)
         const workData = [
-            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "全面负责大中华区市场数字化营销策略，搭建自动化营销漏斗，优化官网转化率，驱动SaaS产品营收增长。" },
+            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "主导大中华区市场自动化营销策略，从0到1操盘SaaS产品GTM策略，驱动官网线索与Demo申请率双位数增长。" },
             { company: "Deep深氪", time: "2022 - 2024", role: "个人创业", logo: "DK", desc: "主导公司业务方向与商业模式设计，带领团队完成从0到1的业务闭环，服务多家头部企业客户。" },
-            { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团市场品牌工作，建立品牌视觉识别系统，策划执行多场量级行业峰会与品牌发布会。" },
-            { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责医美平台核心业务线的商业化运营，搭建用户增长模型，主导双十一狂欢节等S级大促。" },
-            { company: "字节跳动", time: "2019 - 2020", role: "新媒体运营主管", logo: "BD", desc: "搭建并管理四川区域官方内容矩阵，策划城市级别整合营销事件，实现账号粉丝量与互动量指数级跨越。" }
+            { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团市场品牌工作，建立全套品牌视觉识别系统(VI)，策划执行多场千人量级行业峰会与品牌发布会。" },
+            { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责医美平台核心业务线的商业化运营，搭建用户全生命周期成长模型，主导全网双十一大促实现GMV倍增。" },
+            { company: "字节跳动", time: "2019 - 2020", role: "新媒体运营主管", logo: "BD", desc: "从0到1搭建并管理四川区域官方抖音号矩阵，粉丝矩阵突突破百万，单条爆款视频播放量破千万。" }
         ];
 
-        // 项目经验数据（已进行标题润色与分类补全）
+        // B. 项目经验数据 (使用完善后的润色标题与详情)
         const projectsData = [
             // 新媒体
-            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方矩阵精细化运营", company: "字节跳动", time: "2019-2020", role: "核心操盘手", desc: "负责四川区域官方抖音号及头条号矩阵搭建与日常运营，实现区域影响力深度覆盖。", detail: "【项目背景】\n区域下沉战略推进，需要建立强有力的本地化内容发声渠道。\n\n【核心职责】\n1. 从0到1搭建区域账号矩阵体系\n2. 制定全年内容排期与互动玩法\n\n【项目成果】\n粉丝矩阵突破百万，单条爆款视频播放量破千万。" },
-            { id: 2, category: "新媒体", title: "【万能的小孙】千万级抖音IP从0到1孵化", company: "保密", time: "2020", role: "IP主理人", desc: "从人设定位到内容编导，全链路操盘短视频IP孵化。", detail: "此部分可补充你在编导、投流、商业化变现等方面的细节。" },
-            { id: 3, category: "新媒体", title: "【机器人十七】科技垂类现象级IP打造", company: "保密", time: "2021", role: "IP主理人", desc: "定位科技前沿，打造硬核且不失趣味的科技博主人设。", detail: "此部分可补充关于科技内容的专业度打磨及粉丝画像分析。" },
-            { id: 4, category: "新媒体", title: "【一芳在散步】文旅/生活方式IP孵化", company: "保密", time: "2021", role: "运营策划", desc: "结合文旅场景与慢生活方式，打造高净值粉丝群体的垂直IP。", detail: "此部分可补充关于场景化营销和私域引流的策略。" },
-            { id: 5, category: "新媒体", title: "【个人自媒体】汽车垂类账号矩阵独立运营", company: "个人项目", time: "持续进行", role: "自媒体人", desc: "聚焦二手车与汽车文化，深度测评多款车型，沉淀精准汽车私域流量。", detail: "此部分可补充你对车型的测评心得及粉丝转化购车的案例。" },
+            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方矩阵精细化运营全案", company: "字节跳动", time: "2019-2020", role: "核心操盘手", desc: "从0到1搭建区域账号矩阵体系，制定全年内容排期与互动玩法，实现百万粉丝跨越。", detail: "【项目背景】区域下沉战略推进，需要建立强有力的本地化内容发声渠道。\n【核心职责】负责官方抖音号及头条号矩阵搭建、内容编导、日常运营及数据分析。\n【项目成果】粉丝矩阵突破百万，单条爆款视频播放量破千万。" },
+            { id: 2, category: "新媒体", title: "【万能的小孙】抖音职场IP孵化全链路运营", company: "保密", time: "2020", role: "IP主理人", desc: "从人设定位、剧本编导到投流复盘，实现短视频IP从0到1的商业化变现。", detail: "在此部分可以补充具体的IP定位思路、视频选题逻辑、投流策略及粉丝转化路径细节。" },
+            { id: 3, category: "新媒体", title: "【机器人十七】科技垂类IP打造与硬核内容营销", company: "保密", time: "2021", role: "IP主理人", desc: "定位前沿科技与硬核评测，打造科技趣味人设，深度种草垂类粉丝群。", detail: "在此部分可以补充关于科技内容的专业度把控、评测选题及粉丝画像分析详情。" },
+            { id: 4, category: "新媒体", title: "【一芳在散步】文旅/生活方式IP孵化及私域引流", company: "保密", time: "2021", role: "运营策划", desc: "结合场景营销与慢生活方式，打造垂直高净值粉丝IP，沉淀精准流量。", detail: "在此部分可以补充关于场景化营销策略、线下活动配合及私域流量转化方法详情。" },
+            { id: 5, category: "新媒体", title: "【汽车自媒体】汽车评测账号矩阵独立运营实战", company: "个人项目", time: "持续进行", role: "自媒体人", desc: "聚焦二手车与汽车文化，深度测评多款车型，独立完成内容产出与流量运营。", detail: "在此部分可以补充你对热门车型的深度评测心得、数据变现模式及粉丝运营策略。" },
             
             // 整合营销策划
-            { id: 6, category: "整合营销策划", title: "【风味成都】S级城市整合营销现象级战役", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家成都本地餐饮品牌，结合抖音挑战赛打造城市级现象营销。", detail: "【玩法亮点】\n采用线上挑战赛+线下打卡双链路，引爆本地生活流量池。" },
-            { id: 7, category: "整合营销策划", title: "【GitLab × 瑞幸咖啡】“代码与咖啡”跨界营销", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体需求，实现ToB品牌与ToC消费品牌的巧妙结合。", detail: "【跨界逻辑】\n代码与咖啡是程序员的日常，通过联名杯套与定制周边，实现品牌破圈传播。" },
-            { id: 8, category: "整合营销策划", title: "MEB品牌焕新发布会与双十一全域狂欢节", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹双十一全年最大规模促销节点，打通站内外流量实现品效合一。", detail: "可补充具体的GMV增长数据及ROI转化率。" },
+            { id: 6, category: "整合营销", title: "【风味成都】S级城市级别整合营销事件统筹", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销。", detail: "【玩法亮点】采用线上挑战赛+线下打卡双链路，引爆本地生活流量池。" },
+            { id: 7, category: "整合营销", title: "【GitLab×瑞幸咖啡】ToB与ToC跨界营销及破圈传播", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名与话题营销。", detail: "【跨界逻辑】代码与咖啡是程序员的日常。通过联名杯套、定制周边及技术Webinar，实现品牌破圈与声量增长。" },
+            { id: 8, category: "整合营销", title: "【MEB美尔贝】品牌焕新发布会与全域狂欢节整合大促", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，营收倍增。", detail: "在此部分可以补充具体的GMV增长数据、跨渠道流量组合策略及核心玩法。" },
 
             // 品牌营销
-            { id: 9, category: "品牌营销", title: "华为荣耀《影像情书》情感共鸣破圈营销", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品冷硬属性，引发社交媒体广泛讨论。", detail: "负责核心TVC的故事脚本大纲策划与社交媒体宣发节奏把控。" },
-            { id: 10, category: "品牌营销", title: "悦木之源灵芝水：探索之旅全案品牌策划", company: "千行你我", time: "2022", role: "品牌策划", desc: "提炼产品核心成分卖点，打造沉浸式线下快闪与线上溯源营销闭环。", detail: "此部分可补充美妆行业的洞察及KOL种草策略。" },
-            { id: 11, category: "品牌营销", title: "【阿斯顿马丁之夜】超豪华品牌高端圈层营销", company: "千行你我", time: "2021", role: "执行总监", desc: "面向塔尖高净值人群，打造兼具私密性与奢华感的品鉴晚宴。", detail: "此部分可补充高客单价人群的邀约逻辑与现场体验设计。" },
-            { id: 12, category: "品牌营销", title: "【觅山】新消费青梅酒品牌从0到1整合策划", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "从品牌命名、视觉包装到上市GTM策略，全盘操盘新消费酒水品牌。", detail: "此部分可补充年轻女性微醺经济的商业洞察。" },
-            { id: 13, category: "品牌营销", title: "【久未见】高端白酒品牌心智占位与体系打造", company: "Deep深氪", time: "2023", role: "品牌主理", desc: "切入高端商务宴请场景，重塑白酒品牌文化故事与渠道推广策略。", detail: "此部分可补充白酒行业的传统破局思路。" },
+            { id: 9, category: "品牌营销", title: "华为荣耀《影像情书》TVC品牌营销策划与宣发", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣。", detail: "在此部分可以补充关于TVC核心脚本大纲的策划思路、情感化营销的把控详情。" },
+            { id: 10, category: "品牌营销", title: "悦木之源灵芝水：探索之旅沉浸式品牌探索与种草全案", company: "千行你我", time: "2022", role: "品牌策划", desc: "提炼核心成分卖点，打造沉浸式线下快闪与线上溯源营销闭环，提升用户忠诚度。", detail: "在此部分可以补充关于线下快闪店互动设计、KOL组合策略及用户留存数据详情。" },
+            { id: 11, category: "品牌营销", title: "【阿斯顿马丁之夜】超豪华品牌高端圈层营销与深度体验设计", company: "千行你我", time: "2021", role: "执行总监", desc: "面向高净值人群，打造兼具私密性与奢华感的品鉴晚宴，强化品牌尊贵感。", detail: "在此部分可以补充关于高端人群邀约逻辑、现场体验设计及后继转化的精细化细节。" },
+            { id: 12, category: "品牌营销", title: "【觅山】新消费青梅酒品牌全案：从0到1的商业化变现", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘新消费品牌：从品牌命名、视觉包装、GTM策略到全域营销变现。", detail: "在此部分可以补充对年轻女性微醺经济的商业洞察、跨渠道流量布局及GMV达成详情。" },
+            { id: 13, category: "品牌营销", title: "【久未见】高端白酒品牌打造：文化重塑与渠道拓展全链路", company: "Deep深氪", time: "2023", role: "品牌主理", desc: "切入高端商务宴请场景，重塑文化故事，搭建线下深度品鉴与线上流量矩阵。", detail: "在此部分可以补充关于白酒文化差异化包装、高端客户精细化运营及销售额详情。" },
 
             // 市场营销
-            { id: 14, category: "市场营销", title: "医疗大健康“名医+爆品”破局策略与跨界BD", company: "MEB美尔贝", time: "2020", role: "市场经理", desc: "深度绑定行业权威名医，打造差异化医疗服务爆款，开拓异业合作资源。", detail: "解决医疗服务非标品的问题，通过产品化思维提升复购。" },
-            { id: 15, category: "市场营销", title: "【GitLab】SaaS产品从0到1的GTM与商业化变现", company: "GitLab", time: "2024", role: "数字化营销经理", desc: "制定中国区市场进入策略，搭建获客、激活、留存、变现的AARRR漏斗。", detail: "【核心突破】\n实现线索获取成本(CPL)降低30%，商机转化率提升20%。" },
-            { id: 16, category: "市场营销", title: "【GitLab】官网精细化运营与全链路转化率优化", company: "GitLab", time: "2025", role: "数字化营销经理", desc: "主导官网A/B测试与页面重构，显著提升注册转化与Demo申请率。", detail: "可补充你使用的MarTech工具及数据分析方法论。" },
+            { id: 14, category: "市场营销", title: "大健康医疗“名医+爆品”破局策略与整合BD方案", company: "MEB美尔贝", time: "2020", role: "市场经理", desc: "深度绑定行业名医打造差异化爆品，开拓跨行业生态BD合作，驱动增长。", detail: "通过医疗服务非标品的产品化思路，解决用户信任问题，提升复购率详情。" },
+            { id: 15, category: "市场营销", title: "【GitLab】SaaS产品GTM策略操盘与从0到1市场获客", company: "GitLab", time: "2024", role: "营销经理", desc: "制定中国区市场策略，搭建获客、激活、留存、变现的AARRR全链路营销漏斗。", detail: "【项目成果】CPL降低30%，线索转化率提升20%详情。" },
+            { id: 16, category: "市场营销", title: "【GitLab】官网精细化运营与全链路转化率优化 (CRO)", company: "GitLab", time: "2025", role: "营销经理", desc: "主导官网页面重构与A/B测试，大幅提升注册转化与Demo申请率。", detail: "在此部分可以补充具体使用的MarTech工具、数据分析方法论及核心优化项详情。" },
 
             // 用户运营
-            { id: 17, category: "用户运营", title: "【GitLab】大中华区核心开发者社区与用户运营", company: "GitLab", time: "2025", role: "数字化营销经理", desc: "搭建开发者活跃体系，通过线上Webinar与线下Meetup增强用户粘性。", detail: "此部分可补充开源社区的运营逻辑。" },
-            { id: 18, category: "用户运营", title: "【字节跳动】四川本地生活/区域商家生态运营", company: "字节跳动", time: "2019", role: "区域运营", desc: "赋能区域中小商家掌握短视频营销工具，构建健康的本地化商业生态。", detail: "此部分可补充商家的培训体系搭建与标杆案例打造。" },
+            { id: 17, category: "用户运营", title: "【GitLab】大中华区核心社区运营与用户活跃度提升策略", company: "GitLab", time: "2025", role: "营销经理", desc: "搭建开发者活跃体系，通过Webinar与Meetup增强社区粘性与商业转化。", detail: "在此部分可以补充关于开发者社区运营的逻辑、社群精细化方法详情。" },
+            { id: 18, category: "用户运营", title: "【字节跳动】四川本地生活/商家生态系统精细化运营", company: "字节跳动", time: "2019", role: "运营主管", desc: "赋能区域商家掌握短视频营销工具，构建健康的本地化商业生态链。", detail: "在此部分可以补充关于商家培训体系搭建、标杆案例打造方法详情。" },
 
             // 产品运营
-            { id: 19, category: "产品运营", title: "【全民福利会】App全生命周期产品与活动运营", company: "保密", time: "2020", role: "产品运营", desc: "负责App端内促活与留存体系搭建，策划拉新裂变活动。", detail: "此部分可补充积分体系设计与用户生命周期(LTV)管理逻辑。" }
+            { id: 19, category: "产品运营", title: "【全民福利会】全生命周期产品运营与拉新裂变方案", company: "保密", time: "2020", role: "产品运营", desc: "负责App端内促活与留存体系搭建，策划拉新裂变活动实现用户倍增。", detail: "在此部分可以补充关于积分体系设计、用户价值模型及裂变玩法方法论详情。" }
         ];
 
-        // --- 交互逻辑区 ---
+        // --- 2. 交互逻辑区 ---
 
-        // 页面路由与切换逻辑
+        // A. 与我联系弹出面板逻辑
+        const contactWrapper = document.getElementById('contact-wrapper');
+        const contactPanel = document.getElementById('contact-panel');
+
+        contactWrapper.addEventListener('mouseenter', () => {
+            contactPanel.classList.add('show');
+        });
+
+        // 鼠标彻底离开wrapper区域再隐藏，增加操作宽容度
+        contactWrapper.addEventListener('mouseleave', () => {
+            contactPanel.classList.remove('show');
+        });
+
+        // 如果用户点击了面板内部，点击后隐藏
+        contactPanel.addEventListener('click', (e) => {
+            if(e.target.tagName === 'A') { // 点击了链接才隐藏
+                 contactPanel.classList.remove('show');
+            }
+        });
+
+
+        // B. 页面路由与切换
         function switchPage(pageId) {
-            window.scrollTo(0,0);
+            window.scrollTo(0,0); // 滚回顶部
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             
-            document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
+            // 更新文字导航激活态
+            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
             if(pageId !== 'project-detail') {
                 document.getElementById('nav-' + pageId).classList.add('active');
             } else {
@@ -333,27 +397,27 @@
             }
         }
 
-        // 渲染工作履历
+        // C. 渲染工作履历 (增加行悬停背光效果初始化)
         function renderWork() {
             const container = document.getElementById('work-container');
             container.innerHTML = workData.map(work => `
                 <div class="glass-card work-row hover-effect">
                     <div class="work-left">
                         <div class="company-logo">${work.logo}</div>
-                        <div>
+                        <div class="work-info">
                             <div class="work-title">${work.company}</div>
                             <div class="work-desc">${work.desc}</div>
                         </div>
                     </div>
                     <div class="work-right">
-                        <div style="font-weight: 500;">${work.role}</div>
-                        <div style="font-size: 14px; opacity: 0.8;">${work.time}</div>
+                        <div class="work-role">${work.role}</div>
+                        <div class="work-time">${work.time}</div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // 渲染项目卡片
+        // D. 渲染项目卡片 (优化卡片视差效果初始化)
         function renderProjects(category = '全部') {
             const grid = document.getElementById('projects-grid');
             const filtered = category === '全部' ? projectsData : projectsData.filter(p => p.category === category);
@@ -367,11 +431,11 @@
                 </div>
             `).join('');
 
-            initTiltEffect();
-            initHoverLight();
+            initHoverLight(); // 初始化微玻璃呼吸光效
+            initTiltEffect(); // 初始化tvOS同款视差倾斜
         }
 
-        // 切换项目分类
+        // E. 项目筛选
         function filterProjects(category) {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.innerText === category);
@@ -379,7 +443,7 @@
             renderProjects(category);
         }
 
-        // 打开项目详情
+        // F. 打开项目详情
         function openDetail(id) {
             const project = projectsData.find(p => p.id === id);
             if(!project) return;
@@ -394,7 +458,7 @@
             switchPage('project-detail');
         }
 
-        // tvOS 3D 悬浮视差动效 (Apple空间计算核心细节)
+        // G. tvOS 同款 3D 视差倾斜动效 (核心细节)
         function initTiltEffect() {
             document.querySelectorAll('.tilt-card').forEach(card => {
                 card.addEventListener('mousemove', e => {
@@ -403,6 +467,7 @@
                     const y = e.clientY - rect.top;
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
+                    
                     // 计算倾斜角度，限制在正负8度以内保持丝滑
                     const rotateX = ((y - centerY) / centerY) * -8; 
                     const rotateY = ((x - centerX) / centerX) * 8;
@@ -415,7 +480,7 @@
             });
         }
 
-        // 微玻璃拟态呼吸光效 (鼠标跟随发光)
+        // H. 微玻璃拟态呼吸光效 (鼠标跟随发光)
         function initHoverLight() {
             document.querySelectorAll('.hover-effect').forEach(card => {
                 card.addEventListener('mousemove', e => {
@@ -428,7 +493,7 @@
             });
         }
 
-        // 初始化
+        // I. 全局初始化
         window.onload = () => {
             renderWork();
             renderProjects();
