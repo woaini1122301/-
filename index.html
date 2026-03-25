@@ -103,15 +103,10 @@
         .page-view.active { display: block; animation: fadeIn 0.6s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 首页：极致留白与呼吸文字 --- */
+        /* --- 首页：极致留白 --- */
         .hero-home { height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
-        .hero-home h1 {
-            font-size: 26px; font-weight: 300; letter-spacing: 14px; color: var(--text-primary);
-            opacity: 0.7; animation: pulse 4s infinite alternate;
-        }
-        @keyframes pulse { 0% { opacity: 0.3; text-shadow: 0 0 10px transparent; } 100% { opacity: 1; text-shadow: 0 0 35px rgba(255,255,255,0.7); } }
-
-        /* --- 二级页面通用居中表头 (工作履历 & 项目经验 共用) --- */
+        
+        /* --- 二级页面通用居中表头 --- */
         .page-header-centered {
             text-align: center; margin-bottom: 50px;
             display: flex; flex-direction: column; align-items: center;
@@ -199,7 +194,6 @@
 
     <main>
         <section id="home" class="page-view active hero-home">
-            <h1>DAVID'S SPACE</h1>
         </section>
 
         <section id="work" class="page-view">
