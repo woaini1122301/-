@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAVID's Space | 重构流量引擎</title>
+    <title>DAVID's Space | 商业与增长</title>
     <style>
-        /* 基础变量 - 深邃黑与空间色调 */
+        /* --- 基础变量 --- */
         :root {
             --bg-color: #000000;
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --accent-color: #ff00ff; /* 极小量的点缀色 */
+            --text-secondary: rgba(255, 255, 255, 0.65);
             --glass-bg: rgba(255, 255, 255, 0.02);
             --glass-border: rgba(255, 255, 255, 0.08);
             --contact-panel-bg: rgba(10, 10, 15, 0.95);
@@ -26,148 +25,154 @@
             line-height: 1.6;
         }
 
-        /* 全屏 Canvas 粒子容器 - 仅在首页显示 */
+        /* --- 首页全屏 Canvas --- */
         #particle-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; /* 放在文字下方 */
-            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%); /* 空间底色 */
+            z-index: -1;
+            background: radial-gradient(circle at center, #121220 0%, #000000 100%);
             opacity: 0; transition: opacity 1s ease;
         }
         #particle-canvas.active { opacity: 1; }
 
-        /* 二级页面基础背景渐变 (无粒子) */
+        /* 二级页面基础背景 (深色纯净) */
         .subpage-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -2;
             background: linear-gradient(180deg, #000000 0%, #0a0a12 100%);
         }
 
-        /* 顶部导航栏 - 保持精细 */
+        /* --- 顶部导航栏 --- */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--glass-border);
         }
         .nav-container {
             display: flex; justify-content: space-between; align-items: center;
             max-width: 1400px; margin: 0 auto; padding: 18px 40px;
         }
-        .nav-logo { font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-        .nav-links { display: flex; gap: 35px; }
+        /* Logo 兼具返回首页功能 */
+        .nav-logo { 
+            font-size: 16px; font-weight: 700; letter-spacing: 1.5px; 
+            text-transform: uppercase; cursor: pointer; transition: 0.3s;
+        }
+        .nav-logo:hover { text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+        
+        .nav-links { display: flex; gap: 40px; }
         .nav-links a {
             color: var(--text-secondary); text-decoration: none;
-            font-size: 14px; font-weight: 500; transition: all 0.3s; cursor: pointer;
+            font-size: 15px; font-weight: 500; transition: all 0.3s; cursor: pointer;
             position: relative; padding: 4px 0;
         }
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
-            background-color: var(--text-primary); transition: width 0.3s;
+            content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+            background-color: var(--text-primary); transition: width 0.3s ease;
         }
         .nav-links a.active::after { width: 100%; }
 
-        /* 右侧与我联系 */
+        /* 右侧悬停联系方式 */
         .nav-contact-wrapper { position: relative; }
         .nav-contact-trigger {
-            color: var(--text-secondary); cursor: pointer;
-            font-size: 14px; font-weight: 500; transition: color 0.3s;
-            padding: 8px 16px; border: 1px solid transparent; border-radius: 20px;
+            color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 500; 
+            padding: 8px 18px; border: 1px solid transparent; border-radius: 20px; transition: 0.3s;
         }
         .nav-contact-wrapper:hover .nav-contact-trigger {
             color: var(--text-primary); background: var(--glass-bg); border-color: var(--glass-border);
         }
         .nav-contact-panel {
-            position: absolute; top: calc(100% + 15px); right: 0;
-            width: 280px; padding: 25px;
-            background: var(--contact-panel-bg);
-            border: 1px solid var(--glass-border); border-radius: 16px;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            position: absolute; top: calc(100% + 15px); right: 0; width: 280px; padding: 25px;
+            background: var(--contact-panel-bg); border: 1px solid var(--glass-border); border-radius: 16px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.3s ease;
             box-shadow: 0 15px 50px -10px rgba(0,0,0,0.8);
         }
         .nav-contact-wrapper:hover .nav-contact-panel { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .contact-item { display: flex; gap: 15px; align-items: center; margin-bottom: 18px; }
         .contact-item:last-child { margin-bottom: 0; }
-        .contact-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 14px; font-weight: bold; border: 1px solid var(--glass-border);}
+        .contact-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; border: 1px solid var(--glass-border);}
         .contact-info { font-size: 14px; color: var(--text-primary); }
         .contact-info a { color: var(--text-primary); text-decoration: none; }
         .contact-info a:hover { text-decoration: underline; }
 
-        /* 页面主体容器 */
-        main { padding: 140px 5% 60px; max-width: 1300px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; }
+        /* --- 页面主体容器 --- */
+        main { padding: 120px 5% 60px; max-width: 1300px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; }
         .page-view { display: none; }
-        .page-view.active { display: block; animation: fadeIn 0.8s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .page-view.active { display: block; animation: fadeIn 0.6s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 首页：重构逻辑与排版 --- */
-        .hero-home {
-            height: 75vh; display: flex; align-items: center; /* 垂直居中 */
-            justify-content: flex-start; /*靠左 */
-            padding-left: 5%;
+        /* --- 首页：极致留白与粒子穹顶 --- */
+        .hero-home { height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
+        .hero-home h1 {
+            font-size: 24px; font-weight: 300; letter-spacing: 12px; color: var(--text-primary);
+            opacity: 0.7; animation: pulse 4s infinite alternate;
         }
-        .hero-content { max-width: 800px; text-align: left; }
-        /* 左侧文字大字标题 */
-        .hero-title {
-            font-size: 72px; font-weight: 800; line-height: 1.1;
-            letter-spacing: -2px; margin-bottom: 24px;
-            background: linear-gradient(180deg, #ffffff 0%, #b0b0b0 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        /* 下方诠释小字 */
-        .hero-subtitle {
-            font-size: 20px; color: var(--text-secondary); font-weight: 300;
-            max-width: 600px; line-height: 1.8; letter-spacing: 0.5px;
-        }
+        @keyframes pulse { 0% { opacity: 0.4; text-shadow: 0 0 10px transparent; } 100% { opacity: 1; text-shadow: 0 0 30px rgba(255,255,255,0.6); } }
 
-        /* --- 二级页面通用样式 --- */
-        .page-header { margin-bottom: 60px; max-width: 800px;}
-        .page-header h2 { font-size: 36px; font-weight: 700; margin-bottom: 15px; letter-spacing: -1px; }
-        .page-header p { font-size: 16px; color: var(--text-secondary); line-height: 1.8; }
-
-        /* 通用玻璃卡片样式 */
-        .glass-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 24px; padding: 35px;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            position: relative; overflow: hidden;
+        /* --- 工作履历页：窄版粒子特效横幅 --- */
+        .work-banner {
+            position: relative; width: 100%; height: 220px;
+            border-radius: 24px; overflow: hidden; margin-bottom: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--glass-border);
+            background: #000;
+        }
+        #work-particle-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+        }
+        .work-banner h2 {
+            position: relative; z-index: 2; font-size: 42px; font-weight: 700; letter-spacing: 6px;
+            color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none;
         }
         
-        /* --- 工作履历：优化间距与背光 --- */
-        .work-item { display: flex; align-items: center; justify-content: space-between; padding: 28px 35px; margin-bottom: 30px; cursor: pointer; }
-        /* 鼠标悬停时的深邃背光 */
-        .work-item:hover {
-            background: rgba(255,255,255,0.03);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 20px 60px -10px rgba(0,0,0,0.5);
-            transform: translateY(-2px);
-        }
+        /* 履历列表样式 */
+        .work-item { display: flex; align-items: center; justify-content: space-between; padding: 28px 35px; margin-bottom: 25px; cursor: pointer; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.4s; }
+        .work-item:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.15); box-shadow: 0 20px 60px -10px rgba(0,0,0,0.5); transform: translateY(-3px); }
         .work-left { display: flex; align-items: center; gap: 25px; flex-grow: 1; }
-        .company-logo { width: 52px; height: 52px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .company-logo { width: 52px; height: 52px; border-radius: 14px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
         .work-info-meta { flex-grow: 1; }
-        .work-company-name { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+        .work-company-name { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
         .work-job-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
-        .work-item:hover .work-job-desc { max-height: 150px; opacity: 1; margin-top: 12px; }
+        .work-item:hover .work-job-desc { max-height: 150px; opacity: 1; margin-top: 10px; }
         .work-right { text-align: right; color: var(--text-secondary); padding-left: 40px; flex-shrink: 0; }
         .work-pos { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
         .work-duration { font-size: 14px; opacity: 0.8; }
 
-        /* --- 项目经验：Bento Grid --- */
-        .filter-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; }
-        .filter-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-secondary);
-            padding: 9px 22px; border-radius: 30px; cursor: pointer; transition: all 0.3s; font-size: 14px;
+        /* --- 项目经验页：居中布局 (参照GitLab案例页) --- */
+        .projects-header-centered {
+            text-align: center; margin-bottom: 45px;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .filter-btn:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
-        .filter-btn.active { background: var(--text-primary); color: var(--bg-color); border-color: var(--text-primary); }
+        .projects-header-centered h2 {
+            font-size: 44px; font-weight: 800; margin-bottom: 18px; letter-spacing: 1px;
+            background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .projects-header-centered p {
+            font-size: 16px; color: var(--text-secondary); max-width: 650px; line-height: 1.8;
+        }
+        
+        /* 居中的分类筛选器 */
+        .filter-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-bottom: 50px; }
+        .filter-btn {
+            background: transparent; border: 1px solid var(--glass-border); color: var(--text-secondary);
+            padding: 10px 26px; border-radius: 30px; cursor: pointer; transition: all 0.3s; font-size: 14px; font-weight: 500;
+        }
+        .filter-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .filter-btn.active { background: var(--text-primary); color: var(--bg-color); border-color: var(--text-primary); font-weight: 600; }
 
+        /* Bento Grid 卡片 */
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .project-card { height: 320px; display: flex; flex-direction: column; cursor: pointer; transform-style: preserve-3d; }
-        .project-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); box-shadow: 0 15px 40px -10px rgba(0,0,0,0.5); }
-        .proj-cat { font-size: 12px; color: #a0a0f0; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .proj-title { font-size: 19px; font-weight: 600; margin-bottom: 15px; line-height: 1.4;}
-        .proj-intro { font-size: 14px; color: var(--text-secondary); flex-grow: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; line-height: 1.7;}
+        .project-card { 
+            height: 320px; display: flex; flex-direction: column; cursor: pointer; transform-style: preserve-3d;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 35px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .project-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); box-shadow: 0 15px 40px -10px rgba(0,0,0,0.6); }
+        .proj-cat { font-size: 12px; color: #a0a0f0; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .proj-title { font-size: 20px; font-weight: 600; margin-bottom: 15px; line-height: 1.4;}
+        .proj-intro { font-size: 14px; color: var(--text-secondary); flex-grow: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; line-height: 1.7;}
         .proj-link { align-self: flex-end; font-size: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 6px; opacity: 0; transform: translateX(-10px); transition: 0.3s; padding-top: 15px; }
         .project-card:hover .proj-link { opacity: 1; transform: translateX(0); }
 
@@ -181,9 +186,8 @@
 
     <nav>
         <div class="nav-container">
-            <div class="nav-logo">DAVID's Space</div>
+            <div class="nav-logo" onclick="switchPage('home')">DAVID's Space</div>
             <div class="nav-links">
-                <a onclick="switchPage('home')" id="nav-home" class="active">首页</a>
                 <a onclick="switchPage('work')" id="nav-work">工作履历</a>
                 <a onclick="switchPage('projects')" id="nav-projects">项目经验</a>
             </div>
@@ -193,7 +197,7 @@
                     <div class="contact-item">
                         <div class="contact-icon">Mail</div>
                         <div class="contact-info">
-                            <div>邮件</div>
+                            <div>邮箱</div>
                             <a href="mailto:david.wang@email.com">david.wang@email.com</a>
                         </div>
                     </div>
@@ -211,41 +215,40 @@
 
     <main>
         <section id="home" class="page-view active hero-home">
-            <div class="hero-content">
-                <h1 class="hero-title">重构流量引擎<br>以工程思维驱动营销</h1>
-                <p class="hero-subtitle">专注于用技术与数据重构营销流程，构建可量化、可复制的持续增长系统。</p>
-            </div>
+            <h1>DAVID'S SPACE</h1>
         </section>
 
         <section id="work" class="page-view">
-            <div class="page-header">
+            <div class="work-banner">
+                <canvas id="work-particle-canvas"></canvas>
                 <h2>工作履历</h2>
-                <p>沉淀多维度、全链路营销与增长实战经验，涵盖大厂、创业及B2B SaaS产品GTM策略操盘。</p>
             </div>
+            
             <div id="work-container">
                 </div>
         </section>
 
         <section id="projects" class="page-view">
-            <div class="page-header">
+            <div class="projects-header-centered">
                 <h2>项目经验</h2>
                 <p>精选全链条实战案例，涵盖新媒体IP孵化、整合营销策划、品牌全案及数字化增长策略。</p>
             </div>
+            
             <div class="filter-bar" id="filter-container">
                 <button class="filter-btn active" onclick="filterProjects('全部')">全部</button>
                 <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
-                <button class="filter-btn" onclick="filterProjects('整合营销')">整合营销</button>
+                <button class="filter-btn" onclick="filterProjects('整合营销')">整合营销策划</button>
                 <button class="filter-btn" onclick="filterProjects('品牌营销')">品牌营销</button>
                 <button class="filter-btn" onclick="filterProjects('市场增长')">市场增长</button>
             </div>
+            
             <div class="bento-grid" id="projects-grid">
                 </div>
         </section>
     </main>
 
     <script>
-        // --- 数据结构 ---
-
+        // --- 1. 数据结构 ---
         const workData = [
             { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "主导大中华区数字化获客体系搭建，操盘SaaS产品全链路GTM策略，通过MarTech工具实现线索转化率提升25%。" },
             { company: "Deep深氪", time: "2022 - 2024", role: "创始人/创业", logo: "DK", desc: "创立营销咨询公司，为多家头部新消费及ToB企业提供全案品牌策划与增长顾问服务，实现从0到1业务闭环。" },
@@ -255,57 +258,40 @@
         ];
 
         const projectsData = [
-            // 新媒体
-            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方抖音矩阵孵化与精细化运营", company: "字节跳动", time: "2019", role: "项目统筹", desc: "从0到1搭建区域账号矩阵，制定内容排期与互动玩法，实现粉丝破百万，打造多条千万级爆款视频。" },
-            { id: 2, category: "新媒体", title: "职场垂类IP【万能的小孙】从0到1全链路孵化", company: "保密", time: "2020", role: "IP主理人", desc: "全盘操盘IP定位、剧本编导、投流复盘及商业化变现，打造行业现象级职场新媒体账号。" },
-            { id: 3, category: "新媒体", title: "汽车垂类个人自媒体账号矩阵独立运营实战", company: "个人项目", time: "持续", role: "自媒体人", desc: "聚焦二手车与汽车文化，深度测评多款车型，独立完成内容产出、粉丝运营与数据变现。" },
-            
-            // 整合营销策划
-            { id: 4, category: "整合营销", title: "【风味成都】字节跳动城市级别整合营销事件", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销，引爆本地生活流量池。" },
-            { id: 5, category: "整合营销", title: "【GitLab × 瑞幸咖啡】程序员节跨界营销与破圈传播", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名，打造话题营销新范式。" },
-            { id: 6, category: "整合营销", title: "【MEB美尔贝】品牌焕新发布会与全域双十一狂欢节", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，实现GMV倍增。" },
-
-            // 品牌营销
-            { id: 7, category: "品牌营销", title: "华为荣耀《影像情书》情感共鸣TVC品牌营销策划", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣，提升品牌温度。" },
-            { id: 8, category: "品牌营销", title: "【觅山】新消费青梅酒从0到1品牌全案与GTM策略", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘品牌定位、VI包装、渠道拓展及营销变现，快速占领年轻女性微醺市场。" },
-
-            // 市场增长
-            { id: 9, category: "市场增长", title: "【GitLab】SaaS产品中国区GTM策略操盘与全链路数字化获客", company: "GitLab", time: "2024", role: "营销经理", desc: "搭建基于MarTech的获客模型（AARRR），优化全链路转化，实现CPL降低30%。" },
-            { id: 10, category: "市场增长", title: "【GitLab】官网精细化运营与全链路转化率优化 (CRO)", company: "GitLab", time: "2025", role: "营销经理", desc: "主导官网页面重构与A/B测试，大幅提升注册转化与Demo申请率，驱动商机增长。" }
+            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方抖音矩阵孵化", company: "字节跳动", time: "2019", role: "项目统筹", desc: "从0到1搭建区域账号矩阵，制定内容排期与互动玩法，实现粉丝破百万，打造多条千万级爆款视频。" },
+            { id: 2, category: "新媒体", title: "职场垂类IP【万能的小孙】全链路孵化", company: "保密", time: "2020", role: "IP主理人", desc: "全盘操盘IP定位、剧本编导、投流复盘及商业化变现，打造行业现象级职场新媒体账号。" },
+            { id: 3, category: "新媒体", title: "汽车垂类个人自媒体账号矩阵独立运营", company: "个人项目", time: "持续", role: "自媒体人", desc: "聚焦二手车与汽车文化，深度测评多款车型，独立完成内容产出、粉丝运营与数据变现。" },
+            { id: 4, category: "整合营销", title: "【风味成都】字节跳动城市整合营销", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销，引爆本地生活流量池。" },
+            { id: 5, category: "整合营销", title: "【GitLab × 瑞幸咖啡】跨界联名破圈营销", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名，打造话题营销新范式。" },
+            { id: 6, category: "整合营销", title: "【MEB美尔贝】全域双十一狂欢节大促", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，实现GMV倍增。" },
+            { id: 7, category: "品牌营销", title: "华为荣耀《影像情书》情感共鸣TVC营销", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣，提升品牌温度。" },
+            { id: 8, category: "品牌营销", title: "【觅山】新消费青梅酒品牌全案与GTM", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘品牌定位、VI包装、渠道拓展及营销变现，快速占领年轻女性微醺市场。" },
+            { id: 9, category: "市场增长", title: "【GitLab】SaaS产品中国区获客GTM策略", company: "GitLab", time: "2024", role: "营销经理", desc: "搭建基于MarTech的获客模型（AARRR），优化全链路转化，实现CPL显著降低。" },
+            { id: 10, category: "市场增长", title: "【GitLab】官网精细化运营与转化率优化", company: "GitLab", time: "2025", role: "营销经理", desc: "主导官网页面重构与A/B测试，大幅提升注册转化与Demo申请率，驱动商机增长。" }
         ];
 
-        // --- 核心逻辑 ---
-
-        // 1. 页面切换逻辑
+        // --- 2. 页面与组件渲染 ---
         function switchPage(pageId) {
             window.scrollTo(0,0);
             
-            // 处理 Canvas 状态
-            const canvas = document.getElementById('particle-canvas');
-            if(pageId === 'home') {
-                canvas.classList.add('active');
-                if(!animationId) animate(); // 如果停止了，重新启动动画
-            } else {
-                canvas.classList.remove('active');
-                // 可选：为了节省资源，在非首页停止动画循环
-                // if(animationId) cancelAnimationFrame(animationId);
-                // animationId = null;
-            }
+            // 切换主画布显示状态
+            const homeCanvas = document.getElementById('particle-canvas');
+            if(pageId === 'home') { homeCanvas.classList.add('active'); } 
+            else { homeCanvas.classList.remove('active'); }
 
-            // 处理视图显示
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             
-            // 处理导航激活态
             document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-' + pageId).classList.add('active');
+            if(pageId !== 'home') {
+                document.getElementById('nav-' + pageId).classList.add('active');
+            }
         }
 
-        // 2. 渲染函数
         function renderWork() {
             const container = document.getElementById('work-container');
             container.innerHTML = workData.map(work => `
-                <div class="glass-card work-item hover-effect">
+                <div class="work-item tilt-card">
                     <div class="work-left">
                         <div class="company-logo">${work.logo}</div>
                         <div class="work-info-meta">
@@ -324,17 +310,15 @@
         function renderProjects(category = '全部') {
             const grid = document.getElementById('projects-grid');
             const filtered = category === '全部' ? projectsData : projectsData.filter(p => p.category === category);
-            
             grid.innerHTML = filtered.map(p => `
-                <div class="glass-card project-card tilt-card hover-effect">
+                <div class="project-card tilt-card">
                     <div class="proj-cat">${p.category}</div>
                     <div class="proj-title">${p.title}</div>
                     <div class="proj-intro">${p.desc}</div>
                     <div class="proj-link">了解详情 →</div>
                 </div>
             `).join('');
-
-            initVisualEffects(); // 重新初始化新生成的卡片的视觉效果
+            initTiltEffect();
         }
 
         function filterProjects(category) {
@@ -344,20 +328,7 @@
             renderProjects(category);
         }
 
-        // 3. 视觉效果初始化 (背光、倾斜)
-        function initVisualEffects() {
-            // 呼吸背光核心逻辑
-            document.querySelectorAll('.hover-effect').forEach(card => {
-                card.addEventListener('mousemove', e => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    card.style.setProperty('--mouse-x', `${x}px`);
-                    card.style.setProperty('--mouse-y', `${y}px`);
-                });
-            });
-
-            // 3D 倾斜逻辑
+        function initTiltEffect() {
             document.querySelectorAll('.tilt-card').forEach(card => {
                 card.addEventListener('mousemove', e => {
                     const rect = card.getBoundingClientRect();
@@ -365,9 +336,9 @@
                     const y = e.clientY - rect.top;
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -6; // 稍微减小角度提升高级感
-                    const rotateY = ((x - centerX) / centerX) * 6;
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
@@ -375,87 +346,41 @@
             });
         }
 
-
-        // --- 4. 首页核心：Interstellar 风格粒子系统 ---
-
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let animationId = null;
-
-        let width, height;
-        let particles = [];
-        const particleCount = 150; // 粒子数量，保持理性，不要太密集
-        const mouse = { x: null, y: null, radius: 100 }; // 鼠标交互半径
-
-        window.addEventListener('mousemove', e => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-
-        window.addEventListener('resize', setCanvasSize);
-
-        function setCanvasSize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            initParticles(); // 窗口大小改变时重新初始化
-        }
-
+        // --- 3. 封装的双轨粒子系统 (星际穿越风格) ---
         class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5; // 粒子大小在 0.5-2.5 之间
-                
-                // 基础缓慢漂移速度 (星际穿越感觉)
-                this.speedX = Math.random() * 0.2 - 0.1; 
-                this.speedY = Math.random() * 0.2 - 0.1;
-                
-                // 颜色：深白、深紫、极其微量的洋红
-                const colors = [
-                    'rgba(255, 255, 255, 0.5)',
-                    'rgba(160, 160, 255, 0.3)',
-                    'rgba(255, 0, 255, 0.1)' 
-                ];
+            constructor(w, h) {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.3 - 0.15;
+                this.speedY = Math.random() * 0.3 - 0.15;
+                const colors = ['rgba(255, 255, 255, 0.5)', 'rgba(160, 160, 255, 0.3)', 'rgba(255, 0, 255, 0.1)'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
-                
-                // 用于鼠标交互的原始位置
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 30) + 10; // 粒子“重量”，影响交互速度
+                this.mass = (Math.random() * 30) + 10;
             }
-
-            update() {
-                // 1. 基础缓慢漂移
+            update(w, h, mouse) {
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // 边界检查，并在另一侧重现，形成循环流动的效果
-                if (this.x > width) this.x = 0; else if (this.x < 0) this.x = width;
-                if (this.y > height) this.y = 0; else if (this.y < 0) this.y = height;
+                // 越界循环
+                if (this.x > w) this.x = 0; else if (this.x < 0) this.x = w;
+                if (this.y > h) this.y = 0; else if (this.y < 0) this.y = h;
 
-                // 2. 鼠标交互核心逻辑 (排斥效果)
+                // 鼠标交互 (斥力)
                 if (mouse.x != null && mouse.y != null) {
                     let dx = mouse.x - this.x;
                     let dy = mouse.y - this.y;
                     let distance = Math.sqrt(dx * dx + dy * dy);
-                    
                     if (distance < mouse.radius) {
-                        // 计算排斥力
                         let forceDirectionX = dx / distance;
                         let forceDirectionY = dy / distance;
-                        let maxDistance = mouse.radius;
-                        let force = (maxDistance - distance) / maxDistance; // 越近力越大
-                        
-                        let directionX = forceDirectionX * force * this.density;
-                        let directionY = forceDirectionY * force * this.density;
-                        
-                        this.x -= directionX; // 减去方向，形成排斥
-                        this.y -= directionY;
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        this.x -= forceDirectionX * force * this.mass * 0.08;
+                        this.y -= forceDirectionY * force * this.mass * 0.08;
                     }
                 }
             }
-
-            draw() {
+            draw(ctx) {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
@@ -463,42 +388,75 @@
             }
         }
 
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
+        class ParticleSystem {
+            constructor(canvasId, density) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.density = density;
+                this.mouse = { x: null, y: null, radius: 100 };
+                
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                
+                this.canvas.addEventListener('mousemove', e => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.mouse.x = e.clientX - rect.left;
+                    this.mouse.y = e.clientY - rect.top;
+                });
+                this.canvas.addEventListener('mouseleave', () => {
+                    this.mouse.x = null; this.mouse.y = null;
+                });
+            }
+
+            resize() {
+                // 判断是全屏还是窄屏横幅
+                if (this.canvas.id === 'particle-canvas') {
+                    this.width = this.canvas.width = window.innerWidth;
+                    this.height = this.canvas.height = window.innerHeight;
+                } else {
+                    this.width = this.canvas.width = this.canvas.parentElement.offsetWidth;
+                    this.height = this.canvas.height = this.canvas.parentElement.offsetHeight;
+                }
+                this.initParticles();
+            }
+
+            initParticles() {
+                this.particles = [];
+                for (let i = 0; i < this.density; i++) {
+                    this.particles.push(new Particle(this.width, this.height));
+                }
+            }
+
+            updateAndDraw() {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                for (let p of this.particles) {
+                    p.update(this.width, this.height, this.mouse);
+                    p.draw(this.ctx);
+                }
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height); // 清空画布
-            
-            // 如果不在首页，停止绘制以节省资源
-            if (!document.getElementById('home').classList.contains('active')) {
-                animationId = requestAnimationFrame(animate); // 仍然运行循环，但什么都不画，方便切回来时立即响应
-                return;
-            }
+        // 初始化两个粒子系统：一个是全屏(首页)，一个是横幅(工作页)
+        let homeSystem, workSystem;
 
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            // 可选：添加极淡的粒子间连线，增加数据网格感，但要非常淡，以免杂乱
-            // connectParticles(); 
-            
-            animationId = requestAnimationFrame(animate);
-        }
-
-        // 初始化全屏粒子
-        setCanvasSize();
-        canvas.classList.add('active'); // 默认显示首页 Canvas
-        animate();
-
-
-        // --- 全局初始化 ---
         window.onload = () => {
             renderWork();
             renderProjects();
+            
+            homeSystem = new ParticleSystem('particle-canvas', 150);
+            workSystem = new ParticleSystem('work-particle-canvas', 80); // 窄条横幅粒子稍微稀疏一些
+
+            // 统一的动画刷新循环，按需渲染以节省性能
+            function animate() {
+                if (document.getElementById('home').classList.contains('active')) {
+                    homeSystem.updateAndDraw();
+                } else if (document.getElementById('work').classList.contains('active')) {
+                    workSystem.updateAndDraw();
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
         };
 
     </script>
