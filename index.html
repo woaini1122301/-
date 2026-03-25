@@ -346,7 +346,7 @@
 
         // A. 工作履历数据 (示例，你需要修改为自己的)
         const workData = [
-            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理", logo: "GL", desc: "主导大中华区数字化获客体系搭建，操盘SaaS产品全链路GTM策略，通过MarTech工具实现线索转化率提升25%。" },
+            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "主导大中华区数字化获客体系搭建，操盘SaaS产品全链路GTM策略，通过MarTech工具实现线索转化率提升25%。" },
             { company: "Deep深氪", time: "2022 - 2024", role: "创始人/创业", logo: "DK", desc: "创立营销咨询公司，为多家头部新消费及ToB企业提供全案品牌策划与增长顾问服务，实现从0到1业务闭环。" },
             { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团品牌矩阵升级，建立系统化VI体系，策划并执行多场行业级千人峰会，显著提升品牌行业声量。" },
             { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责核心业务线的商业化变现模型搭建，主导双十一等S级全网大促活动，实现GMV同比翻倍增长。" },
@@ -375,18 +375,15 @@
             contactPanel.classList.add('show');
         });
 
-        // 鼠标彻底离开wrapper区域再隐藏，增加操作宽容度
         contactWrapper.addEventListener('mouseleave', () => {
             contactPanel.classList.remove('show');
         });
 
-        // 如果用户点击了面板内部，点击后隐藏
         contactPanel.addEventListener('click', (e) => {
-            if(e.target.tagName === 'A') { // 点击了链接才隐藏
+            if(e.target.tagName === 'A') { 
                  contactPanel.classList.remove('show');
             }
         });
-
 
         // B. 页面路由与切换
         function switchPage(pageId) {
@@ -537,21 +534,17 @@
                 }
 
                 init() {
-                    // 【全屏分布逻辑】：不再限制在右侧，使用更激进的坐标
                     // 使用不规则的极坐标分布模拟浩瀚星云
                     const theta = Math.random() * 2 * Math.PI; // 角度
-                    // 径向分布：通过开方让粒子更倾向于聚集在中间，但有很长的尾部
                     const radius = Math.pow(Math.random(), 2) * width * 1.2; 
                     
                     // 初始 3D 坐标
                     this.rawX = radius * Math.cos(theta);
-                    this.rawY = (Math.random() * 2 - 1) * height * 0.8; // Y 轴分布稍窄，形成星盘感
-                    // Z 轴（深度）：使用较远的深度增加空间感
+                    this.rawY = (Math.random() * 2 - 1) * height * 0.8; 
                     this.rawZ = Math.random() * width * 1.5 - width * 0.5; 
                     
-                    this.size = Math.random() * 2.5 + 0.5; // 基础大小
+                    this.size = Math.random() * 2.5 + 0.5; 
                     
-                    // 【精致造型】：使用多彩色调混合
                     const colors = [
                         'rgba(200, 100, 255, ', // 深紫
                         'rgba(255, 100, 255, ', // 洋红
@@ -559,52 +552,40 @@
                         'rgba(255, 255, 255, '  // 纯白微光
                     ];
                     this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    // 慢速自转速度
                     this.speed = Math.random() * 0.0005 + 0.0001; 
                 }
 
                 update(time) {
-                    // 绕 Y 轴缓慢自转
                     const angle = time * this.speed;
                     const cosA = Math.cos(angle);
                     const sinA = Math.sin(angle);
                     
-                    // 应用旋转公式
                     const x = this.rawX * cosA - this.rawZ * sinA;
                     const z = this.rawX * sinA + this.rawZ * cosA;
                     const y = this.rawY;
 
-                    // 增加一点整体沿 X 轴的倾斜角，让它看起来更具空间立体感
                     const tilt = 0.5;
                     const tiltedY = y * Math.cos(tilt) - z * Math.sin(tilt);
                     const tiltedZ = y * Math.sin(tilt) + z * Math.cos(tilt);
 
-                    // 3D 透视投影 (Perspective Projection)
-                    // Fov 值越小，透视越强烈，空间越深邃
                     const fov = width * 0.8; 
                     const scale = fov / (fov + tiltedZ);
                     
-                    // 【非居中且全屏】：将星云中心偏置，但粒子扩散至全屏
                     const centerX = width * 0.7; 
                     const centerY = height * 0.6;
                     this.px = centerX + x * scale;
                     this.py = centerY + tiltedY * scale;
 
-                    // 根据 Z 轴深度调整最终大小和透明度
                     this.finalSize = this.size * scale;
-                    // Z 轴越远，透明度越低
                     this.alpha = Math.max(0.1, Math.min(0.9, scale * 0.7)); 
 
-                    // 【精致交互】：鼠标近距离对焦微亮效果
                     if (mouseX !== null && mouseY !== null) {
                         const dx = this.px - mouseX;
                         const dy = this.py - mouseY;
                         const dist = Math.sqrt(dx * dx + dy * dy);
-                        const intersectRadius = 150; // 交互半径
+                        const intersectRadius = 150; 
                         
                         if (dist < intersectRadius) {
-                            // 距离越近，亮度越高，大小稍微放大，模拟景深对焦
                             const force = (intersectRadius - dist) / intersectRadius;
                             this.alpha += force * 0.3;
                             this.finalSize *= (1 + force * 0.2);
@@ -613,28 +594,24 @@
                 }
 
                 draw() {
-                    // 绘制稠密颗粒：使用简单的 arc 创造细腻的沙砾感
                     ctx.beginPath();
-                    ctx.arc(this.nav-logoX, this.py, this.finalSize, 0, Math.PI * 2);
+                    // 修复了上一版的坐标变量名拼写错误：修改回了 this.px
+                    ctx.arc(this.px, this.py, this.finalSize, 0, Math.PI * 2);
                     ctx.fillStyle = this.colorPrefix + this.alpha + ')';
                     ctx.fill();
                 }
             }
 
-            // 初始化粒子数组
             function initParticles() {
-                particles.length = 0; // 清空数组
+                particles.length = 0; 
                 for (let i = 0; i < numParticles; i++) {
                     particles.push(new Particle());
                 }
             }
 
             let time = 0;
-            // 渲染主循环
             function renderNebula() {
-                // 确保在首页激活时才渲染，节省资源
                 if (document.getElementById('home').classList.contains('active')) {
-                    // 清空画布 (不使用半透明清除，保持颗粒的清晰沙砾感)
                     ctx.clearRect(0, 0, width, height); 
                     time++; 
 
@@ -653,7 +630,6 @@
         window.onload = () => {
             renderWork();
             renderProjects();
-            // 应用行倾斜和背光（虽然渲染是动态的，但需要为初始行添加监听）
             initHoverLight();
             initTiltEffect(); 
             initParticleNebula(); // 启动粒子特效
