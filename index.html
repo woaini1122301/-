@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAVID's Space | 商业与增长</title>
+    <title>DAVID's Space | 商业运营与增长专家</title>
     <style>
         /* --- 基础变量 --- */
         :root {
@@ -25,14 +25,22 @@
             line-height: 1.6;
         }
 
-        /* --- 首页全屏 Canvas --- */
-        #particle-canvas {
+        /* --- 首页和工作履历页 Canvas 粒子背景 --- */
+        #particle-canvas, #work-particle-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
             background: radial-gradient(circle at center, #121220 0%, #000000 100%);
             opacity: 0; transition: opacity 1s ease;
         }
-        #particle-canvas.active { opacity: 1; }
+        #particle-canvas.active, #work-particle-canvas.active { opacity: 1; }
+        
+        /* 让工作履历页面的 canvas 只在这个页面显示 */
+        #work-particle-canvas {
+            display: none;
+        }
+        #work.active + #work-particle-canvas {
+            display: block;
+        }
 
         /* 二级页面基础背景 (深色纯净) */
         .subpage-bg {
@@ -102,7 +110,7 @@
         .page-view.active { display: block; animation: fadeIn 0.6s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 首页：极致留白与粒子穹顶 --- */
+        /* --- 首页：极致留白 --- */
         .hero-home { height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
         .hero-home h1 {
             font-size: 24px; font-weight: 300; letter-spacing: 12px; color: var(--text-primary);
@@ -110,16 +118,13 @@
         }
         @keyframes pulse { 0% { opacity: 0.4; text-shadow: 0 0 10px transparent; } 100% { opacity: 1; text-shadow: 0 0 30px rgba(255,255,255,0.6); } }
 
-        /* --- 工作履历页：窄版粒子特效横幅 --- */
+        /* --- 工作履历页 --- */
         .work-banner {
             position: relative; width: 100%; height: 220px;
             border-radius: 24px; overflow: hidden; margin-bottom: 40px;
             display: flex; align-items: center; justify-content: center;
             border: 1px solid var(--glass-border);
             background: #000;
-        }
-        #work-particle-canvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
         }
         .work-banner h2 {
             position: relative; z-index: 2; font-size: 42px; font-weight: 700; letter-spacing: 6px;
@@ -182,6 +187,8 @@
 
     <canvas id="particle-canvas"></canvas>
     
+    <canvas id="work-particle-canvas"></canvas>
+
     <div class="subpage-bg"></div>
 
     <nav>
@@ -220,7 +227,6 @@
 
         <section id="work" class="page-view">
             <div class="work-banner">
-                <canvas id="work-particle-canvas"></canvas>
                 <h2>工作履历</h2>
             </div>
             
@@ -274,10 +280,20 @@
         function switchPage(pageId) {
             window.scrollTo(0,0);
             
-            // 切换主画布显示状态
+            // 切换 Canvas 显示状态
             const homeCanvas = document.getElementById('particle-canvas');
-            if(pageId === 'home') { homeCanvas.classList.add('active'); } 
-            else { homeCanvas.classList.remove('active'); }
+            const workCanvas = document.getElementById('work-particle-canvas');
+            
+            if(pageId === 'home') { 
+                homeCanvas.classList.add('active');
+                workCanvas.classList.remove('active');
+            } else if(pageId === 'work') {
+                homeCanvas.classList.remove('active');
+                workCanvas.classList.add('active');
+            } else {
+                homeCanvas.classList.remove('active');
+                workCanvas.classList.remove('active');
+            }
 
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
@@ -410,14 +426,8 @@
             }
 
             resize() {
-                // 判断是全屏还是窄屏横幅
-                if (this.canvas.id === 'particle-canvas') {
-                    this.width = this.canvas.width = window.innerWidth;
-                    this.height = this.canvas.height = window.innerHeight;
-                } else {
-                    this.width = this.canvas.width = this.canvas.parentElement.offsetWidth;
-                    this.height = this.canvas.height = this.canvas.parentElement.offsetHeight;
-                }
+                this.width = this.canvas.width = window.innerWidth;
+                this.height = this.canvas.height = window.innerHeight;
                 this.initParticles();
             }
 
@@ -445,7 +455,9 @@
             renderProjects();
             
             homeSystem = new ParticleSystem('particle-canvas', 150);
-            workSystem = new ParticleSystem('work-particle-canvas', 80); // 窄条横幅粒子稍微稀疏一些
+            workSystem = new ParticleSystem('work-particle-canvas', 150); 
+
+            homeSystem.canvas.classList.add('active'); // 默认显示首页 Canvas
 
             // 统一的动画刷新循环，按需渲染以节省性能
             function animate() {
