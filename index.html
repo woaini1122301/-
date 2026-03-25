@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -30,42 +30,37 @@
             line-height: 1.6;
         }
 
-        /* 空间背景 - 模拟参考图的核心发光数据云 */
+        /* 空间背景 */
         .aurora-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -2;
             overflow: hidden;
+            background: #000000;
         }
         
         .aurora-light {
             position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
-            background: radial-gradient(circle at center, rgba(128, 0, 128, 0.3), transparent 60%),
-                        radial-gradient(circle at 10% 90%, rgba(60, 20, 80, 0.3), transparent 40%),
-                        radial-gradient(circle at 90% 10%, rgba(20, 50, 100, 0.2), transparent 40%);
+            background: radial-gradient(circle at center, rgba(80, 0, 120, 0.2), transparent 60%),
+                        radial-gradient(circle at 10% 90%, rgba(30, 10, 60, 0.2), transparent 40%),
+                        radial-gradient(circle at 90% 10%, rgba(10, 30, 80, 0.15), transparent 40%);
             filter: blur(80px);
             animation: aurora-move 20s ease-in-out infinite alternate;
         }
 
-        /* 核心发光体 - 模拟参考图中的亮点 */
-        .core-light {
-            position: absolute; top: 50%; left: 50%;
-            width: 80px; height: 80px;
-            background: #ff00ff;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 150px 60px rgba(255, 0, 255, 0.7);
-            filter: blur(10px);
-            animation: breath 4s ease-in-out infinite alternate;
+        /* 新增：3D 粒子球体画布容器，置于底层 */
+        #particle-sphere {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
+            pointer-events: none; /* 防止阻挡鼠标点击 */
         }
 
         @keyframes aurora-move {
             0% { transform: scale(1) translate(0, 0); }
             100% { transform: scale(1.1) translate(-20px, 20px); }
-        }
-        @keyframes breath {
-            0%, 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         /* 顶部导航栏 - 新布局逻辑 */
@@ -80,9 +75,14 @@
             max-width: 1400px; margin: 0 auto; padding: 20px 40px;
         }
         
-        /* 导航栏左侧 Logo */
+        /* 导航栏左侧 Logo - 增加交互提示 */
         .nav-logo {
             font-size: 16px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .nav-logo:hover {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            color: #fff;
         }
 
         /* 导航栏中间 页面链接 */
@@ -149,10 +149,16 @@
         .glass-card:hover::before { opacity: 1; }
         .glass-card > * { position: relative; z-index: 1; }
 
-        /* 页面表头介绍文本样式 */
-        .page-header { margin-bottom: 50px; text-align: left; }
+        /* 页面表头介绍文本样式 - 修改为完全居中 */
+        .page-header { 
+            margin-bottom: 50px; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
         .page-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
-        .page-header p { font-size: 16px; color: var(--text-secondary); }
+        .page-header p { font-size: 16px; color: var(--text-secondary); max-width: 700px; }
 
         /* 首页视图 - 极简 */
         .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
@@ -181,8 +187,8 @@
         .work-time { font-size: 14px; opacity: 0.8; }
 
         /* 项目经验视图 - Bento Grid 优化间距 */
-        .projects-controls { margin-bottom: 40px; }
-        .filter-bar { display: flex; flex-wrap: wrap; gap: 12px; }
+        .projects-controls { margin-bottom: 40px; display: flex; justify-content: center;}
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
         .filter-btn {
             background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-secondary);
             padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s;
@@ -221,15 +227,14 @@
 
     <div class="aurora-bg">
         <div class="aurora-light"></div>
-        <div class="core-light"></div>
+        <canvas id="particle-sphere"></canvas>
     </div>
 
     <nav>
         <div class="nav-container">
-            <div class="nav-logo">DAVID's Space</div>
+            <div class="nav-logo" onclick="switchPage('home')">DAVID's Space</div>
             
             <div class="nav-links">
-                <a onclick="switchPage('home')" id="nav-home" class="active">首页</a>
                 <a onclick="switchPage('work')" id="nav-work">工作履历</a>
                 <a onclick="switchPage('projects')" id="nav-projects">项目经验</a>
             </div>
@@ -390,9 +395,9 @@
             
             // 更新文字导航激活态
             document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
-            if(pageId !== 'project-detail') {
+            if(pageId !== 'project-detail' && pageId !== 'home') {
                 document.getElementById('nav-' + pageId).classList.add('active');
-            } else {
+            } else if (pageId === 'project-detail') {
                 document.getElementById('nav-projects').classList.add('active');
             }
         }
@@ -493,10 +498,83 @@
             });
         }
 
-        // I. 全局初始化
+        // I. 核心发光体升级：偏置 3D 粒子球体特效
+        function initParticleSphere() {
+            const canvas = document.getElementById('particle-sphere');
+            const ctx = canvas.getContext('2d');
+            
+            // 设置画布尺寸
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const particles = [];
+            const numParticles = 250; // 粒子数量，适中不抢视觉
+            
+            // 初始化分布在一个 3D 球体表面的粒子
+            for(let i = 0; i < numParticles; i++) {
+                const theta = Math.random() * 2 * Math.PI;
+                const phi = Math.acos((Math.random() * 2) - 1);
+                const radius = 220 + (Math.random() * 40 - 20); // 核心球体半径 + 微小波动
+                
+                particles.push({
+                    theta: theta,
+                    phi: phi,
+                    radius: radius,
+                    size: Math.random() * 2 + 0.5
+                });
+            }
+
+            let time = 0;
+            function renderParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                time += 0.003; // 自转速度
+
+                // 【非居中设计】：将球体中心定位在偏屏幕右侧 75%，偏下 55% 的位置
+                const centerX = canvas.width * 0.75; 
+                const centerY = canvas.height * 0.55;
+
+                particles.forEach(p => {
+                    // 3D 坐标计算，沿 Y 轴自转
+                    let x = p.radius * Math.sin(p.phi) * Math.cos(p.theta + time);
+                    let z = p.radius * Math.sin(p.phi) * Math.sin(p.theta + time);
+                    let y = p.radius * Math.cos(p.phi);
+
+                    // 增加一点整体沿 X 轴的倾斜角，让它看起来更具空间感
+                    const tilt = 0.4;
+                    let tiltedY = y * Math.cos(tilt) - z * Math.sin(tilt);
+                    let tiltedZ = y * Math.sin(tilt) + z * Math.cos(tilt);
+
+                    // 简易 3D 透视投影
+                    const perspective = 800;
+                    const scale = perspective / (perspective + tiltedZ);
+                    const px = centerX + x * scale;
+                    const py = centerY + tiltedY * scale;
+
+                    // 绘制粒子
+                    ctx.beginPath();
+                    ctx.arc(px, py, p.size * scale, 0, Math.PI * 2);
+                    
+                    // 根据 Z 轴深度调整透明度，产生远近层次感
+                    const alpha = Math.max(0.1, scale - 0.5);
+                    // 使用科技幽蓝到紫色的色调代替原本抢眼的粉色
+                    ctx.fillStyle = `rgba(160, 120, 255, ${alpha})`; 
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(renderParticles);
+            }
+            renderParticles();
+        }
+
+        // J. 全局初始化
         window.onload = () => {
             renderWork();
             renderProjects();
+            initParticleSphere(); // 启动粒子特效
         };
 
     </script>
