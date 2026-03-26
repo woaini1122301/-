@@ -213,7 +213,7 @@
                 detail: "【项目概述】\n深度参与知名内衣品牌的数字化增长策略，优化从社交媒体种草到电商平台转化的全路径ROI，通过精准投放与内容共创实现品效合一。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
             },
 
-            // --- 三、 品牌运营 (原品牌营销与声誉管理) ---
+            // --- 三、 品牌运营 ---
             { 
                 id: 10, category: "品牌运营", 
                 title: "企业核心高管恶意舆情危机独立处置项目", 
@@ -227,6 +227,22 @@
                 company: "GitLab", time: "项目期间", role: "GTM操盘手", 
                 desc: "主导AI驱动型产品的上市（Go-to-Market）策略，利用PLG模式驱动用户获取，在开发者社区建立技术领先心智，实现新品上线初期的爆发式增长。", 
                 detail: "【项目概述】\n主导AI驱动型产品的上市（Go-to-Market）策略，利用PLG模式驱动用户获取，在开发者社区建立技术领先心智，实现新品上线初期的爆发式增长。\n\n【核心策略与执行】\n（此处可后续补充更多转化率、留存率等数据指标）" 
+            },
+
+            // --- 四、 市场增长 ---
+            { 
+                id: 12, category: "市场增长", 
+                title: "【GitLab】SaaS产品中国区获客GTM策略与数字化增长", 
+                company: "GitLab", time: "项目期间", role: "营销经理", 
+                desc: "搭建全链路获客体系（AARRR），操盘中国区GTM，驱动官网线索与商机增长。", 
+                detail: "【项目背景】GitLab进入中国市场，需要构建强有力的获客漏斗。\n【核心职责】负责GitLab中国区市场策略搭建，覆盖获客、激活、留存、变现。具体包括MarTech工具链整合、Webinar系列运营、SEO/SEM优化、核心大客户 ABM营销策略等。" 
+            },
+            { 
+                id: 13, category: "市场增长", 
+                title: "【MEB美尔贝】医美平台双十一全网狂欢节商业化大促", 
+                company: "MEB美尔贝", time: "项目期间", role: "项目经理", 
+                desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，GMV同比倍增。", 
+                detail: "全盘负责医美平台商业化运营和大促策划，统筹产品、运营、市场资源。核心职责包括双十一全周期GMV分解与目标达成规划，站内用户全生命周期增长模型搭建，KOL矩阵投流复盘及 GMV 最终达标。" 
             }
         ];
 
@@ -234,11 +250,41 @@
         document.getElementById('contact-wrapper').addEventListener('mouseenter', () => document.getElementById('contact-panel').classList.add('show'));
         document.getElementById('contact-wrapper').addEventListener('mouseleave', () => document.getElementById('contact-panel').classList.remove('show'));
 
+        // 【核心修改：实现点击"全部"时，分类错开展示的轮询算法】
         function renderProjects(category = '全部') {
             const grid = document.getElementById('projects-grid');
-            const filtered = category === '全部' ? projectsData : projectsData.filter(p => p.category === category);
+            let displayData = [];
+
+            if (category === '全部') {
+                // 1. 先按分类将项目分组
+                const groups = {};
+                projectsData.forEach(p => {
+                    if (!groups[p.category]) groups[p.category] = [];
+                    groups[p.category].push(p);
+                });
+                
+                // 2. 交替抽取（Round-Robin），打乱展示避免同一分类扎堆
+                let index = 0;
+                let hasMore = true;
+                const keys = Object.keys(groups); // 提取出所有分类
+                
+                while (hasMore) {
+                    hasMore = false;
+                    for (let key of keys) {
+                        if (index < groups[key].length) {
+                            displayData.push(groups[key][index]);
+                            hasMore = true; // 只要还有一个分类没抽完，就继续下一轮
+                        }
+                    }
+                    index++;
+                }
+            } else {
+                // 如果是具体分类，正常过滤
+                displayData = projectsData.filter(p => p.category === category);
+            }
             
-            grid.innerHTML = filtered.map(p => `
+            // 渲染数据
+            grid.innerHTML = displayData.map(p => `
                 <div class="glass-card project-card tilt-card hover-effect" onclick="openDetail(${p.id})">
                     <div class="proj-category">${p.category}</div>
                     <div class="proj-title">${p.title}</div>
