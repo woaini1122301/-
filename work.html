@@ -55,14 +55,17 @@
         .page-header-centered h2 { font-size: 38px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .page-header-centered p { font-size: 15px; color: var(--text-secondary); max-width: 650px; font-weight: 300; line-height: 1.8; }
 
-        .work-row { display: flex; align-items: center; justify-content: space-between; padding: 26px 35px; margin-bottom: 20px; cursor: pointer; }
+        .work-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 26px 35px; margin-bottom: 20px; cursor: pointer; }
         .work-row:hover { box-shadow: var(--work-shadow-hover); border-color: rgba(255, 204, 0, 0.15); background: rgba(255,255,255,0.025); transform: translateY(-2px); }
-        .work-left { display: flex; align-items: center; gap: 25px; flex-grow: 1; }
-        .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 204, 0, 0.05); border: 1px solid rgba(255, 204, 0, 0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--accent-color); font-size: 16px;}
+        .work-left { display: flex; align-items: flex-start; gap: 25px; flex-grow: 1; }
+        .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 204, 0, 0.05); border: 1px solid rgba(255, 204, 0, 0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--accent-color); font-size: 16px; flex-shrink: 0;}
         .work-info { flex-grow: 1; text-align: left; }
         .work-title { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: #fff; }
-        .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 300; }
-        .work-row:hover .work-desc { max-height: 100px; opacity: 1; margin-top: 10px; }
+        
+        /* 关键修复：允许文本换行，并且在悬停时高度足够大以容纳长文本 */
+        .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 300; white-space: pre-line; }
+        .work-row:hover .work-desc { max-height: 800px; opacity: 1; margin-top: 15px; padding-bottom: 10px;}
+        
         .work-right { text-align: right; color: var(--text-secondary); flex-shrink: 0; padding-left: 40px;}
         .work-role { font-weight: 500; font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
         .work-time { font-size: 13px; opacity: 0.7; font-weight: 300; }
@@ -109,16 +112,24 @@
 
     <script>
         const workData = [
-            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "1、增长与商业化变现 (ARR +500%)：
- 从0到1操盘SaaS产品GTM策略，创新引入PLG（产品驱动增长）模式，1年内实现该产品线营收3倍增长。统筹全系列产品SEM、SEO及全渠道投放，优化“线索到商机”全生命周期，全年获客量提升120%，CPA下降30%，推动公司级产品ARR同比增长500%，整体ROI＞12。
+            { 
+                company: "GitLab", 
+                time: "2024 - 2026", 
+                role: "市场数字化营销经理", 
+                logo: "GL", 
+                // 关键修复：这里使用了反引号 ` ` 来包裹多行文本
+                desc: `1、增长与商业化变现 (ARR +500%)：
+从0到1操盘SaaS产品GTM策略，创新引入PLG（产品驱动增长）模式，1年内实现该产品线营收3倍增长。统筹全系列产品SEM、SEO及全渠道投放，优化“线索到商机”全生命周期，全年获客量提升120%，CPA下降30%，推动公司级产品ARR同比增长500%，整体ROI＞12。
 
 2、官网运营与转化率优化 (CVR +47%)：
- 主导企业官网日常优化与更新运营，重构及底层SKU逻辑重塑。通过分析与A/B测试持续优化着陆页用户旅程，上线后用户停留时长提升30%+，有效线索留资率（CVR）大幅跃升47%。
+主导企业官网日常优化与更新运营，重构及底层SKU逻辑重塑。通过分析与A/B测试持续优化着陆页用户旅程，上线后用户停留时长提升30%+，有效线索留资率（CVR）大幅跃升47%。
 
 3、品牌运营与内容生态 (曝光 3000W+)： 
 搭建涵盖“高管洞察、技术干货”的立体化内容矩阵，半年内实现0投放自然全网曝光超3000万次。策划GitLab×瑞幸咖啡跨界营销，精准渗透大众圈层；并建立高校产学研合作，抢占潜在开发者心智。
 
-4、公关危机与声誉管理 ： 独立操盘应对离职员工针对高管的恶意舆情危机。7天内平息事件，通过“紧急下架封禁、法务严正声明、24小时监控对冲、媒体稿件压制”的组合策略，严控负面内容；同步建立存量客户安抚机制，确保了核心大客户在危机期间的零流失。" },
+4、公关危机与声誉管理 ： 
+独立操盘应对离职员工针对高管的恶意舆情危机。7天内平息事件，通过“紧急下架封禁、法务严正声明、24小时监控对冲、媒体稿件压制”的组合策略，严控负面内容；同步建立存量客户安抚机制，确保了核心大客户在危机期间的零流失。` 
+            },
             { company: "Deep深氪", time: "2022 - 2024", role: "个人创业", logo: "DK", desc: "主导公司业务方向与商业模式设计，带领团队完成从0到1的业务闭环，服务多家头部企业客户。" },
             { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团市场品牌工作，建立全套品牌视觉识别系统(VI)，策划执行多场千人量级行业峰会与品牌发布会。" },
             { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责医美平台核心业务线的商业化运营，搭建用户全生命周期成长模型，主导全网双十一大促实现GMV倍增。" },
@@ -149,9 +160,9 @@
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left, y = e.clientY - rect.top;
-                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6; 
-                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -2; 
+                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 2;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
             });
