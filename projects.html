@@ -119,10 +119,10 @@
             </div>
             <div class="filter-bar" id="filter-container">
                 <button class="filter-btn active" onclick="filterProjects('全部')">全部</button>
-                <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
                 <button class="filter-btn" onclick="filterProjects('整合营销')">整合营销</button>
-                <button class="filter-btn" onclick="filterProjects('品牌营销')">品牌营销</button>
+                <button class="filter-btn" onclick="filterProjects('品牌运营')">品牌运营</button>
                 <button class="filter-btn" onclick="filterProjects('市场增长')">市场增长</button>
+                <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
             </div>
             <div class="bento-grid" id="projects-grid"></div>
         </div>
@@ -135,8 +135,8 @@
                     <h1 class="detail-title" id="detail-title">标题</h1>
                     <div class="detail-meta">
                         <span id="detail-time"><strong>时间</strong> <span class="val"></span></span>
-                        <span id="detail-company"><strong>所在公司</strong> <span class="val"></span></span>
-                        <span id="detail-role"><strong>核心职责</strong> <span class="val"></span></span>
+                        <span id="detail-company"><strong>所属主体</strong> <span class="val"></span></span>
+                        <span id="detail-role"><strong>核心角色</strong> <span class="val"></span></span>
                     </div>
                 </div>
                 <div class="detail-content" id="detail-content">内容加载中...</div>
@@ -146,16 +146,91 @@
 
     <script>
         const projectsData = [
-            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方抖音矩阵孵化与运营全案", company: "字节跳动", time: "2019", role: "项目统筹", desc: "从0到1搭建区域账号矩阵体系，制定内容排期与互动玩法，实现百万粉丝跨越。", detail: "【项目背景】大厂区域下沉战略推进，需要建立强有力的本地化内容发声渠道与商业化引流入口。\n【核心职责】负责四川区域官方抖音号及头条号矩阵搭建、人设IP编导、日常运营、数据复盘及商业化变现探索。\n【项目成果】粉丝矩阵突破百万，单条爆款视频播放量破千万，显著提升了大厂在本地的品牌声量与业务渗透率。" },
-            { id: 2, category: "新媒体", title: "职场垂类IP【万能的小孙】抖音从0到1商业化孵化", company: "保密", time: "2020", role: "IP主理人", desc: "从人设定位、剧本编导到投流复盘，实现短视频IP从0到1的粉丝沉淀与商业化变现。", detail: "在此部分可以补充具体的IP定位思路、冷启动阶段的精准人设打造（短视频+直播），千川投流策略及粉丝转化路径细节。" },
-            { id: 3, category: "整合营销", title: "【风味成都】字节跳动城市级整合营销事件統筹", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销。", detail: "统筹项目整体策划与执行：联动本地餐饮协会、头部餐饮品牌、抖音达人挑战赛、线下快闪打卡等多元玩法，驱动品效合一，单次活动曝光突破亿级。" },
-            { id: 4, category: "整合营销", title: "【GitLab×瑞幸咖啡】ToB与ToC跨界联名品牌破圈营销", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名与话题营销。", detail: "【跨界逻辑】代码与咖啡是程序员的日常。通过联名杯套、定制周边及技术Webinar，实现品牌破圈与声量增长详情。" },
-            { id: 5, category: "品牌营销", title: "华为荣耀《影像情书》情感共鸣TVC品牌营销全案", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣。", detail: "在此部分可以补充关于TVC核心脚本大纲、情感化营销策略制定及全网宣发排期详情。" },
-            { id: 6, category: "品牌营销", title: "【觅山】新消费青梅酒品牌全案：从0到1的商业化变现", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘新消费品牌：从品牌命名、VI包装、GTM策略到全域营销变现。", detail: "全链路从0操盘新消费品牌：定位针对年轻女性微醺经济，通过天猫/京东/抖音电商渠道布局，KOL种草及投流运营，实现品类破局与GMV达成详情。" },
-            { id: 7, category: "市场增长", title: "【GitLab】SaaS产品中国区获客GTM策略与全链路数字化增长", company: "GitLab", time: "2024", role: "营销经理", desc: "搭建全链路获客体系（AARRR），操盘中国区GTM，驱动官网线索与商机增长。", detail: "【项目背景】GitLab进入中国市场，需要构建强有力的获客漏斗。\n【核心职责】负责GitLab中国区市场策略搭建，覆盖获客、激活、留存、变现。具体包括MarTech工具链整合、Webinar系列运营、SEO/SEM优化、核心大客户 ABM营销策略等。详情见此部分。" },
-            { id: 8, category: "市场增长", title: "【MEB美尔贝】医美平台双十一全网狂欢节商业化大促", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，GMV同比倍增。", detail: "全盘负责医美平台商业化运营和大促策划，统筹产品、运营、市场资源。核心职责包括双十一全周期GMV分解与目标达成规划，站内用户全生命周期增长模型搭建，KOL矩阵投流复盘及 GMV 最终达标。详情见此部分。" }
+            // --- 一、 新媒体运营 ---
+            { 
+                id: 1, category: "新媒体", 
+                title: "生活类IP“机器人十七”从0-1孵化与变现", 
+                company: "独立项目", time: "项目期间", role: "IP主理人", 
+                desc: "全程主导生活方式类个人IP的孵化，通过差异化人设构建与精准内容选题，跑通“内容引流-私域沉淀-商业变现”的全闭环。", 
+                detail: "【项目概述】\n全程主导生活方式类个人IP的孵化，通过差异化人设构建与精准内容选题，跑通“内容引流-私域沉淀-商业变现”的全闭环。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标及变现金额等）" 
+            },
+            { 
+                id: 2, category: "新媒体", 
+                title: "“Dkk”汽车垂直领域自媒体运营（测评与自驾）", 
+                company: "独立项目", time: "项目期间", role: "IP主理人", 
+                desc: "独立运营汽车垂类账号，深耕专业车辆测评与高品质自驾内容，通过高质量视觉呈现与专业点评，建立高粘性的垂直粉丝社群。", 
+                detail: "【项目概述】\n独立运营汽车垂类账号，深耕专业车辆测评与高品质自驾内容，通过高质量视觉呈现与专业点评，建立高粘性的垂直粉丝社群。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+            { 
+                id: 3, category: "新媒体", 
+                title: "GitLab官方视频账号创意策划与增长运营", 
+                company: "GitLab", time: "项目期间", role: "项目统筹", 
+                desc: "负责技术社区官方视频内容的战略布局，将硬核技术干货进行“消费级”转化，通过创意策划提升品牌在开发者圈层的认知度与活跃度。", 
+                detail: "【项目概述】\n负责技术社区官方视频内容的战略布局，将硬核技术干货进行“消费级”转化，通过创意策划提升品牌在开发者圈层的认知度与活跃度。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+
+            // --- 二、 整合营销 ---
+            { 
+                id: 4, category: "整合营销", 
+                title: "“今日宜”西打酒新品上市全渠道推广方案", 
+                company: "独立项目", time: "项目期间", role: "营销主理", 
+                desc: "针对新锐低度酒品牌，制定从人群洞察到媒介投放的整合营销策略，通过场景化营销快速建立品牌在年轻消费群体中的首选认知。", 
+                detail: "【项目概述】\n针对新锐低度酒品牌，制定从人群洞察到媒介投放的整合营销策略，通过场景化营销快速建立品牌在年轻消费群体中的首选认知。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+            { 
+                id: 5, category: "整合营销", 
+                title: "泸州老窖“高光”品牌高端化转型与推广", 
+                company: "独立项目", time: "项目期间", role: "营销主理", 
+                desc: "操盘泸州老窖战略级新品“高光”的品牌推广，通过跨界联动与高端调性塑造，助力传统白酒品牌实现年轻化突破与高溢价占位。", 
+                detail: "【项目概述】\n操盘泸州老窖战略级新品“高光”的品牌推广，通过跨界联动与高端调性塑造，助力传统白酒品牌实现年轻化突破与高溢价占位。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+            { 
+                id: 6, category: "整合营销", 
+                title: "“叫叫学院”小红书专项社媒增长计划", 
+                company: "独立项目", time: "项目期间", role: "营销主理", 
+                desc: "针对在线教育赛道，主导小红书平台的KOL/KOC内容矩阵策略，通过精细化标签运营与热点借势，显著提升品牌的搜索权重与转化效能。", 
+                detail: "【项目概述】\n针对在线教育赛道，主导小红书平台的KOL/KOC内容矩阵策略，通过精细化标签运营与热点借势，显著提升品牌的搜索权重与转化效能。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+            { 
+                id: 7, category: "整合营销", 
+                title: "阿勒泰将军山滑雪场“神秘阿勒泰”目的地营销", 
+                company: "独立项目", time: "项目期间", role: "项目策划", 
+                desc: "策划文旅现象级营销方案，利用“阿勒泰”地域IP与滑雪垂直场景，打造多维度的线上曝光与线下体验链路，驱动景区流量与品牌声量双爆发。", 
+                detail: "【项目概述】\n策划文旅现象级营销方案，利用“阿勒泰”地域IP与滑雪垂直场景，打造多维度的线上曝光与线下体验链路，驱动景区流量与品牌声量双爆发。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+            { 
+                id: 8, category: "整合营销", 
+                title: "思念食品“新年儿童养成计划”节日营销", 
+                company: "独立项目", time: "项目期间", role: "项目策划", 
+                desc: "负责知名食品品牌春节节点营销，以“儿童成长”为情感切入点，通过内容植入与互动玩法，提升品牌在家庭消费场景中的情感链接。", 
+                detail: "【项目概述】\n负责知名食品品牌春节节点营销，以“儿童成长”为情感切入点，通过内容植入与互动玩法，提升品牌在家庭消费场景中的情感链接。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+            { 
+                id: 9, category: "整合营销", 
+                title: "UBRAS品牌线上全链路整合营销方案", 
+                company: "独立项目", time: "项目期间", role: "项目策划", 
+                desc: "深度参与知名内衣品牌的数字化增长策略，优化从社交媒体种草到电商平台转化的全路径ROI，通过精准投放与内容共创实现品效合一。", 
+                detail: "【项目概述】\n深度参与知名内衣品牌的数字化增长策略，优化从社交媒体种草到电商平台转化的全路径ROI，通过精准投放与内容共创实现品效合一。\n\n【核心策略与执行】\n（此处可后续补充更多项目细节、数据指标等）" 
+            },
+
+            // --- 三、 品牌运营 (原品牌营销与声誉管理) ---
+            { 
+                id: 10, category: "品牌运营", 
+                title: "企业核心高管恶意舆情危机独立处置项目", 
+                company: "独立项目", time: "项目期间", role: "公关负责人", 
+                desc: "面对离职员工发起的针对高管的突发性恶意攻击，担任危机公关负责人，通过法律手段与舆论对冲组合拳，在7天内平息风波，确保零客户流失。", 
+                detail: "【项目概述】\n面对离职员工发起的针对高管的突发性恶意攻击，担任危机公关负责人，通过法律手段与舆论对冲组合拳，在7天内平息风波，确保零客户流失。\n\n【核心策略与执行】\n（此处可后续补充更多危机处理的复盘细节）" 
+            },
+            { 
+                id: 11, category: "品牌运营", 
+                title: "GitLab CodeRider（AI编程助手）全球首发GTM项目", 
+                company: "GitLab", time: "项目期间", role: "GTM操盘手", 
+                desc: "主导AI驱动型产品的上市（Go-to-Market）策略，利用PLG模式驱动用户获取，在开发者社区建立技术领先心智，实现新品上线初期的爆发式增长。", 
+                detail: "【项目概述】\n主导AI驱动型产品的上市（Go-to-Market）策略，利用PLG模式驱动用户获取，在开发者社区建立技术领先心智，实现新品上线初期的爆发式增长。\n\n【核心策略与执行】\n（此处可后续补充更多转化率、留存率等数据指标）" 
+            }
         ];
 
+        // 交互逻辑
         document.getElementById('contact-wrapper').addEventListener('mouseenter', () => document.getElementById('contact-panel').classList.add('show'));
         document.getElementById('contact-wrapper').addEventListener('mouseleave', () => document.getElementById('contact-panel').classList.remove('show'));
 
