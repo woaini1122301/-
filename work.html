@@ -59,28 +59,15 @@
         .work-row:hover { box-shadow: var(--work-shadow-hover); border-color: rgba(255, 204, 0, 0.15); background: rgba(255,255,255,0.025); transform: translateY(-2px); }
         .work-left { display: flex; align-items: flex-start; gap: 25px; flex-grow: 1; }
         
-        /* 关键修改 1：重写 logo 容器样式，适应图片展示 */
-        .company-logo { 
-            width: 50px; 
-            height: 50px; 
-            border-radius: 12px; 
-            background: rgba(255, 255, 255, 0.03); /* 去掉原来的琥珀色发光底，改为极其低调的微白底 */
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-        /* 关键修改 2：控制图片自适应 */
-        .company-logo img {
-            width: 75%;
-            height: 75%;
-            object-fit: contain;
-        }
-
+        /* 图片 Logo 容器样式 */
+        .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .company-logo img { width: 75%; height: 75%; object-fit: contain; }
+        
         .work-info { flex-grow: 1; text-align: left; }
-        .work-title { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: #fff; }
+        .work-title { font-size: 19px; font-weight: 600; margin-bottom: 2px; color: #fff; }
+        /* 新增：公司一句话简介样式 */
+        .work-short-desc { font-size: 13px; color: rgba(255, 255, 255, 0.45); font-weight: 400; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
         .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 300; white-space: pre-line; }
         .work-row:hover .work-desc { max-height: 800px; opacity: 1; margin-top: 15px; padding-bottom: 10px;}
         
@@ -129,10 +116,11 @@
     </main>
 
     <script>
-        // 关键修改 3：将 logo 字段替换为你真实的图片路径
+        // 加入了 shortDesc（一句话简介）和真实的 logo 路径
         const workData = [
             { 
                 company: "GitLab", 
+                shortDesc: "全球领先的开源一体化 DevSecOps 平台",
                 time: "2024 - 2026", 
                 role: "市场数字化营销经理", 
                 logo: "./logo/gitlab.png", 
@@ -150,6 +138,7 @@
             },
             { 
                 company: "Deep深氪", 
+                shortDesc: "线上整合营销咨询创业项目",
                 time: "2022 - 2024", 
                 role: "个人创业", 
                 logo: "./logo/deep.png", 
@@ -162,6 +151,7 @@
             },
             { 
                 company: "千行你我", 
+                shortDesc: "聚焦新消费与高端商业的综合性品牌管理集团",
                 time: "2021 - 2022", 
                 role: "市场品牌总监", 
                 logo: "./logo/qianxing.png", 
@@ -176,6 +166,7 @@
             },
             { 
                 company: "MEB美尔贝", 
+                shortDesc: "国内领先的医美消费与产业互联网服务平台",
                 time: "2020 - 2021", 
                 role: "商业化运营经理", 
                 logo: "./logo/meb.png", 
@@ -190,6 +181,7 @@
             },
             { 
                 company: "字节跳动", 
+                shortDesc: "全球领先的科技互联网与数字内容生态平台",
                 time: "2019 - 2020", 
                 role: "新媒体运营主管", 
                 logo: "./logo/bytedance.png", 
@@ -212,6 +204,7 @@
                     </div>
                     <div class="work-info">
                         <div class="work-title">${work.company}</div>
+                        <div class="work-short-desc">${work.shortDesc}</div>
                         <div class="work-desc">${work.desc}</div>
                     </div>
                 </div>
