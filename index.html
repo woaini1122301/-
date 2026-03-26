@@ -207,24 +207,29 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo" onclick="switchPage('home')">DAVID's Space</div>
+            
             <div class="nav-links">
                 <a onclick="switchPage('work')" id="nav-work">工作履历</a>
                 <a onclick="switchPage('projects')" id="nav-projects">项目经验</a>
             </div>
+            
             <div class="nav-contact-wrapper" id="contact-wrapper">
                 <a class="nav-contact-trigger">与我联系</a>
+                
                 <div class="nav-contact-panel" id="contact-panel">
                     <div class="contact-item">
                         <div class="contact-icon">Mail</div>
                         <div class="contact-info">
                             <div>官方邮件</div>
-                            <a href="mailto:david@email.com">david@email.com</a> </div>
+                            <a href="mailto:david@email.com">david@email.com</a> 
+                        </div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon">Phone</div>
                         <div class="contact-info">
                             <div>移动电话</div>
-                            <a href="tel:13800000000">+86 138 0000 0000</a> </div>
+                            <a href="tel:13800000000">+86 138 0000 0000</a> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -232,7 +237,7 @@
     </nav>
 
     <main>
-        <section id="home" class="page-view active">
+        <section id="home" class="page-view active hero-home">
             <div class="hero">
                 <h1>David Wang</h1> 
                 <p>深耕互联网营销与商业化变现，从大厂到创业的全链路增长实战家。致力于用数据与技术，重构商业运营效率。</p>
@@ -252,12 +257,14 @@
                 <h2>项目经验</h2>
                 <p>精选全链条实战案例，涵盖新媒体IP孵化、整合营销策划、品牌全案及数字化增长策略。</p>
             </div>
-            <div class="filter-bar" id="filter-container">
-                <button class="filter-btn active" onclick="filterProjects('全部')">全部</button>
-                <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
-                <button class="filter-btn" onclick="filterProjects('整合营销')">整合营销</button>
-                <button class="filter-btn" onclick="filterProjects('品牌营销')">品牌营销</button>
-                <button class="filter-btn" onclick="filterProjects('市场增长')">市场增长</button>
+            <div class="projects-controls">
+                <div class="filter-bar" id="filter-container">
+                    <button class="filter-btn active" onclick="filterProjects('全部')">全部</button>
+                    <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
+                    <button class="filter-btn" onclick="filterProjects('整合营销')">整合营销</button>
+                    <button class="filter-btn" onclick="filterProjects('品牌营销')">品牌营销</button>
+                    <button class="filter-btn" onclick="filterProjects('市场增长')">市场增长</button>
+                </div>
             </div>
             <div class="bento-grid" id="projects-grid"></div>
         </section>
@@ -280,47 +287,59 @@
     </main>
 
     <script>
-        // ================= 数据加载 =================
+        // ================= 数据结构区 =================
         const workData = [
-            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "主导大中华区市场自动化营销策略，从0到1操盘SaaS产品GTM策略，驱动官网线索与Demo申请率双位数增长。" },
-            { company: "Deep深氪", time: "2022 - 2024", role: "个人创业", logo: "DK", desc: "主导公司业务方向与商业模式设计，带领团队完成从0到1的业务闭环，服务多家头部企业客户。" },
-            { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团市场品牌工作，建立全套品牌视觉识别系统(VI)，策划执行多场千人量级行业峰会与品牌发布会。" },
-            { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责医美平台核心业务线的商业化运营，搭建用户全生命周期成长模型，主导全网双十一大促实现GMV倍增。" },
-            { company: "字节跳动", time: "2019 - 2020", role: "新媒体运营主管", logo: "BD", desc: "从0到1搭建并管理四川区域官方抖音号矩阵，粉丝矩阵突突破百万，单条爆款视频播放量破千万。" }
+            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "主导大中华区数字化获客体系搭建，操盘SaaS产品全链路GTM策略，通过MarTech工具实现线索转化率提升25%。" },
+            { company: "Deep深氪", time: "2022 - 2024", role: "创始人/创业", logo: "DK", desc: "创立营销咨询公司，为多家头部新消费及ToB企业提供全案品牌策划与增长顾问服务，实现从0到1业务闭环。" },
+            { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团品牌矩阵升级，建立系统化VI体系，策划并执行多场行业级千人峰会，显著提升品牌行业声量。" },
+            { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责核心业务线的商业化变现模型搭建，主导双十一等S级全网大促活动，实现GMV同比翻倍增长。" },
+            { company: "字节跳动", time: "2019 - 2020", role: "新媒体运营主管", logo: "BD", desc: "负责四川区域官方内容矩阵运营，从0孵化百万级粉丝抖音账号，策划多场城市级整合营销事件。" }
         ];
 
         const projectsData = [
-            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方矩阵精细化运营全案", company: "字节跳动", time: "2019-2020", role: "核心操盘手", desc: "从0到1搭建区域账号矩阵体系，制定全年内容排期与互动玩法，实现百万粉丝跨越。", detail: "【项目背景】区域下沉战略推进，需要建立强有力的本地化内容发声渠道。\n【核心职责】负责官方抖音号及头条号矩阵搭建、内容编导、日常运营及数据分析。\n【项目成果】粉丝矩阵突破百万，单条爆款视频播放量破千万。" },
-            { id: 2, category: "新媒体", title: "【万能的小孙】抖音职场IP孵化全链路运营", company: "保密", time: "2020", role: "IP主理人", desc: "从人设定位、剧本编导到投流复盘，实现短视频IP从0到1的商业化变现。", detail: "在此部分可以补充具体的IP定位思路、视频选题逻辑、投流策略及粉丝转化路径细节。" },
-            { id: 3, category: "整合营销", title: "【风味成都】S级城市级别整合营销事件统筹", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销。", detail: "【玩法亮点】采用线上挑战赛+线下打卡双链路，引爆本地生活流量池。" },
-            { id: 4, category: "整合营销", title: "【GitLab×瑞幸咖啡】ToB与ToC跨界营销及破圈传播", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名与话题营销。", detail: "【跨界逻辑】代码与咖啡是程序员的日常。通过联名杯套、定制周边及技术Webinar，实现品牌破圈与声量增长。" },
-            { id: 5, category: "品牌营销", title: "华为荣耀《影像情书》TVC品牌营销策划与宣发", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣。", detail: "在此部分可以补充关于TVC核心脚本大纲的策划思路、情感化营销的把控详情。" },
-            { id: 6, category: "品牌营销", title: "【觅山】新消费青梅酒品牌全案：从0到1的商业化变现", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘新消费品牌：从品牌命名、视觉包装、GTM策略到全域营销变现。", detail: "在此部分可以补充对年轻女性微醺经济的商业洞察、跨渠道流量布局及GMV达成详情。" },
-            { id: 7, category: "市场增长", title: "【GitLab】SaaS产品GTM策略操盘与从0到1市场获客", company: "GitLab", time: "2024", role: "营销经理", desc: "制定中国区市场策略，搭建获客、激活、留存、变现的AARRR全链路营销漏斗。", detail: "【项目成果】CPL降低30%，线索转化率提升20%详情。" },
-            { id: 8, category: "市场增长", title: "【MEB美尔贝】医美平台双十一全网狂欢节商业化大促", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，GMV同比倍增。", detail: "全盘负责双十一大促：包括促销政策制定、站内用户全生命周期成长模型搭建、短视频平台KOL矩阵种草、直播间玩法设计及投流复盘，最终实现GMV同比倍增。" }
+            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方抖音矩阵孵化与运营全案", company: "字节跳动", time: "2019", role: "项目统筹", desc: "从0到1搭建区域账号矩阵体系，制定内容排期与互动玩法，实现百万粉丝跨越。", detail: "【项目背景】大厂区域下沉战略推进，需要建立强有力的本地化内容发声渠道与商业化引流入口。\n【核心职责】负责四川区域官方抖音号及头条号矩阵搭建、人设IP编导、日常运营、数据复盘及商业化变现探索。\n【项目成果】粉丝矩阵突破百万，单条爆款视频播放量破千万，显著提升了大厂在本地的品牌声量与业务渗透率。" },
+            { id: 2, category: "新媒体", title: "职场垂类IP【万能的小孙】抖音从0到1商业化孵化", company: "保密", time: "2020", role: "IP主理人", desc: "从人设定位、剧本编导到投流复盘，实现短视频IP从0到1的粉丝沉淀与商业化变现。", detail: "在此部分可以补充具体的IP定位思路、冷启动阶段的精准人设打造（短视频+直播），千川投流策略及粉丝转化路径细节。" },
+            { id: 3, category: "整合营销", title: "【风味成都】字节跳动城市级整合营销事件統筹", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销。", detail: "统筹项目整体策划与执行：联动本地餐饮协会、头部餐饮品牌、抖音达人挑战赛、线下快闪打卡等多元玩法，驱动品效合一，单次活动曝光突破亿级。" },
+            { id: 4, category: "整合营销", title: "【GitLab×瑞幸咖啡】ToB与ToC跨界联名品牌破圈营销", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名与话题营销。", detail: "【跨界逻辑】代码与咖啡是程序员的日常。通过联名杯套、定制周边及技术Webinar，实现品牌破圈与声量增长详情。" },
+            { id: 5, category: "品牌营销", title: "华为荣耀《影像情书》情感共鸣TVC品牌营销全案", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣。", detail: "在此部分可以补充关于TVC核心脚本大纲、情感化营销策略制定及全网宣发排期详情。" },
+            { id: 6, category: "品牌营销", title: "【觅山】新消费青梅酒品牌全案：从0到1的商业化变现", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘新消费品牌：从品牌命名、VI包装、GTM策略到全域营销变现。", detail: "全链路从0操盘新消费品牌：定位针对年轻女性微醺经济，通过天猫/京东/抖音电商渠道布局，KOL种草及投流运营，实现品类破局与GMV达成详情。" },
+            { id: 7, category: "市场增长", title: "【GitLab】SaaS产品中国区获客GTM策略与全链路数字化增长", company: "GitLab", time: "2024", role: "营销经理", desc: "搭建全链路获客体系（AARRR），操盘中国区GTM，驱动官网线索与商机增长。", detail: "【项目背景】GitLab进入中国市场，需要构建强有力的获客漏斗。\n【核心职责】负责GitLab中国区市场策略搭建，覆盖获客、激活、留存、变现。具体包括MarTech工具链整合、Webinar系列运营、SEO/SEM优化、核心大客户 ABM营销策略等。详情见此部分。" },
+            { id: 8, category: "市场增长", title: "【MEB美尔贝】医美平台双十一全网狂欢节商业化大促", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，GMV同比倍增。", detail: "全盘负责医美平台商业化运营和大促策划，统筹产品、运营、市场资源。核心职责包括双十一全周期GMV分解与目标达成规划，站内用户全生命周期增长模型搭建，KOL矩阵投流复盘及 GMV 最终达标。详情见此部分。" }
         ];
 
-        // ================= 交互事件 =================
+        // ================= 交互与路由逻辑 =================
         const contactWrapper = document.getElementById('contact-wrapper');
         const contactPanel = document.getElementById('contact-panel');
+
         contactWrapper.addEventListener('mouseenter', () => contactPanel.classList.add('show'));
         contactWrapper.addEventListener('mouseleave', () => contactPanel.classList.remove('show'));
         contactPanel.addEventListener('click', (e) => { if(e.target.tagName === 'A') contactPanel.classList.remove('show'); });
 
         function switchPage(pageId) {
-            window.scrollTo(0,0);
+            window.scrollTo(0,0); 
+            
+            // 控制 Canvas 显示与隐藏
             const nebulaCanvas = document.getElementById('particle-nebula');
-            if(pageId === 'home') { nebulaCanvas.style.opacity = '1'; nebulaCanvas.style.visibility = 'visible'; } 
-            else { nebulaCanvas.style.opacity = '0'; nebulaCanvas.style.visibility = 'hidden'; }
+            if(pageId === 'home') {
+                nebulaCanvas.style.opacity = '1';
+                nebulaCanvas.style.visibility = 'visible';
+            } else {
+                nebulaCanvas.style.opacity = '0';
+                nebulaCanvas.style.visibility = 'hidden';
+            }
 
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             
             document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
-            if(pageId !== 'project-detail' && pageId !== 'home') document.getElementById('nav-' + pageId).classList.add('active');
-            else if (pageId === 'project-detail') document.getElementById('nav-projects').classList.add('active');
+            if(pageId !== 'project-detail' && pageId !== 'home') {
+                document.getElementById('nav-' + pageId).classList.add('active');
+            } else if (pageId === 'project-detail') {
+                document.getElementById('nav-projects').classList.add('active');
+            }
         }
 
+        // ================= 渲染逻辑 =================
         function renderWork() {
             const container = document.getElementById('work-container');
             container.innerHTML = workData.map(work => `
@@ -343,6 +362,7 @@
         function renderProjects(category = '全部') {
             const grid = document.getElementById('projects-grid');
             const filtered = category === '全部' ? projectsData : projectsData.filter(p => p.category === category);
+            
             grid.innerHTML = filtered.map(p => `
                 <div class="glass-card project-card tilt-card hover-effect" onclick="openDetail(${p.id})">
                     <div class="proj-category">${p.category}</div>
@@ -351,13 +371,14 @@
                     <div class="proj-more">查看案例详情 →</div>
                 </div>
             `).join('');
-            initHoverLight(); initTiltEffect();
+
+            initHoverLight(); 
+            initTiltEffect(); 
         }
 
         function filterProjects(category) {
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                if(btn.innerText === category) btn.classList.add('active');
-                else btn.classList.remove('active');
+                btn.classList.toggle('active', btn.innerText === category);
             });
             renderProjects(category);
         }
@@ -374,17 +395,23 @@
             switchPage('project-detail');
         }
 
+        // ================= 特效绑定 =================
         function initTiltEffect() {
             document.querySelectorAll('.tilt-card').forEach(card => {
-                card.onmousemove = null; card.onmouseleave = null;
+                card.onmousemove = null;
+                card.onmouseleave = null;
+                
                 card.addEventListener('mousemove', e => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left, y = e.clientY - rect.top;
-                    const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6; 
-                    const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
+                    const centerX = rect.width / 2, centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -6; 
+                    const rotateY = ((x - centerX) / centerX) * 6;
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
-                card.addEventListener('mouseleave', () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`);
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
             });
         }
 
@@ -398,18 +425,23 @@
             });
         }
 
-        // ================= 核心：黑洞吸积盘特效 =================
+        // ===========================================
+        // 核心重写：浩瀚 Gargantua 黑洞粒子系统
+        // ===========================================
         function initParticleNebula() {
             const canvas = document.getElementById('particle-nebula');
             const ctx = canvas.getContext('2d');
+            
             let width, height;
             let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
 
             const particles = [];
             const numParticles = 1500; 
 
+            // 粒子类定义 (必须在实例化之前)
             class Particle {
                 constructor() { this.init(); }
+
                 init() {
                     const theta = Math.random() * 2 * Math.PI; 
                     const coreRadius = Math.random() * width * 0.15 + width * 0.03;
@@ -417,7 +449,7 @@
                     const radius = Math.random() < 0.8 ? coreRadius : edgeRadius;
                     
                     this.rawX = radius * Math.cos(theta);
-                    this.rawY = (Math.random() * 2 - 1) * width * 0.015; // 极扁平
+                    this.rawY = (Math.random() * 2 - 1) * width * 0.015; 
                     this.rawZ = Math.random() * width * 2 - width; 
                     this.size = Math.random() * 2.5 + 0.5; 
                     
@@ -453,9 +485,11 @@
                     this.alpha = Math.max(0.1, Math.min(0.9, scale * 0.7)); 
 
                     if (mouseX !== null && mouseY !== null) {
-                        const dx = this.px - mouseX, dy = this.py - mouseY;
+                        const dx = this.px - mouseX;
+                        const dy = this.py - mouseY;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         const intersectRadius = 150; 
+                        
                         if (dist < intersectRadius) {
                             const force = (intersectRadius - dist) / intersectRadius;
                             this.alpha += force * 0.3;
@@ -474,7 +508,9 @@
 
             function initParticles() {
                 particles.length = 0; 
-                for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+                for (let i = 0; i < numParticles; i++) {
+                    particles.push(new Particle());
+                }
             }
 
             function resizeCanvas() {
@@ -486,7 +522,7 @@
             window.addEventListener('resize', resizeCanvas);
             window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
-            // **修复核心**：确保在定义完所有函数和类之后，再执行初始化尺寸
+            // 初始调用
             resizeCanvas();
 
             let time = 0;
@@ -501,16 +537,18 @@
                 }
                 requestAnimationFrame(renderNebula);
             }
+            
             renderNebula();
         }
 
-        // ================= 启动 =================
+        // ================= 初始化执行 =================
         window.onload = () => {
             renderWork();
             renderProjects();
             initHoverLight();
             initTiltEffect(); 
             initParticleNebula(); 
+            document.getElementById('particle-nebula').style.opacity = '1';
         };
 
     </script>
