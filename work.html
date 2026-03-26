@@ -58,11 +58,29 @@
         .work-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 26px 35px; margin-bottom: 20px; cursor: pointer; }
         .work-row:hover { box-shadow: var(--work-shadow-hover); border-color: rgba(255, 204, 0, 0.15); background: rgba(255,255,255,0.025); transform: translateY(-2px); }
         .work-left { display: flex; align-items: flex-start; gap: 25px; flex-grow: 1; }
-        .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 204, 0, 0.05); border: 1px solid rgba(255, 204, 0, 0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--accent-color); font-size: 16px; flex-shrink: 0;}
+        
+        /* 关键修改 1：重写 logo 容器样式，适应图片展示 */
+        .company-logo { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 12px; 
+            background: rgba(255, 255, 255, 0.03); /* 去掉原来的琥珀色发光底，改为极其低调的微白底 */
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        /* 关键修改 2：控制图片自适应 */
+        .company-logo img {
+            width: 75%;
+            height: 75%;
+            object-fit: contain;
+        }
+
         .work-info { flex-grow: 1; text-align: left; }
         .work-title { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: #fff; }
-        
-        /* 关键修复：允许文本换行，并且在悬停时高度足够大以容纳长文本 */
         .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 300; white-space: pre-line; }
         .work-row:hover .work-desc { max-height: 800px; opacity: 1; margin-top: 15px; padding-bottom: 10px;}
         
@@ -111,13 +129,13 @@
     </main>
 
     <script>
-        // 注意：每一项的 desc 都已经替换为了 反引号 ` `
+        // 关键修改 3：将 logo 字段替换为你真实的图片路径
         const workData = [
             { 
                 company: "GitLab", 
                 time: "2024 - 2026", 
                 role: "市场数字化营销经理", 
-                logo: "GL", 
+                logo: "./logo/gitlab.png", 
                 desc: `1、增长与商业化变现 (ARR +500%)：
 从0到1操盘SaaS产品GTM策略，创新引入PLG（产品驱动增长）模式，1年内实现该产品线营收3倍增长。统筹全系列产品SEM、SEO及全渠道投放，优化“线索到商机”全生命周期，全年获客量提升120%，CPA下降30%，推动公司级产品ARR同比增长500%，整体ROI＞12。
 
@@ -134,7 +152,7 @@
                 company: "Deep深氪", 
                 time: "2022 - 2024", 
                 role: "个人创业", 
-                logo: "DK", 
+                logo: "./logo/deep.png", 
                 desc: `1、平台运营搭建：
 负责桐松甄选平台整体内容建设，包括但不限于内容规划、UGC\\PGC、完成100+优质产品引入， 实现3个月内10+优质品牌、工作室入驻；
 2、制定品牌运营策略和思路：
@@ -146,7 +164,7 @@
                 company: "千行你我", 
                 time: "2021 - 2022", 
                 role: "市场品牌总监", 
-                logo: "QX", 
+                logo: "./logo/qianxing.png", 
                 desc: `1、品牌架构与全案GTM： 
 主导品牌【迪士尼月饼】、【酒未见】、【觅山】上市全链路策略，通市场扫描与竞品对标，精准定义价值主张；从0到1构建VIS系统与品牌管理手册，统一多业务线输出标准，实现品牌资产体系化与市场占位。
 
@@ -160,7 +178,7 @@
                 company: "MEB美尔贝", 
                 time: "2020 - 2021", 
                 role: "商业化运营经理", 
-                logo: "ME", 
+                logo: "./logo/meb.png", 
                 desc: `1、全域获客与BD： 
 操盘华熙生物、【米兰柏羽】、等知名品牌的联合营销策划；布局百度、微博、小红书全域内容营销，构建了从公域流量（曝光）到私域/线索（获客）的有效闭环。
 
@@ -174,7 +192,7 @@
                 company: "字节跳动", 
                 time: "2019 - 2020", 
                 role: "新媒体运营主管", 
-                logo: "BD", 
+                logo: "./logo/bytedance.png", 
                 desc: `1、矩阵运营与爆款打造：
  负责四川区域官方账号（抖音/头条/微信）运营，实现单月头条阅读量8000万+及10万+净增粉；主导年轻人情感专题，实现平均单条阅读量300万+。
 
@@ -189,7 +207,9 @@
         container.innerHTML = workData.map(work => `
             <div class="glass-card work-row hover-effect tilt-card">
                 <div class="work-left">
-                    <div class="company-logo">${work.logo}</div>
+                    <div class="company-logo">
+                        <img src="${work.logo}" alt="${work.company} Logo">
+                    </div>
                     <div class="work-info">
                         <div class="work-title">${work.company}</div>
                         <div class="work-desc">${work.desc}</div>
