@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DAVID's Space | 空间计算美学</title>
     <style>
-        /* 基础与变量配置 - 更深邃的黑与深红紫 */
+        /* ================= 基础与变量配置 - 改为 Interstellar 黑洞配色 ================= */
         :root {
             --bg-color: #000000;
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.65);
-            --accent-color: #ff00ff; /* 洋红/深红紫 - 用于发光点缀 */
+            /* 【配色：黑 + 橙】 accent-color 改为黑洞的金色/橙色 */
+            --accent-color: #ffcc00; 
             --glass-bg: rgba(255, 255, 255, 0.02);
             --glass-border: rgba(255, 255, 255, 0.07);
             --glass-hover: rgba(255, 255, 255, 0.07);
-            --contact-panel-bg: rgba(20, 0, 20, 0.8); /* 联系面板背景，带一点深紫色调 */
+            --contact-panel-bg: rgba(10, 10, 15, 0.95); /* 联系面板背景，更深邃 */
             
-            --work-shadow-hover: 0 15px 50px -10px rgba(128, 0, 128, 0.4); /* 工作履历悬停背光 */
-            --project-shadow-hover: 0 10px 40px -10px rgba(128, 0, 128, 0.3); /* 项目卡片悬停背光 */
+            /* 【配色：橙】 卡片悬停时的呼吸背光改为金色光晕 */
+            --work-shadow-hover: 0 15px 50px -10px rgba(255, 204, 0, 0.3); 
+            --project-shadow-hover: 0 10px 40px -10px rgba(255, 204, 0, 0.2); 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,198 +30,228 @@
             overflow-x: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
             line-height: 1.6;
+            background: #000; /* 确保底色纯黑 */
         }
 
-        /* 空间背景 */
+        /* ================= 空间背景与特效层 ================= */
+        /* 极光背景层 (底层) */
         .aurora-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2;
-            overflow: hidden;
+            z-index: -3; /* 垫底 */
             background: #000000;
+            overflow: hidden;
         }
         
+        /* 极淡的极光底色，增加深邃感 */
         .aurora-light {
             position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
-            background: radial-gradient(circle at center, rgba(80, 0, 120, 0.2), transparent 60%),
-                        radial-gradient(circle at 10% 90%, rgba(30, 10, 60, 0.2), transparent 40%),
-                        radial-gradient(circle at 90% 10%, rgba(10, 30, 80, 0.15), transparent 40%);
+            background: radial-gradient(circle at center, rgba(60, 0, 100, 0.1), transparent 60%),
+                        radial-gradient(circle at 90% 10%, rgba(20, 40, 100, 0.1), transparent 40%);
             filter: blur(80px);
             animation: aurora-move 20s ease-in-out infinite alternate;
+            opacity: 0.6;
         }
 
-        /* 新增：3D 粒子球体画布容器，置于底层 */
-        #particle-sphere {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none; /* 防止阻挡鼠标点击 */
+        /* 新增的 Gargantua 黑洞吸积盘 Canvas 画布容器，置于底层 */
+        #particle-nebula {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; /* 位于极光之上，文字之下 */
+            opacity: 1; 
+            pointer-events: auto; /* 允许捕获鼠标事件进行对焦交互 */
         }
 
         @keyframes aurora-move {
             0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.1) translate(-20px, 20px); }
+            100% { transform: scale(1.05) translate(-15px, 15px); }
         }
 
-        /* 顶部导航栏 - 新布局逻辑 */
+        /* ================= 顶部导航栏 ================= */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.3); /* 更透明 */
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
         }
         .nav-container {
             display: flex; justify-content: space-between; align-items: center;
-            max-width: 1400px; margin: 0 auto; padding: 20px 40px;
+            max-width: 1400px; margin: 0 auto; padding: 18px 40px;
         }
         
-        /* 导航栏左侧 Logo - 增加交互提示 */
+        /* 导航栏左侧 Logo */
         .nav-logo {
-            font-size: 16px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+            font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
             cursor: pointer; transition: all 0.3s ease;
+            color: rgba(255,255,255,0.8);
         }
         .nav-logo:hover {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
             color: #fff;
         }
 
         /* 导航栏中间 页面链接 */
-        .nav-links { display: flex; gap: 30px; }
+        .nav-links { display: flex; gap: 35px; }
         .nav-links a {
             color: var(--text-secondary); text-decoration: none;
-            font-size: 14px; font-weight: 500; transition: color 0.3s; cursor: pointer;
+            font-size: 14px; font-weight: 500; transition: all 0.3s ease; cursor: pointer;
+            position: relative; padding: 4px 0;
         }
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        /* 增加下划线指示器 */
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
+            background-color: var(--text-primary); transition: width 0.3s ease;
+        }
+        .nav-links a.active::after { width: 100%; }
 
         /* 导航栏右侧 与我联系 + 弹出面板 */
         .nav-contact-wrapper { position: relative; }
         .nav-contact-trigger {
             color: var(--text-secondary); cursor: pointer;
             font-size: 14px; font-weight: 500; transition: color 0.3s;
+            padding: 5px 10px; border-radius: 4px;
         }
-        .nav-contact-trigger:hover { color: var(--text-primary); }
+        .nav-contact-trigger:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
         
         /* 弹出联系面板样式 */
         .nav-contact-panel {
             position: absolute; top: calc(100% + 15px); right: 0;
-            width: 280px; padding: 20px;
+            width: 280px; padding: 25px;
             background: var(--contact-panel-bg);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 16px;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             opacity: 0; pointer-events: none; visibility: hidden;
-            transform: translateY(10px); transition: all 0.3s ease;
-            box-shadow: 0 10px 40px -10px rgba(128, 0, 128, 0.3);
+            transform: translateY(10px); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.8);
         }
         .nav-contact-panel.show {
             opacity: 1; pointer-events: auto; visibility: visible;
             transform: translateY(0);
         }
-        .contact-item { display: flex; gap: 12px; align-items: center; margin-bottom: 15px; }
+        .contact-item { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; }
         .contact-item:last-child { margin-bottom: 0; }
-        .contact-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(128, 0, 128, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-weight: bold; }
+        /* 【配色：橙】 */
+        .contact-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255, 204, 0, 0.15); border: 1px solid rgba(255, 204, 0, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-size: 12px; font-weight: bold; }
         .contact-info { font-size: 14px; color: var(--text-primary); }
-        .contact-info a { color: var(--text-primary); text-decoration: none; }
-        .contact-info a:hover { text-decoration: underline; }
+        .contact-info div { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
+        .contact-info a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
+        .contact-info a:hover { text-decoration: underline; color: var(--accent-color); }
 
-        /* 页面容器 */
-        main { padding: 120px 5% 60px; max-width: 1200px; margin: 0 auto; min-height: 100vh; }
-        .page-view { display: none; animation: fadeIn 0.6s ease; }
-        .page-view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* ================= 页面视图通用容器 ================= */
+        main { padding: 90px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; }
+        .page-view { display: none; }
+        .page-view.active { display: block; animation: fadeIn 0.6s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 通用：微玻璃拟态卡片 + 呼吸光效 */
+        /* ================= 通用：微玻璃拟态卡片 ================= */
         .glass-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 20px;
-            padding: 30px;
+            padding: 35px;
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, background 0.4s ease, transform 0.1s; /* 优化：分离 transform 过渡以防止 3D 悬浮卡顿 */
             position: relative; overflow: hidden;
         }
-        /* 鼠标跟随发光效果核心 */
+        
+        /* 鼠标跟随发光效果核心 - 修改为微橙色 */
         .glass-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.05), transparent 40%);
-            opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 0;
+            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 204, 0, 0.06), transparent 40%);
+            opacity: 0; transition: opacity 0.5s ease; pointer-events: none; z-index: 0;
         }
         .glass-card:hover::before { opacity: 1; }
         .glass-card > * { position: relative; z-index: 1; }
 
-        /* 页面表头介绍文本样式 - 修改为完全居中 */
+        /* ================= 页面表头介绍居中 (你的排腰) ================= */
         .page-header { 
-            margin-bottom: 50px; 
+            margin-bottom: 45px; 
             text-align: center; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
         }
-        .page-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
-        .page-header p { font-size: 16px; color: var(--text-secondary); max-width: 700px; }
+        .page-header h2 { font-size: 38px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .page-header p { font-size: 15px; color: var(--text-secondary); max-width: 650px; font-weight: 300; line-height: 1.8; }
 
-        /* 首页视图 - 极简 */
-        .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: 64px; font-weight: 700; margin-bottom: 16px; letter-spacing: -1.5px; }
-        .hero p { font-size: 24px; color: var(--text-secondary); font-weight: 300; }
+        /* ================= 首页视图 ================= */
+        .hero { height: 75vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; pointer-events: none; /* 穿透鼠标事件给背景黑洞进行对焦 */ }
+        .hero h1 { font-size: 64px; font-weight: 700; margin-bottom: 20px; letter-spacing: -2px; background: linear-gradient(180deg, #fff, #ccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .hero p { font-size: 20px; color: rgba(255,255,255,0.7); font-weight: 300; letter-spacing: 0.5px; max-width: 600px; line-height: 1.8; }
 
-        /* 工作履历视图 - 优化间距与背光 */
+        /* ================= 工作履历视图 ================= */
         .work-container { padding-top: 10px; }
         .work-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 24px 30px; margin-bottom: 25px; /* 增加行间距 */
+            padding: 28px 35px; margin-bottom: 20px;
             cursor: pointer;
         }
-        /* 鼠标悬停背光显现 */
-        .work-row:hover { box-shadow: var(--work-shadow-hover); border-color: rgba(128, 0, 128, 0.15); }
+        /* 【配色：橙】 鼠标悬停背光显现金色光晕 */
+        .work-row:hover { 
+            box-shadow: var(--work-shadow-hover); 
+            border-color: rgba(255, 204, 0, 0.15); 
+            background: rgba(255,255,255,0.025);
+            transform: translateY(-2px);
+        }
 
-        .work-left { display: flex; align-items: center; gap: 20px; flex-grow: 1; }
-        .company-logo { width: 48px; height: 48px; border-radius: 12px; background: rgba(128, 0, 128, 0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--accent-color); font-size: 16px;}
-        .work-info { flex-grow: 1; }
-        .work-title { font-size: 20px; font-weight: 600; margin-bottom: 4px;}
-        .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
+        .work-left { display: flex; align-items: center; gap: 25px; flex-grow: 1; }
+        /* 【配色：橙】 GL -> GL金色 Logo */
+        .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 204, 0, 0.05); border: 1px solid rgba(255, 204, 0, 0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--accent-color); font-size: 16px;}
+        .work-info { flex-grow: 1; text-align: left; }
+        .work-title { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: #fff; }
+        .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 300; }
         .work-row:hover .work-desc { max-height: 100px; opacity: 1; margin-top: 10px; }
 
-        .work-right { text-align: right; color: var(--text-secondary); flex-shrink: 0; padding-left: 30px;}
-        .work-role { font-weight: 500; font-size: 16px; color: var(--text-primary);}
-        .work-time { font-size: 14px; opacity: 0.8; }
+        .work-right { text-align: right; color: var(--text-secondary); flex-shrink: 0; padding-left: 40px;}
+        .work-role { font-weight: 500; font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
+        .work-time { font-size: 13px; opacity: 0.7; font-weight: 300; }
 
-        /* 项目经验视图 - Bento Grid 优化间距 */
-        .projects-controls { margin-bottom: 40px; display: flex; justify-content: center;}
-        .filter-bar { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+        /* ================= 项目经验视图 ================= */
+        .projects-controls { margin-bottom: 45px; display: flex; justify-content: center;}
+        /* 你的排腰 (居中状态保持) */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05); }
         .filter-btn {
-            background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-secondary);
-            padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s;
-            font-size: 14px;
+            background: transparent; border: none; color: var(--text-secondary);
+            padding: 8px 24px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
+            font-size: 14px; font-weight: 500;
         }
-        .filter-btn.active, .filter-btn:hover { background: var(--text-primary); color: var(--bg-color); }
+        .filter-btn:hover { color: var(--text-primary); }
+        /* 【配色：橙】 筛选按钮高亮样式 */
+        .filter-btn.active { background: rgba(255,255,255,0.08); color: var(--text-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 
         .bento-grid {
             display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 30px; /* 增加卡片间距 */
+            gap: 25px; /* 卡片间距适中 */
         }
         .project-card {
-            height: 300px; display: flex; flex-direction: column; cursor: pointer;
+            height: 320px; display: flex; flex-direction: column; cursor: pointer;
             transform-style: preserve-3d; /* 用于视差效果 */
+            text-align: left;
         }
-        /* 项目卡片悬停背光 */
-        .project-card:hover { box-shadow: var(--project-shadow-hover); border-color: rgba(128, 0, 128, 0.1); }
+        /* 【配色：橙】 项目卡片悬停背光 */
+        .project-card:hover { 
+            box-shadow: var(--project-shadow-hover); 
+            border-color: rgba(255, 204, 0, 0.1); 
+            background: rgba(255,255,255,0.025);
+            transform: translateY(-3px);
+        }
 
-        .proj-category { font-size: 12px; color: var(--accent-color); font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        .proj-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
-        .proj-desc { font-size: 14px; color: var(--text-secondary); flex-grow: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; line-height: 1.6;}
-        .proj-more { align-self: flex-end; font-size: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 4px; opacity: 0; transform: translateX(-10px); transition: 0.3s; padding-top: 10px; }
+        /* 【配色：橙】 分类文字 */
+        .proj-category { font-size: 12px; color: var(--accent-color); font-weight: 600; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .proj-title { font-size: 19px; font-weight: 600; margin-bottom: 15px; color: #fff; line-height: 1.4; }
+        .proj-desc { font-size: 14px; color: var(--text-secondary); flex-grow: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; line-height: 1.7; font-weight: 300; }
+        .proj-more { align-self: flex-end; font-size: 13px; color: var(--text-primary); display: flex; align-items: center; gap: 6px; opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; padding-top: 15px; font-weight: 500; }
         .project-card:hover .proj-more { opacity: 1; transform: translateX(0); }
 
-        /* 三级详情页视图 - 保持整体风格 */
-        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--text-secondary); cursor: pointer; font-size: 14px; }
+        /* ================= 三级详情页视图 ================= */
+        .back-btn { display: inline-block; margin-bottom: 40px; color: var(--text-secondary); cursor: pointer; font-size: 14px; transition: color 0.3s; font-weight: 500; }
         .back-btn:hover { color: var(--text-primary); }
-        .detail-header { margin-bottom: 40px; }
-        .detail-title { font-size: 40px; margin-bottom: 16px; font-weight: 700;}
-        .detail-meta { display: flex; gap: 24px; color: var(--text-secondary); font-size: 16px; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; }
-        .detail-content { font-size: 16px; color: #ddd; line-height: 1.8; white-space: pre-line; }
+        .detail-header { margin-bottom: 40px; text-align: center; }
+        .detail-title { font-size: 40px; margin-bottom: 18px; font-weight: 700; color: #fff; letter-spacing: -1px; line-height: 1.2;}
+        .detail-meta { display: flex; gap: 30px; color: var(--text-secondary); font-size: 15px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 25px; justify-content: center; font-weight: 300; }
+        /* 【配色：橙】 加粗元数据 */
+        .detail-meta span strong { color: rgba(255,255,255,0.9); font-weight: 500; margin-right: 5px; }
+        .detail-content { font-size: 16px; color: #eaeaea; line-height: 1.9; white-space: pre-line; font-weight: 300; max-width: 900px; margin: 0 auto; text-align: left; }
 
     </style>
 </head>
@@ -227,8 +259,9 @@
 
     <div class="aurora-bg">
         <div class="aurora-light"></div>
-        <canvas id="particle-sphere"></canvas>
     </div>
+    
+    <canvas id="particle-nebula"></canvas>
 
     <nav>
         <div class="nav-container">
@@ -244,16 +277,18 @@
                 
                 <div class="nav-contact-panel" id="contact-panel">
                     <div class="contact-item">
-                        <div class="contact-icon">@</div>
+                        <div class="contact-icon">Mail</div>
                         <div class="contact-info">
-                            <div>邮件：</div>
-                            <a href="mailto:david@email.com">david@email.com</a> </div>
+                            <div>官方邮件</div>
+                            <a href="mailto:david@email.com">david@email.com</a> 
+                        </div>
                     </div>
                     <div class="contact-item">
-                        <div class="contact-icon">Ph</div>
+                        <div class="contact-icon">Phone</div>
                         <div class="contact-info">
-                            <div>手机：</div>
-                            <a href="tel:13800000000">+86 138 0000 0000</a> </div>
+                            <div>移动电话</div>
+                            <a href="tel:13800000000">+86 138 0000 0000</a> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -261,16 +296,17 @@
     </nav>
 
     <main>
-        <section id="home" class="page-view active">
+        <section id="home" class="page-view active hero-home">
             <div class="hero">
-                <h1>David Wang</h1> <p>深耕互联网营销与商业化变现，从大厂到创业的全链路实战家。</p>
+                <h1>David Wang</h1> 
+                <p>深耕互联网营销与商业化变现，从大厂到创业的全链路增长实战家。致力于用数据与技术，重构商业运营效率。</p>
             </div>
         </section>
 
         <section id="work" class="page-view">
             <div class="page-header">
                 <h2>工作履历</h2>
-                <p>沉淀多维度、全链路营销与增长实战经验，涵盖大厂、创业及SaaS产品GTM策略。</p>
+                <p>沉淀多维度、全链路营销与增长实战经验，涵盖大厂、创业及SaaS产品GTM策略操盘。</p>
             </div>
             
             <div class="work-container" id="work-container">
@@ -279,8 +315,8 @@
 
         <section id="projects" class="page-view">
             <div class="page-header">
-                <h2>项目案例</h2>
-                <p>按分类浏览全链条实战案例，涵盖新媒体、整合营销、品牌与增长策略。</p>
+                <h2>项目经验</h2>
+                <p>精选全链条实战案例，涵盖新媒体IP孵化、整合营销策划、品牌全案及数字化增长策略。</p>
             </div>
 
             <div class="projects-controls">
@@ -289,9 +325,7 @@
                     <button class="filter-btn" onclick="filterProjects('新媒体')">新媒体</button>
                     <button class="filter-btn" onclick="filterProjects('整合营销')">整合营销</button>
                     <button class="filter-btn" onclick="filterProjects('品牌营销')">品牌营销</button>
-                    <button class="filter-btn" onclick="filterProjects('市场营销')">市场营销</button>
-                    <button class="filter-btn" onclick="filterProjects('用户运营')">用户运营</button>
-                    <button class="filter-btn" onclick="filterProjects('产品运营')">产品运营</button>
+                    <button class="filter-btn" onclick="filterProjects('市场增长')">市场增长</button>
                 </div>
             </div>
             
@@ -301,14 +335,14 @@
 
         <section id="project-detail" class="page-view">
             <div class="back-btn" onclick="switchPage('projects')">← 返回项目列表</div>
-            <div class="glass-card detail-card" style="padding: 50px;">
+            <div class="glass-card detail-card" style="padding: 60px;">
                 <div class="detail-header">
                     <div class="proj-category" id="detail-category">分类</div>
                     <h1 class="detail-title" id="detail-title">标题</h1>
                     <div class="detail-meta">
-                        <span id="detail-time">时间: </span>
-                        <span id="detail-company">公司: </span>
-                        <span id="detail-role">职责: </span>
+                        <span id="detail-time"><strong>时间</strong> <span class="val"></span></span>
+                        <span id="detail-company"><strong>所在公司</strong> <span class="val"></span></span>
+                        <span id="detail-role"><strong>核心职责</strong> <span class="val"></span></span>
                     </div>
                 </div>
                 <div class="detail-content" id="detail-content">
@@ -319,52 +353,30 @@
     </main>
 
     <script>
-        // --- 1. 数据结构区 ---
+        // ================= 数据结构区 =================
 
-        // A. 工作履历数据 (示例，你需要修改为自己的)
+        // A. 工作履历数据
         const workData = [
-            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理", logo: "GL", desc: "主导大中华区市场自动化营销策略，从0到1操盘SaaS产品GTM策略，驱动官网线索与Demo申请率双位数增长。" },
-            { company: "Deep深氪", time: "2022 - 2024", role: "个人创业", logo: "DK", desc: "主导公司业务方向与商业模式设计，带领团队完成从0到1的业务闭环，服务多家头部企业客户。" },
-            { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团市场品牌工作，建立全套品牌视觉识别系统(VI)，策划执行多场千人量级行业峰会与品牌发布会。" },
-            { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责医美平台核心业务线的商业化运营，搭建用户全生命周期成长模型，主导全网双十一大促实现GMV倍增。" },
-            { company: "字节跳动", time: "2019 - 2020", role: "新媒体运营主管", logo: "BD", desc: "从0到1搭建并管理四川区域官方抖音号矩阵，粉丝矩阵突突破百万，单条爆款视频播放量破千万。" }
+            { company: "GitLab", time: "2024 - 2026", role: "市场数字化营销经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理经理", logo: "GL", desc: "主导大中华区数字化获客体系搭建，操盘SaaS产品全链路GTM策略，通过MarTech工具实现线索转化率提升25%。" },
+            { company: "Deep深氪", time: "2022 - 2024", role: "创始人/创业", logo: "DK", desc: "创立营销咨询公司，为多家头部新消费及ToB企业提供全案品牌策划与增长顾问服务，实现从0到1业务闭环。" },
+            { company: "千行你我", time: "2021 - 2022", role: "市场品牌总监", logo: "QX", desc: "统筹集团品牌矩阵升级，建立系统化VI体系，策划并执行多场行业级千人峰会，显著提升品牌行业声量。" },
+            { company: "MEB美尔贝", time: "2020 - 2021", role: "商业化运营经理", logo: "ME", desc: "负责核心业务线的商业化变现模型搭建，主导双十一等S级全网大促活动，实现GMV同比翻倍增长。" },
+            { company: "字节跳动", time: "2019 - 2020", role: "新媒体运营主管", logo: "BD", desc: "负责四川区域官方内容矩阵运营，从0孵化百万级粉丝抖音账号，策划多场城市级整合营销事件。" }
         ];
 
-        // B. 项目经验数据 (使用完善后的润色标题与详情)
+        // B. 项目经验数据 (示例润色标题)
         const projectsData = [
-            // 新媒体
-            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方矩阵精细化运营全案", company: "字节跳动", time: "2019-2020", role: "核心操盘手", desc: "从0到1搭建区域账号矩阵体系，制定全年内容排期与互动玩法，实现百万粉丝跨越。", detail: "【项目背景】区域下沉战略推进，需要建立强有力的本地化内容发声渠道。\n【核心职责】负责官方抖音号及头条号矩阵搭建、内容编导、日常运营及数据分析。\n【项目成果】粉丝矩阵突破百万，单条爆款视频播放量破千万。" },
-            { id: 2, category: "新媒体", title: "【万能的小孙】抖音职场IP孵化全链路运营", company: "保密", time: "2020", role: "IP主理人", desc: "从人设定位、剧本编导到投流复盘，实现短视频IP从0到1的商业化变现。", detail: "在此部分可以补充具体的IP定位思路、视频选题逻辑、投流策略及粉丝转化路径细节。" },
-            { id: 3, category: "新媒体", title: "【机器人十七】科技垂类IP打造与硬核内容营销", company: "保密", time: "2021", role: "IP主理人", desc: "定位前沿科技与硬核评测，打造科技趣味人设，深度种草垂类粉丝群。", detail: "在此部分可以补充关于科技内容的专业度把控、评测选题及粉丝画像分析详情。" },
-            { id: 4, category: "新媒体", title: "【一芳在散步】文旅/生活方式IP孵化及私域引流", company: "保密", time: "2021", role: "运营策划", desc: "结合场景营销与慢生活方式，打造垂直高净值粉丝IP，沉淀精准流量。", detail: "在此部分可以补充关于场景化营销策略、线下活动配合及私域流量转化方法详情。" },
-            { id: 5, category: "新媒体", title: "【汽车自媒体】汽车评测账号矩阵独立运营实战", company: "个人项目", time: "持续进行", role: "自媒体人", desc: "聚焦二手车与汽车文化，深度测评多款车型，独立完成内容产出与流量运营。", detail: "在此部分可以补充你对热门车型的深度评测心得、数据变现模式及粉丝运营策略。" },
-            
-            // 整合营销策划
-            { id: 6, category: "整合营销", title: "【风味成都】S级城市级别整合营销事件统筹", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销。", detail: "【玩法亮点】采用线上挑战赛+线下打卡双链路，引爆本地生活流量池。" },
-            { id: 7, category: "整合营销", title: "【GitLab×瑞幸咖啡】ToB与ToC跨界营销及破圈传播", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名与话题营销。", detail: "【跨界逻辑】代码与咖啡是程序员的日常。通过联名杯套、定制周边及技术Webinar，实现品牌破圈与声量增长。" },
-            { id: 8, category: "整合营销", title: "【MEB美尔贝】品牌焕新发布会与全域狂欢节整合大促", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，营收倍增。", detail: "在此部分可以补充具体的GMV增长数据、跨渠道流量组合策略及核心玩法。" },
-
-            // 品牌营销
-            { id: 9, category: "品牌营销", title: "华为荣耀《影像情书》TVC品牌营销策划与宣发", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣。", detail: "在此部分可以补充关于TVC核心脚本大纲的策划思路、情感化营销的把控详情。" },
-            { id: 10, category: "品牌营销", title: "悦木之源灵芝水：探索之旅沉浸式品牌探索与种草全案", company: "千行你我", time: "2022", role: "品牌策划", desc: "提炼核心成分卖点，打造沉浸式线下快闪与线上溯源营销闭环，提升用户忠诚度。", detail: "在此部分可以补充关于线下快闪店互动设计、KOL组合策略及用户留存数据详情。" },
-            { id: 11, category: "品牌营销", title: "【阿斯顿马丁之夜】超豪华品牌高端圈层营销与深度体验设计", company: "千行你我", time: "2021", role: "执行总监", desc: "面向高净值人群，打造兼具私密性与奢华感的品鉴晚宴，强化品牌尊贵感。", detail: "在此部分可以补充关于高端人群邀约逻辑、现场体验设计及后继转化的精细化细节。" },
-            { id: 12, category: "品牌营销", title: "【觅山】新消费青梅酒品牌全案：从0到1的商业化变现", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘新消费品牌：从品牌命名、视觉包装、GTM策略到全域营销变现。", detail: "在此部分可以补充对年轻女性微醺经济的商业洞察、跨渠道流量布局及GMV达成详情。" },
-            { id: 13, category: "品牌营销", title: "【久未见】高端白酒品牌打造：文化重塑与渠道拓展全链路", company: "Deep深氪", time: "2023", role: "品牌主理", desc: "切入高端商务宴请场景，重塑文化故事，搭建线下深度品鉴与线上流量矩阵。", detail: "在此部分可以补充关于白酒文化差异化包装、高端客户精细化运营及销售额详情。" },
-
-            // 市场营销
-            { id: 14, category: "市场营销", title: "大健康医疗“名医+爆品”破局策略与整合BD方案", company: "MEB美尔贝", time: "2020", role: "市场经理", desc: "深度绑定行业名医打造差异化爆品，开拓跨行业生态BD合作，驱动增长。", detail: "通过医疗服务非标品的产品化思路，解决用户信任问题，提升复购率详情。" },
-            { id: 15, category: "市场营销", title: "【GitLab】SaaS产品GTM策略操盘与从0到1市场获客", company: "GitLab", time: "2024", role: "营销经理", desc: "制定中国区市场策略，搭建获客、激活、留存、变现的AARRR全链路营销漏斗。", detail: "【项目成果】CPL降低30%，线索转化率提升20%详情。" },
-            { id: 16, category: "市场营销", title: "【GitLab】官网精细化运营与全链路转化率优化 (CRO)", company: "GitLab", time: "2025", role: "营销经理", desc: "主导官网页面重构与A/B测试，大幅提升注册转化与Demo申请率。", detail: "在此部分可以补充具体使用的MarTech工具、数据分析方法论及核心优化项详情。" },
-
-            // 用户运营
-            { id: 17, category: "用户运营", title: "【GitLab】大中华区核心社区运营与用户活跃度提升策略", company: "GitLab", time: "2025", role: "营销经理", desc: "搭建开发者活跃体系，通过Webinar与Meetup增强社区粘性与商业转化。", detail: "在此部分可以补充关于开发者社区运营的逻辑、社群精细化方法详情。" },
-            { id: 18, category: "用户运营", title: "【字节跳动】四川本地生活/商家生态系统精细化运营", company: "字节跳动", time: "2019", role: "运营主管", desc: "赋能区域商家掌握短视频营销工具，构建健康的本地化商业生态链。", detail: "在此部分可以补充关于商家培训体系搭建、标杆案例打造方法详情。" },
-
-            // 产品运营
-            { id: 19, category: "产品运营", title: "【全民福利会】全生命周期产品运营与拉新裂变方案", company: "保密", time: "2020", role: "产品运营", desc: "负责App端内促活与留存体系搭建，策划拉新裂变活动实现用户倍增。", detail: "在此部分可以补充关于积分体系设计、用户价值模型及裂变玩法方法论详情。" }
+            { id: 1, category: "新媒体", title: "【字节跳动】四川区域官方抖音矩阵孵化与运营全案", company: "字节跳动", time: "2019", role: "项目统筹", desc: "从0到1搭建区域账号矩阵体系，制定内容排期与互动玩法，实现百万粉丝跨越。", detail: "【项目背景】大厂区域下沉战略推进，需要建立强有力的本地化内容发声渠道与商业化引流入口。\n【核心职责】负责四川区域官方抖音号及头条号矩阵搭建、人设IP编导、日常运营、数据复盘及商业化变现探索。\n【项目成果】粉丝矩阵突破百万，单条爆款视频播放量破千万，显著提升了大厂在本地的品牌声量与业务渗透率。" },
+            { id: 2, category: "新媒体", title: "职场垂类IP【万能的小孙】抖音从0到1商业化孵化", company: "保密", time: "2020", role: "IP主理人", desc: "从人设定位、剧本编导到投流复盘，实现短视频IP从0到1的粉丝沉淀与商业化变现。", detail: "在此部分可以补充具体的IP定位思路、冷启动阶段的精准人设打造（短视频+直播），千川投流策略及粉丝转化路径细节。" },
+            { id: 3, category: "整合营销", title: "【风味成都】字节跳动城市级整合营销事件統筹", company: "字节跳动", time: "2019", role: "项目统筹", desc: "联动百家本地餐饮品牌及KOL，结合抖音挑战赛打造城市级现象营销。", detail: "统筹项目整体策划与执行：联动本地餐饮协会、头部餐饮品牌、抖音达人挑战赛、线下快闪打卡等多元玩法，驱动品效合一，单次活动曝光突破亿级。" },
+            { id: 4, category: "整合营销", title: "【GitLab×瑞幸咖啡】ToB与ToC跨界联名品牌破圈营销", company: "GitLab", time: "2025", role: "营销负责人", desc: "精准洞察程序员群体，实现ToB品牌与ToC消费品牌的巧妙联名与话题营销。", detail: "【跨界逻辑】代码与咖啡是程序员的日常。通过联名杯套、定制周边及技术Webinar，实现品牌破圈与声量增长详情。" },
+            { id: 5, category: "品牌营销", title: "华为荣耀《影像情书》情感共鸣TVC品牌营销全案", company: "千行你我", time: "2021", role: "品牌策划", desc: "以情感化故事赋能科技产品属性，引发社交媒体广泛讨论与共鸣。", detail: "在此部分可以补充关于TVC核心脚本大纲、情感化营销策略制定及全网宣发排期详情。" },
+            { id: 6, category: "品牌营销", title: "【觅山】新消费青梅酒品牌全案：从0到1的商业化变现", company: "Deep深氪", time: "2022", role: "品牌主理", desc: "全盘操盘新消费品牌：从品牌命名、VI包装、GTM策略到全域营销变现。", detail: "全链路从0操盘新消费品牌：定位针对年轻女性微醺经济，通过天猫/京东/抖音电商渠道布局，KOL种草及投流运营，实现品类破局与GMV达成详情。" },
+            { id: 7, category: "市场增长", title: "【GitLab】SaaS产品中国区获客GTM策略与全链路数字化增长", company: "GitLab", time: "2024", role: "营销经理", desc: "搭建全链路获客体系（AARRR），操盘中国区GTM，驱动官网线索与商机增长。", detail: "【项目背景】GitLab进入中国市场，需要构建强有力的获客漏斗。\n【核心职责】负责GitLab中国区市场策略搭建，覆盖获客、激活、留存、变现。具体包括MarTech工具链整合、Webinar系列运营、SEO/SEM优化、核心大客户 ABM营销策略等。详情见此部分。" },
+            { id: 8, category: "市场增长", title: "【MEB美尔贝】医美平台双十一全网狂欢节商业化大促", company: "MEB美尔贝", time: "2020", role: "项目经理", desc: "统筹全年最大规模促销节点，打通站内外流量实现品效合一，GMV同比倍增。", detail: "全盘负责医美平台商业化运营和大促策划，统筹产品、运营、市场资源。核心职责包括双十一全周期GMV分解与目标达成规划，站内用户全生命周期增长模型搭建，KOL矩阵投流复盘及 GMV 最终达标。详情见此部分。" }
         ];
 
-        // --- 2. 交互逻辑区 ---
+        // ================= 交互与路由逻辑 =================
 
         // A. 与我联系弹出面板逻辑
         const contactWrapper = document.getElementById('contact-wrapper');
@@ -390,6 +402,17 @@
         // B. 页面路由与切换
         function switchPage(pageId) {
             window.scrollTo(0,0); // 滚回顶部
+            
+            // 切换 Canvas 的可见性，节省资源
+            const nebulaCanvas = document.getElementById('particle-nebula');
+            if(pageId === 'home') {
+                nebulaCanvas.style.opacity = '1';
+                nebulaCanvas.style.visibility = 'visible';
+            } else {
+                nebulaCanvas.style.opacity = '0';
+                nebulaCanvas.style.visibility = 'hidden';
+            }
+
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             
@@ -406,7 +429,7 @@
         function renderWork() {
             const container = document.getElementById('work-container');
             container.innerHTML = workData.map(work => `
-                <div class="glass-card work-row hover-effect">
+                <div class="glass-card work-row hover-effect tilt-card">
                     <div class="work-left">
                         <div class="company-logo">${work.logo}</div>
                         <div class="work-info">
@@ -432,7 +455,7 @@
                     <div class="proj-category">${p.category}</div>
                     <div class="proj-title">${p.title}</div>
                     <div class="proj-desc">${p.desc}</div>
-                    <div class="proj-more">了解详情 →</div>
+                    <div class="proj-more">查看案例详情 →</div>
                 </div>
             `).join('');
 
@@ -455,9 +478,12 @@
 
             document.getElementById('detail-category').innerText = project.category;
             document.getElementById('detail-title').innerText = project.title;
-            document.getElementById('detail-time').innerText = "时间: " + project.time;
-            document.getElementById('detail-company').innerText = "所在公司: " + project.company;
-            document.getElementById('detail-role').innerText = "主要职责: " + project.role;
+            
+            // 填充元数据
+            document.querySelector('#detail-time .val').innerText = project.time;
+            document.querySelector('#detail-company .val').innerText = project.company;
+            document.querySelector('#detail-role .val').innerText = project.role;
+            
             document.getElementById('detail-content').innerText = project.detail;
 
             switchPage('project-detail');
@@ -466,6 +492,10 @@
         // G. tvOS 同款 3D 视差倾斜动效 (核心细节)
         function initTiltEffect() {
             document.querySelectorAll('.tilt-card').forEach(card => {
+                // 确保监听器只绑定一次，防止重新渲染导致的性能问题
+                card.onmousemove = null;
+                card.onmouseleave = null;
+                
                 card.addEventListener('mousemove', e => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
@@ -473,9 +503,9 @@
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
                     
-                    // 计算倾斜角度，限制在正负8度以内保持丝滑
-                    const rotateX = ((y - centerY) / centerY) * -8; 
-                    const rotateY = ((x - centerX) / centerX) * 8;
+                    // 计算倾斜角度，限制在正负6度以内保持丝滑
+                    const rotateX = ((y - centerY) / centerY) * -6; 
+                    const rotateY = ((x - centerX) / centerX) * 6;
                     
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
@@ -488,93 +518,178 @@
         // H. 微玻璃拟态呼吸光效 (鼠标跟随发光)
         function initHoverLight() {
             document.querySelectorAll('.hover-effect').forEach(card => {
-                card.addEventListener('mousemove', e => {
+                card.onmousemove = e => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     card.style.setProperty('--mouse-x', `${x}px`);
                     card.style.setProperty('--mouse-y', `${y}px`);
-                });
+                };
             });
         }
 
-        // I. 核心发光体升级：偏置 3D 粒子球体特效
-        function initParticleSphere() {
-            const canvas = document.getElementById('particle-sphere');
+        // ===========================================
+        // I. 【核心重写】：浩瀚 Gargantua 黑洞粒子系统
+        // (Full Screen, High Density, W warped, 영화색감)
+        // ===========================================
+        function initParticleNebula() {
+            const canvas = document.getElementById('particle-nebula');
             const ctx = canvas.getContext('2d');
             
+            let width, height;
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+
             // 设置画布尺寸
             function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                initParticles(); // 尺寸改变时重新初始化
             }
             window.addEventListener('resize', resizeCanvas);
+            
+            // 鼠标移动监听，用于粒子对焦交互
+            window.addEventListener('mousemove', e => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
             resizeCanvas();
 
             const particles = [];
-            const numParticles = 250; // 粒子数量，适中不抢视觉
+            // 【密度大幅提升】：使用 1500 个粒子创造稠密沙砾感
+            const numParticles = 1500; 
             
-            // 初始化分布在一个 3D 球体表面的粒子
-            for(let i = 0; i < numParticles; i++) {
-                const theta = Math.random() * 2 * Math.PI;
-                const phi = Math.acos((Math.random() * 2) - 1);
-                const radius = 220 + (Math.random() * 40 - 20); // 核心球体半径 + 微小波动
-                
-                particles.push({
-                    theta: theta,
-                    phi: phi,
-                    radius: radius,
-                    size: Math.random() * 2 + 0.5
-                });
+            // 粒子类定义
+            class Particle {
+                constructor() {
+                    this.init();
+                }
+
+                init() {
+                    // 【造型核心】：使用扁平的极坐标分布模拟卡冈图雅的吸积盘
+                    const theta = Math.random() * 2 * Math.PI; // 角度
+                    // 核心半径 + 开方让粒子更多地聚集在黑洞边缘，但有很长的扁平蔓延
+                    const coreRadius = Math.random() * width * 0.15 + width * 0.03;
+                    const edgeRadius = Math.pow(Math.random(), 2) * width * 1.5; 
+                    const radius = Math.random() < 0.8 ? coreRadius : edgeRadius;
+                    
+                    // 初始 3D 坐标
+                    this.rawX = radius * Math.cos(theta);
+                    // Gargantua 是扁平的吸积盘，Y 轴分布必须极其狭窄
+                    this.rawY = (Math.random() * 2 - 1) * width * 0.015; 
+                    // Z 轴（深度）：使用较远的深度增加空间感
+                    this.rawZ = Math.random() * width * 2 - width; 
+                    
+                    this.size = Math.random() * 2.5 + 0.5; // 基础大小
+                    
+                    // 【精致造型】：使用电影卡冈图雅色调：琥珀、金色、微白
+                    const colors = [
+                        'rgba(255, 180, 0, ', // 琥珀
+                        'rgba(255, 220, 100, ', // 金色
+                        'rgba(255, 255, 255, '  // 纯白微光
+                    ];
+                    this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // 慢速自转速度
+                    this.speed = Math.random() * 0.0006 + 0.0001; 
+                }
+
+                update(time) {
+                    // 绕 Y 轴缓慢自转
+                    const angle = time * this.speed;
+                    const cosA = Math.cos(angle);
+                    const sinA = Math.sin(angle);
+                    
+                    // 应用旋转公式
+                    const x = this.rawX * cosA - this.rawZ * sinA;
+                    const z = this.rawX * sinA + this.rawZ * cosA;
+                    const y = this.rawY;
+
+                    // 【黑洞扭曲效果核心 (Wwarped)】：沿 X 轴应用不规则倾斜角和透视扭曲
+                    const tilt = 0.5;
+                    const tiltedY = y * Math.cos(tilt) - z * Math.sin(tilt);
+                    const tiltedZ = y * Math.sin(tilt) + z * Math.cos(tilt);
+
+                    // 简易 3D 透视投影
+                    const fov = width * 1.0; 
+                    const scale = fov / (fov + tiltedZ);
+                    
+                    // 【非居中且蔓延全屏】：将黑洞中心偏置，但粒子扩散至全屏
+                    const centerX = width * 0.75; // 你的非居中偏置位置保持
+                    const centerY = height * 0.6;
+                    this.px = centerX + x * scale;
+                    this.py = centerY + tiltedY * scale;
+
+                    // 根据 Z 轴深度调整最终大小和透明度
+                    this.finalSize = this.size * scale;
+                    // Z 轴越远，透明度越低
+                    this.alpha = Math.max(0.1, Math.min(0.9, scale * 0.7)); 
+
+                    // 【精致交互】：鼠标近距离对焦微亮效果
+                    if (mouseX !== null && mouseY !== null) {
+                        const dx = this.px - mouseX;
+                        const dy = this.py - mouseY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const intersectRadius = 150; // 交互半径
+                        
+                        if (dist < intersectRadius) {
+                            // 距离越近，亮度越高，大小稍微放大，模拟景深对焦
+                            const force = (intersectRadius - dist) / intersectRadius;
+                            this.alpha += force * 0.3;
+                            this.finalSize *= (1 + force * 0.2);
+                        }
+                    }
+                }
+
+                draw() {
+                    // 绘制稠密颗粒：Arc 创造细腻的沙砾感
+                    ctx.beginPath();
+                    ctx.arc(this.px, this.py, this.finalSize, 0, Math.PI * 2);
+                    ctx.fillStyle = this.colorPrefix + this.alpha + ')';
+                    ctx.fill();
+                }
+            }
+
+            // 初始化粒子数组
+            function initParticles() {
+                particles.length = 0; // 清空数组
+                for (let i = 0; i < numParticles; i++) {
+                    particles.push(new Particle());
+                }
             }
 
             let time = 0;
-            function renderParticles() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                time += 0.003; // 自转速度
+            // 渲染主循环
+            function renderNebula() {
+                // 确保只有画布可见时才计算，节省资源 (switchPage逻辑控制 visibility)
+                if (canvas.style.visibility !== 'hidden') {
+                    // 清空画布 (不使用半透明清除，保持颗粒的清晰沙砾感)
+                    ctx.clearRect(0, 0, width, height); 
+                    time++; 
 
-                // 【非居中设计】：将球体中心定位在偏屏幕右侧 75%，偏下 55% 的位置
-                const centerX = canvas.width * 0.75; 
-                const centerY = canvas.height * 0.55;
-
-                particles.forEach(p => {
-                    // 3D 坐标计算，沿 Y 轴自转
-                    let x = p.radius * Math.sin(p.phi) * Math.cos(p.theta + time);
-                    let z = p.radius * Math.sin(p.phi) * Math.sin(p.theta + time);
-                    let y = p.radius * Math.cos(p.phi);
-
-                    // 增加一点整体沿 X 轴的倾斜角，让它看起来更具空间感
-                    const tilt = 0.4;
-                    let tiltedY = y * Math.cos(tilt) - z * Math.sin(tilt);
-                    let tiltedZ = y * Math.sin(tilt) + z * Math.cos(tilt);
-
-                    // 简易 3D 透视投影
-                    const perspective = 800;
-                    const scale = perspective / (perspective + tiltedZ);
-                    const px = centerX + x * scale;
-                    const py = centerY + tiltedY * scale;
-
-                    // 绘制粒子
-                    ctx.beginPath();
-                    ctx.arc(px, py, p.size * scale, 0, Math.PI * 2);
-                    
-                    // 根据 Z 轴深度调整透明度，产生远近层次感
-                    const alpha = Math.max(0.1, scale - 0.5);
-                    // 使用科技幽蓝到紫色的色调代替原本抢眼的粉色
-                    ctx.fillStyle = `rgba(160, 120, 255, ${alpha})`; 
-                    ctx.fill();
-                });
-
-                requestAnimationFrame(renderParticles);
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].update(time);
+                        particles[i].draw();
+                    }
+                }
+                requestAnimationFrame(renderNebula);
             }
-            renderParticles();
+            
+            renderNebula();
         }
 
+        // ===========================================
         // J. 全局初始化
+        // ===========================================
         window.onload = () => {
             renderWork();
             renderProjects();
-            initParticleSphere(); // 启动粒子特效
+            // 应用行倾斜和背光（虽然渲染是动态的，但需要为初始行添加监听）
+            initHoverLight();
+            initTiltEffect(); 
+            initParticleNebula(); // 启动粒子星系
+            // 默认首页淡入
+            document.getElementById('particle-nebula').style.opacity = '1';
         };
 
     </script>
