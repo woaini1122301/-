@@ -88,6 +88,7 @@
         <div class="nav-container">
             <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
             <div class="nav-links">
+                <a href="about.html">关于我</a>
                 <a href="work.html">工作履历</a>
                 <a href="projects.html" class="active">项目经验</a>
             </div>
@@ -145,7 +146,6 @@
     </main>
 
     <script>
-        // 【终极合集版：29 个案例全量收录】
         const projectsData = [
             // ================= 整合营销 =================
             { 
@@ -359,11 +359,9 @@
             }
         ];
 
-        // 交互逻辑
         document.getElementById('contact-wrapper').addEventListener('mouseenter', () => document.getElementById('contact-panel').classList.add('show'));
         document.getElementById('contact-wrapper').addEventListener('mouseleave', () => document.getElementById('contact-panel').classList.remove('show'));
 
-        // 【轮询算法：点击"全部"时，分类错开展示】
         function renderProjects(category = '全部') {
             const grid = document.getElementById('projects-grid');
             let displayData = [];
@@ -377,7 +375,6 @@
                 
                 let index = 0;
                 let hasMore = true;
-                // 轮询数组顺序
                 const keys = ['整合营销', '品牌运营', '市场增长', '新媒体'];
                 
                 while (hasMore) {
