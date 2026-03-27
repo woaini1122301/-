@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAVID's Space | 关于我</title>
+    <style>
+        :root {
+            --bg-color: #000000; --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.65);
+            --accent-color: #ffcc00; --glass-bg: rgba(255, 255, 255, 0.015); --glass-border: rgba(255, 255, 255, 0.06);
+            --contact-panel-bg: rgba(10, 10, 15, 0.95); 
+            --terminal-bg: #0a0a0c; --terminal-green: #00ff41;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-primary); overflow-x: hidden; font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; }
+
+        .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; background: #000000; overflow: hidden; }
+        .aurora-light { position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%), radial-gradient(circle at 90% 10%, rgba(80, 30, 0, 0.1), transparent 40%); filter: blur(80px); animation: aurora-move 20s ease-in-out infinite alternate; }
+        @keyframes aurora-move { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.05) translate(-15px, 15px); } }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 18px 40px; }
+        .nav-logo a { font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.8); transition: 0.3s ease; }
+        .nav-logo a:hover { text-shadow: 0 0 15px rgba(255, 204, 0, 0.7); color: #fff; }
+
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; position: relative; padding: 4px 0; }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background-color: var(--accent-color); transition: 0.3s; }
+        .nav-links a.active::after { width: 100%; }
+
+        .nav-contact-wrapper { position: relative; }
+        .nav-contact-trigger { color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.3s; padding: 5px 10px; border-radius: 4px; }
+        .nav-contact-trigger:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+        .nav-contact-panel { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; padding: 25px; background: var(--contact-panel-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; backdrop-filter: blur(20px); opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.4s; box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.8); }
+        .nav-contact-panel.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .contact-item { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; }
+        .contact-item:last-child { margin-bottom: 0; }
+        .contact-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255, 204, 0, 0.15); border: 1px solid rgba(255, 204, 0, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-size: 12px; font-weight: bold; }
+        .contact-info { font-size: 14px; color: var(--text-primary); text-align: left; }
+        .contact-info div { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
+        .contact-info a { color: var(--text-primary); text-decoration: none; transition: 0.3s; }
+        .contact-info a:hover { text-decoration: underline; color: var(--accent-color); }
+
+        main { padding: 110px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 30px; backdrop-filter: blur(25px); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        
+        /* Bento Grid 布局 */
+        .bento-grid { display: grid; grid-template-columns: 320px 1fr; grid-auto-rows: minmax(min-content, max-content); gap: 25px; }
+        
+        /* 1. 个人资料卡 (跨两行) */
+        .profile-card { grid-row: span 2; align-items: center; text-align: center; }
+        .avatar-box { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,204,0,0.2), rgba(255,255,255,0.05)); border: 2px solid rgba(255,204,0,0.3); margin-bottom: 25px; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 0 30px rgba(255,204,0,0.15); }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+        /* 如果没有照片，显示首字母占位 */
+        .avatar-placeholder { font-size: 48px; font-weight: 700; color: var(--accent-color); }
+        
+        .profile-name { font-size: 28px; font-weight: 700; margin-bottom: 5px; }
+        .profile-location { font-size: 14px; color: var(--accent-color); margin-bottom: 25px; letter-spacing: 2px; }
+        .profile-quote { font-size: 15px; color: var(--text-secondary); line-height: 1.8; font-style: italic; position: relative; }
+        .profile-quote::before, .profile-quote::after { content: '"'; font-family: serif; color: rgba(255,204,0,0.4); font-size: 24px; vertical-align: bottom; }
+        
+        /* 2. 赛博技能终端 */
+        .skills-card { flex-direction: row; gap: 30px; padding: 0; overflow: hidden;}
+        .skills-tags-area { flex: 1; padding: 30px; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start;}
+        .skill-tag { padding: 6px 14px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; user-select: none; }
+        .skill-tag:hover, .skill-tag.active { background: rgba(255,204,0,0.15); border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-2px); }
+        
+        /* 终端视窗 */
+        .terminal-area { flex: 1; background: var(--terminal-bg); border-left: 1px solid var(--glass-border); display: flex; flex-direction: column;}
+        .term-header { background: rgba(255,255,255,0.03); padding: 10px 15px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .term-dot.red { background: #ff5f56; } .term-dot.yellow { background: #ffbd2e; } .term-dot.green { background: #27c93f; }
+        .term-title { font-size: 12px; color: rgba(255,255,255,0.4); margin-left: 10px; font-family: monospace; }
+        .term-body { padding: 20px; flex: 1; font-family: "Courier New", Courier, monospace; font-size: 14px; color: var(--terminal-green); line-height: 1.6; white-space: pre-wrap; overflow-y: auto; }
+        .term-cursor { display: inline-block; width: 8px; height: 15px; background: var(--terminal-green); vertical-align: middle; animation: blink 1s infinite; }
+
+        /* 3. 混合信息区 (教育 & 兴趣) */
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; grid-column: 2; }
+        .block-title { font-size: 13px; text-transform: uppercase; color: var(--accent-color); letter-spacing: 1px; margin-bottom: 15px; font-weight: 600; }
+        
+        .edu-item { margin-bottom: 10px; }
+        .edu-school { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+        .edu-major { font-size: 14px; color: var(--text-secondary); }
+        
+        .interest-list { display: flex; flex-direction: column; gap: 12px; }
+        .interest-item { display: flex; align-items: center; gap: 12px; }
+        .interest-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .interest-text { font-size: 14px; color: var(--text-secondary); flex: 1;}
+
+        /* 4. 3D全息认证卡 */
+        .certs-container { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 5px; }
+        .holo-card { height: 180px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; transform-style: preserve-3d; transition: transform 0.1s; }
+        /* 镭射反光效果 */
+        .holo-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(105deg, transparent 20%, rgba(255,204,0,0.3) 25%, transparent 30%); background-size: 200% 200%; background-position: 100% 0; transition: background-position 0.4s ease-out; mix-blend-mode: overlay; pointer-events: none; }
+        .holo-card:hover::after { background-position: 0 100%; }
+        
+        .cert-img { width: 90%; height: 80%; object-fit: contain; z-index: 1; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+        .cert-placeholder { font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 1px; z-index: 1;}
+
+    </style>
+</head>
+<body>
+
+    <div class="aurora-bg"><div class="aurora-light"></div></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
+            <div class="nav-links">
+                <a href="about.html" class="active">关于我</a>
+                <a href="work.html">工作履历</a>
+                <a href="projects.html">项目经验</a>
+            </div>
+            <div class="nav-contact-wrapper" id="contact-wrapper">
+                <a class="nav-contact-trigger">与我联系</a>
+                <div class="nav-contact-panel" id="contact-panel">
+                    <div class="contact-item">
+                        <div class="contact-icon">Mail</div>
+                        <div class="contact-info">
+                            <div>官方邮件</div><a href="mailto:david@email.com">david@email.com</a> 
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">Phone</div>
+                        <div class="contact-info">
+                            <div>移动电话</div><a href="tel:13800000000">+86 138 0000 0000</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="bento-grid">
+            
+            <div class="glass-card profile-card">
+                <div class="avatar-box">
+                    <img src="./images/avatar.png" alt="David Kang" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="avatar-placeholder" style="display:none;">DK</span>
+                </div>
+                <div class="profile-name">David Kang</div>
+                <div class="profile-location">◎ 四川 · 成都</div>
+                <div class="profile-quote">
+                    以严谨的逻辑构建生活基本盘，以极客的敏锐探索商业新边界；在自律中追求自由，持续迭代，做自己人生的超级个体。
+                </div>
+            </div>
+
+            <div class="glass-card skills-card">
+                <div class="skills-tags-area" id="tags-container">
+                    </div>
+                <div class="terminal-area">
+                    <div class="term-header">
+                        <div class="term-dot red"></div><div class="term-dot yellow"></div><div class="term-dot green"></div>
+                        <div class="term-title">david@macbook-pro:~ /skills</div>
+                    </div>
+                    <div class="term-body">
+                        <span id="term-text">Root login successful.\nWaiting for module selection...</span><span class="term-cursor"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="glass-card">
+                    <div class="block-title">Education / 教育背景</div>
+                    <div class="edu-item">
+                        <div class="edu-school">四川农业大学</div>
+                        <div class="edu-major">广告学 + 产品设计 | 211院校</div>
+                    </div>
+                </div>
+                <div class="glass-card" style="padding-bottom: 20px;">
+                    <div class="block-title">Interests / 跨界领域</div>
+                    <div class="interest-list">
+                        <div class="interest-item"><div class="interest-icon">🏎️</div><div class="interest-text">资深汽车爱好者，热衷 V90/XFL 等好车挖掘</div></div>
+                        <div class="interest-item"><div class="interest-icon">🏂</div><div class="interest-text">滑雪发烧友，追求速度与重力的绝对平衡</div></div>
+                        <div class="interest-item"><div class="interest-text" style="color:var(--text-secondary); font-size: 13px; margin-top: 5px;">*其他涉猎：烹饪精研 / 绿植美学 / 木工制作</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="certs-container">
+                <div class="holo-card tilt-card">
+                    <img src="./images/cert1.png" class="cert-img" alt="字节跳动ATT讲师" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="cert-placeholder" style="display:none;">字节跳动 ATT 培训讲师</span>
+                </div>
+                <div class="holo-card tilt-card">
+                    <img src="./images/cert2.png" class="cert-img" alt="SixSigma" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="cert-placeholder" style="display:none;">SixSigma (六西格玛) 认证</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // 联系面板交互
+        document.getElementById('contact-wrapper').addEventListener('mouseenter', () => document.getElementById('contact-panel').classList.add('show'));
+        document.getElementById('contact-wrapper').addEventListener('mouseleave', () => document.getElementById('contact-panel').classList.remove('show'));
+
+        // ================= 赛博终端打字机逻辑 =================
+        const skillsData = {
+            "数据分析": "[System.Log] 提取商业数据流...\n>> 核心能力：熟练运用数据洞察驱动决策，精通漏斗模型与A/B测试。曾主导官网着陆页优化，实现 CVR 跃升47%。",
+            "整合营销": "[System.Log] 加载全域营销策略模块...\n>> 核心能力：具备从顶层设计到落地执行的全盘操盘能力。曾统筹抖音“风味成都”等S级现象级营销，实现亿级曝光。",
+            "品牌运营": "[System.Log] 品牌资产协议已确立...\n>> 核心能力：精通 0-1 品牌孵化与心智占位，曾独立操盘【久未见】等高端品牌矩阵，塑造极致商业护城河。",
+            "新媒体运营": "[System.Log] 唤醒流量池协议...\n>> 核心能力：深谙算法机制与爆款内容编导，成功孵化【万能的小孙】等百万级高粘性垂直 IP，跑通私域商业闭环。",
+            "市场公关": "[System.Log] 舆情防御护盾已启动...\n>> 核心能力：具备敏锐的公关嗅觉与危机处置手腕，曾在7天内平息核心高管恶意舆情，实现客户零流失。",
+            "团队管理": "[System.Log] 组织效能网络链接中...\n>> 核心能力：丰富的 10人以上 核心战队管理经验，擅长搭建集约化营销中台与标准化SOP，最大化释放组织产能。",
+            // 备用通用描述
+            "文案": "执行动作：构建极致商业文案框架...\n>> 输出直击痛点的感染力文本，提升品牌溢价与转化。",
+            "线上获客": "执行动作：解析流量密码...\n>> 搭建全链路 AARRR 漏斗，大幅压降 CPA，驱动线索与商机增长。",
+            "SEM/SEO": "执行动作：检索算法逆向工程...\n>> 深度优化搜索引擎竞价与自然排名，抢占数字营销制高点。"
+        };
+
+        const allSkills = ["文案", "营销策划", "新媒体运营", "产品设计", "用户运营", "网站运营", "数据分析", "品牌策划", "品牌运营", "媒介资源", "市场公关", "线上获客", "SEM/SEO", "广告策划", "TVC", "B2B", "B2C", "渠道运营", "团队管理", "异业合作"];
+
+        const tagsContainer = document.getElementById('tags-container');
+        const termText = document.getElementById('term-text');
+        let typeInterval;
+
+        // 初始化标签
+        allSkills.forEach(skill => {
+            const tag = document.createElement('div');
+            tag.className = 'skill-tag';
+            tag.innerText = skill;
+            tag.onclick = () => activateTerminal(skill, tag);
+            tagsContainer.appendChild(tag);
+        });
+
+        function activateTerminal(skillName, activeTag) {
+            // 更新标签高亮
+            document.querySelectorAll('.skill-tag').forEach(t => t.classList.remove('active'));
+            activeTag.classList.add('active');
+
+            // 匹配描述文本
+            let textToType = skillsData[skillName] || `[root@david ~]# load_module --name "${skillName}"\n>> Loading... [OK]\n>> 已掌握该领域核心方法论，能够将其灵活串联入整体商业框架中，转化为实质性业务增长。`;
+            
+            // 执行打字动画
+            clearInterval(typeInterval);
+            termText.innerText = '';
+            let index = 0;
+            
+            typeInterval = setInterval(() => {
+                if (index < textToType.length) {
+                    termText.innerText += textToType.charAt(index);
+                    // 让终端自动滚动到底部
+                    termText.parentElement.scrollTop = termText.parentElement.scrollHeight;
+                    index++;
+                } else {
+                    clearInterval(typeInterval);
+                }
+            }, 35); // 敲击速度
+        }
+
+        // ================= 3D 全息与微玻璃倾斜 =================
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left, y = e.clientY - rect.top;
+                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -10; 
+                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+    </script>
+</body>
+</html>
