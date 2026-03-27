@@ -19,7 +19,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
-            overflow: hidden; /* 首页禁止滚动，沉浸式体验 */
+            overflow: hidden; 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
             background: #000; 
         }
@@ -47,7 +47,7 @@
             z-index: -2; 
         }
 
-        /* 顶部导航栏 */
+        /* 顶部导航栏 - 新增“关于我” */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
             background: rgba(0, 0, 0, 0.4);
@@ -100,13 +100,26 @@
         .contact-info a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
         .contact-info a:hover { text-decoration: underline; color: var(--accent-color); }
 
-        /* 首页独有布局 */
+        /* 首页文字布局 */
         main { padding: 90px 5% 0; max-width: 1250px; margin: 0 auto; height: 100vh; position: relative; z-index: 10; display: flex; align-items: center; }
-        .hero { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; pointer-events: none; animation: fadeIn 1s ease forwards;}
-        .hero h1 { font-size: 64px; font-weight: 700; margin-bottom: 20px; letter-spacing: -2px; background: linear-gradient(180deg, #fff, #ccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-        .hero p { font-size: 20px; color: rgba(255,255,255,0.7); font-weight: 300; letter-spacing: 0.5px; max-width: 600px; line-height: 1.8; }
+        .hero { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; pointer-events: none; }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .line-1 { 
+            font-size: 72px; font-weight: 700; margin-bottom: 5px; letter-spacing: -2px; 
+            background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            opacity: 0; animation: fadeInDown 0.8s ease forwards;
+        }
+        
+        /* 打字机特效容器 */
+        .line-2 { 
+            font-size: 56px; font-weight: 500; color: var(--accent-color); 
+            letter-spacing: -1px; min-height: 70px;
+        }
+        
+        /* 光标闪烁动画 */
+        .cursor { display: inline-block; width: 4px; height: 50px; background-color: var(--accent-color); vertical-align: middle; margin-left: 5px; animation: blink 1s step-end infinite; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -118,6 +131,7 @@
         <div class="nav-container">
             <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
             <div class="nav-links">
+                <a href="about.html">关于我</a>
                 <a href="work.html">工作履历</a>
                 <a href="projects.html">项目经验</a>
             </div>
@@ -143,8 +157,8 @@
 
     <main>
         <div class="hero">
-            <h1>David Wang</h1> 
-            <p>深耕互联网营销与商业化变现，从大厂到创业的全链路增长实战家。致力于用数据与技术，重构商业运营效率。</p>
+            <h1 class="line-1">hi, I’m David Kang</h1> 
+            <div class="line-2"><span id="typewriter"></span><span class="cursor"></span></div>
         </div>
     </main>
 
@@ -154,6 +168,23 @@
         const contactPanel = document.getElementById('contact-panel');
         contactWrapper.addEventListener('mouseenter', () => contactPanel.classList.add('show'));
         contactWrapper.addEventListener('mouseleave', () => contactPanel.classList.remove('show'));
+
+        // 打字机特效逻辑
+        const textToType = "nice to meet you";
+        const typewriterEl = document.getElementById('typewriter');
+        let typeIndex = 0;
+
+        // 等待第一行淡入完成后再开始打字
+        setTimeout(() => {
+            const typingInterval = setInterval(() => {
+                if (typeIndex < textToType.length) {
+                    typewriterEl.innerHTML += textToType.charAt(typeIndex);
+                    typeIndex++;
+                } else {
+                    clearInterval(typingInterval);
+                }
+            }, 100); // 打字速度，数字越小越快
+        }, 800);
 
         // ================= 核心：黑洞吸积盘特效 =================
         const canvas = document.getElementById('particle-nebula');
@@ -238,7 +269,6 @@
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
-        // 确保类定义完成后执行初始化
         resizeCanvas();
 
         let time = 0;
@@ -252,7 +282,6 @@
             requestAnimationFrame(renderNebula);
         }
         
-        // 启动动画
         renderNebula();
     </script>
 </body>
