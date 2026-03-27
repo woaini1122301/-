@@ -59,13 +59,11 @@
         .work-row:hover { box-shadow: var(--work-shadow-hover); border-color: rgba(255, 204, 0, 0.15); background: rgba(255,255,255,0.025); transform: translateY(-2px); }
         .work-left { display: flex; align-items: flex-start; gap: 25px; flex-grow: 1; }
         
-        /* 图片 Logo 容器样式 */
         .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .company-logo img { width: 75%; height: 75%; object-fit: contain; }
         
         .work-info { flex-grow: 1; text-align: left; }
         .work-title { font-size: 19px; font-weight: 600; margin-bottom: 2px; color: #fff; }
-        /* 新增：公司一句话简介样式 */
         .work-short-desc { font-size: 13px; color: rgba(255, 255, 255, 0.45); font-weight: 400; margin-bottom: 6px; letter-spacing: 0.5px; }
         
         .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 300; white-space: pre-line; }
@@ -81,9 +79,11 @@
     <div class="aurora-bg"><div class="aurora-light"></div></div>
 
     <nav>
-       <div class="nav-links">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
+            <div class="nav-links">
                 <a href="about.html">关于我</a>
-                <a href="work.html">工作履历</a>
+                <a href="work.html" class="active">工作履历</a>
                 <a href="projects.html">项目经验</a>
             </div>
             <div class="nav-contact-wrapper" id="contact-wrapper">
@@ -115,7 +115,6 @@
     </main>
 
     <script>
-        // 加入了 shortDesc（一句话简介）和真实的 logo 路径
         const workData = [
             { 
                 company: "GitLab", 
