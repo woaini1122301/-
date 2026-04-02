@@ -8,223 +8,81 @@
         :root {
             --bg-color: #000000; --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.65);
             --accent-color: #ffcc00; --glass-bg: rgba(255, 255, 255, 0.015); --glass-border: rgba(255, 255, 255, 0.06);
-            --contact-panel-bg: rgba(10, 10, 15, 0.95); 
             --work-shadow-hover: 0 15px 50px -10px rgba(255, 204, 0, 0.25); 
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-color); color: var(--text-primary); overflow-x: hidden; font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; }
-
-        .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; background: #000000; overflow: hidden; }
-        .aurora-light { position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%), radial-gradient(circle at 90% 10%, rgba(80, 30, 0, 0.1), transparent 40%); filter: blur(80px); animation: aurora-move 20s ease-in-out infinite alternate; }
-        @keyframes aurora-move { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.05) translate(-15px, 15px); } }
+        body { background-color: var(--bg-color); color: var(--text-primary); font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; }
+        .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; background: #000; }
+        .aurora-light { position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%); filter: blur(80px); animation: move 20s infinite alternate; }
+        @keyframes move { 100% { transform: translate(-15px, 15px); } }
 
         nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.04); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 18px 40px; }
-        .nav-logo a { font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.8); transition: 0.3s ease; }
-        .nav-logo a:hover { text-shadow: 0 0 15px rgba(255, 204, 0, 0.7); color: #fff; }
-
+        .nav-logo a { font-size: 15px; font-weight: 700; color: #eee; text-decoration: none; }
         .nav-links { display: flex; gap: 35px; }
-        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; position: relative; padding: 4px 0; }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
-        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background-color: var(--accent-color); transition: 0.3s; }
-        .nav-links a.active::after { width: 100%; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links a.active { color: var(--text-primary); }
 
-        .nav-contact-wrapper { position: relative; }
-        .nav-contact-trigger { color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.3s; padding: 5px 10px; border-radius: 4px; }
-        .nav-contact-trigger:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
-        .nav-contact-panel { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; padding: 25px; background: var(--contact-panel-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; backdrop-filter: blur(20px); opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.4s; box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.8); }
-        .nav-contact-panel.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .contact-item { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; }
-        .contact-item:last-child { margin-bottom: 0; }
-        .contact-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255, 204, 0, 0.15); border: 1px solid rgba(255, 204, 0, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-size: 12px; font-weight: bold; }
-        .contact-info { font-size: 14px; color: var(--text-primary); text-align: left; }
-        .contact-info div { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
-        .contact-info a { color: var(--text-primary); text-decoration: none; transition: 0.3s; }
-        .contact-info a:hover { text-decoration: underline; color: var(--accent-color); }
+        main { padding: 110px 5% 60px; max-width: 1250px; margin: 0 auto; }
+        .page-header { text-align: center; margin-bottom: 50px; }
+        .page-header h2 { font-size: 38px; font-weight: 700; margin-bottom: 10px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        main { padding: 90px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 35px; backdrop-filter: blur(25px); transition: box-shadow 0.4s, border-color 0.4s, background 0.4s, transform 0.1s; position: relative; overflow: hidden; }
-        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 204, 0, 0.06), transparent 40%); opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 0; }
-        .glass-card:hover::before { opacity: 1; }
-        .glass-card > * { position: relative; z-index: 1; }
-
-        .page-header-centered { margin-top: 15px; margin-bottom: 35px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .page-header-centered h2 { font-size: 38px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .page-header-centered p { font-size: 15px; color: var(--text-secondary); max-width: 650px; font-weight: 300; line-height: 1.8; }
-
-        .work-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 26px 35px; margin-bottom: 20px; cursor: pointer; }
-        .work-row:hover { box-shadow: var(--work-shadow-hover); border-color: rgba(255, 204, 0, 0.15); background: rgba(255,255,255,0.025); transform: translateY(-2px); }
-        .work-left { display: flex; align-items: flex-start; gap: 25px; flex-grow: 1; }
+        .work-row { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px 35px; margin-bottom: 20px; display: flex; justify-content: space-between; cursor: pointer; transition: 0.4s; }
+        .work-row:hover { background: rgba(255,255,255,0.03); border-color: var(--accent-color); transform: translateY(-2px); }
         
-        .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .company-logo { width: 50px; height: 50px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-right: 25px; }
         .company-logo img { width: 75%; height: 75%; object-fit: contain; }
         
-        .work-info { flex-grow: 1; text-align: left; }
-        .work-title { font-size: 19px; font-weight: 600; margin-bottom: 2px; color: #fff; }
-        .work-short-desc { font-size: 13px; color: rgba(255, 255, 255, 0.45); font-weight: 400; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .work-title { font-size: 19px; font-weight: 600; color: #fff; }
+        .work-short { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+        .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: 0.5s; white-space: pre-line; }
+        .work-row:hover .work-desc { max-height: 1000px; opacity: 1; margin-top: 15px; }
         
-        .work-desc { font-size: 14px; color: var(--text-secondary); max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 300; white-space: pre-line; }
-        .work-row:hover .work-desc { max-height: 800px; opacity: 1; margin-top: 15px; padding-bottom: 10px;}
-        
-        .work-right { text-align: right; color: var(--text-secondary); flex-shrink: 0; padding-left: 40px;}
-        .work-role { font-weight: 500; font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
-        .work-time { font-size: 13px; opacity: 0.7; font-weight: 300; }
+        .work-right { text-align: right; }
+        .work-role { font-weight: 500; font-size: 15px; color: var(--text-primary); }
+        .work-time { font-size: 13px; opacity: 0.6; }
     </style>
 </head>
 <body>
-
     <div class="aurora-bg"><div class="aurora-light"></div></div>
-
     <nav>
         <div class="nav-container">
             <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
             <div class="nav-links">
                 <a href="about.html">关于我</a>
+                <a href="portfolio.html">作品集</a>
                 <a href="work.html" class="active">工作履历</a>
                 <a href="projects.html">项目经验</a>
             </div>
-            <div class="nav-contact-wrapper" id="contact-wrapper">
-                <a class="nav-contact-trigger">与我联系</a>
-                <div class="nav-contact-panel" id="contact-panel">
-                    <div class="contact-item">
-                        <div class="contact-icon">Mail</div>
-                        <div class="contact-info">
-                            <div>官方邮件</div><a href="mailto:david@email.com">david@email.com</a> 
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">Phone</div>
-                        <div class="contact-info">
-                            <div>移动电话</div><a href="tel:13800000000">+86 138 0000 0000</a> 
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </nav>
-
     <main>
-        <div class="page-header-centered">
-            <h2>工作履历</h2>
-            <p>沉淀多维度、全链路营销与增长实战经验，涵盖大厂、创业及SaaS产品GTM策略操盘。</p>
-        </div>
+        <div class="page-header"><h2>工作履历</h2><p>全链路营销操盘，覆盖大厂、创业及 SaaS 增长实战。</p></div>
         <div id="work-container"></div>
     </main>
-
     <script>
-        const workData = [
-            { 
-                company: "GitLab", 
-                shortDesc: "全球领先的开源一体化 DevSecOps 平台",
-                time: "2024 - 2026", 
-                role: "市场数字化营销经理", 
-                logo: "./logo/gitlab.png", 
-                desc: `1、增长与商业化变现 (ARR +500%)：
-从0到1操盘SaaS产品GTM策略，创新引入PLG（产品驱动增长）模式，1年内实现该产品线营收3倍增长。统筹全系列产品SEM、SEO及全渠道投放，优化“线索到商机”全生命周期，全年获客量提升120%，CPA下降30%，推动公司级产品ARR同比增长500%，整体ROI＞12。
-
-2、官网运营与转化率优化 (CVR +47%)：
-主导企业官网日常优化与更新运营，重构及底层SKU逻辑重塑。通过分析与A/B测试持续优化着陆页用户旅程，上线后用户停留时长提升30%+，有效线索留资率（CVR）大幅跃升47%。
-
-3、品牌运营与内容生态 (曝光 3000W+)： 
-搭建涵盖“高管洞察、技术干货”的立体化内容矩阵，半年内实现0投放自然全网曝光超3000万次。策划GitLab×瑞幸咖啡跨界营销，精准渗透大众圈层；并建立高校产学研合作，抢占潜在开发者心智。
-
-4、公关危机与声誉管理 ： 
-独立操盘应对离职员工针对高管的恶意舆情危机。7天内平息事件，通过“紧急下架封禁、法务严正声明、24小时监控对冲、媒体稿件压制”的组合策略，严控负面内容；同步建立存量客户安抚机制，确保了核心大客户在危机期间的零流失。` 
-            },
-            { 
-                company: "Deep深氪", 
-                shortDesc: "线上整合营销咨询创业项目",
-                time: "2022 - 2024", 
-                role: "个人创业", 
-                logo: "./logo/deep.png", 
-                desc: `1、平台运营搭建：
-负责桐松甄选平台整体内容建设，包括但不限于内容规划、UGC\\PGC、完成100+优质产品引入， 实现3个月内10+优质品牌、工作室入驻；
-2、制定品牌运营策略和思路：
-结合业务需求推进内容方向、活动、产品场景等方面探索，提升用户活跃；品牌营销策划案制定，针对品牌/企业需求指定年度/阶段性品牌推广、产品推广、营销的线上营销策划案主笔；
-3、新媒体运营：
-线上新媒体运营操盘，包含抖音、视频号、B站；孵化【GAO’s AUTO SHOW 、DK  玩车日记】` 
-            },
-            { 
-                company: "千行你我", 
-                shortDesc: "聚焦新消费与高端商业的综合性品牌管理集团",
-                time: "2021 - 2022", 
-                role: "市场品牌总监", 
-                logo: "./logo/qianxing.png", 
-                desc: `1、品牌架构与全案GTM： 
-主导品牌【迪士尼月饼】、【酒未见】、【觅山】上市全链路策略，通市场扫描与竞品对标，精准定义价值主张；从0到1构建VIS系统与品牌管理手册，统一多业务线输出标准，实现品牌资产体系化与市场占位。
-
-2、营销中台与协作效能： 
-搭建集约化市场运营中台，建立标准化项目管理SOP，赋能内外部品牌营销项目搭建、媒体矩阵运营、广告策划、直播运营等事项。实现营销费用投入产出比（ROI）的显著提升。
-
-3、整合营销闭环与破圈： 
-构建“行业洞察+产品种草+公关传播”的内容闭环，打造“线上引流+线下体验”的整合营销场景。利用资源置换主导跨界联动，低成本撬动高倍率品牌曝光。` 
-            },
-            { 
-                company: "MEB美尔贝", 
-                shortDesc: "国内领先的医美消费与产业互联网服务平台",
-                time: "2020 - 2021", 
-                role: "商业化运营经理", 
-                logo: "./logo/meb.png", 
-                desc: `1、全域获客与BD： 
-操盘华熙生物、【米兰柏羽】、等知名品牌的联合营销策划；布局百度、微博、小红书全域内容营销，构建了从公域流量（曝光）到私域/线索（获客）的有效闭环。
-
-2、达人体系与亿级转化 (GMV 1亿+)：
- 建立抖音/微博/小红书全平台MCN合作机制，从0拓展并建联2000+达人资源。通过“6:3:1”科学矩阵投放，累计产出内容200+条，实现全网1亿+曝光，助力双十一直播间GMV突破1亿元。
-
-3、“名医+爆品”策略与联名BD：
- 创新“医生IP + 王牌SKU”营销模型，强化专业背书以驱动高客单价产品转化。操盘【艺星】、【企鹅艺术】等顶级品牌` 
-            },
-            { 
-                company: "字节跳动", 
-                shortDesc: "全球领先的科技互联网与数字内容生态平台",
-                time: "2019 - 2020", 
-                role: "新媒体运营主管", 
-                logo: "./logo/bytedance.png", 
-                desc: `1、矩阵运营与爆款打造：
- 负责四川区域官方账号（抖音/头条/微信）运营，实现单月头条阅读量8000万+及10万+净增粉；主导年轻人情感专题，实现平均单条阅读量300万+。
-
-2、IP孵化与全流程操盘： 深度参与IP账号【上班龙门阵】策划（粉丝50万+）；从0到1亲自操盘【万能的小孙】，负责从脚本、拍摄到剪辑全链路，最终实现粉丝200万+、单条最高曝光5000万+。` 
-            }
+        const data = [
+            { company: "GitLab", short: "全球领先的开源一体化 DevSecOps 平台", role: "市场数字化营销经理", time: "2024 - 2026", logo: "./logo/gitlab.png", desc: "1、增长与商业化变现 (ARR +500%)\n2、官网运营与转化率优化 (CVR +47%)\n3、品牌运营与内容生态 (曝光 3000W+)\n4、公关危机与声誉管理" },
+            { company: "Deep深氪", short: "线上整合营销咨询创业项目", role: "个人创业", time: "2022 - 2024", logo: "./logo/deep.png", desc: "1、平台运营搭建，引入100+优质产品\n2、制定品牌年度营销策略，孵化【GAO’s AUTO SHOW】\n3、新媒体运营操盘，跑通全网商业闭环" },
+            { company: "千行你我", short: "聚焦新消费与高端商业的综合性品牌管理集团", role: "市场品牌总监", time: "2021 - 2022", logo: "./logo/qianxing.png", desc: "1、品牌架构与全案GTM，主导迪士尼月饼、高光上市\n2、搭建营销中台，提升组织 ROI\n3、利用跨界联动低成本撬动高倍率品牌曝光" },
+            { company: "MEB美尔贝", short: "国内领先的医美消费与产业互联网服务平台", role: "商业化运营经理", time: "2020 - 2021", logo: "./logo/meb.png", desc: "1、全域获客与BD，操盘达人矩阵投放\n2、双十一大促单日 GMV 破亿元\n3、创新“名医+爆品”策略驱动高客单转化" },
+            { company: "字节跳动", short: "全球领先的科技互联网与数字内容生态平台", role: "新媒体运营主管", time: "2019 - 2020", logo: "./logo/bytedance.png", desc: "1、负责四川区域官方账号矩阵运营\n2、单月头条阅读量 8000W+，净增粉 10W+\n3、从0到1孵化 200W 粉丝 IP【万能的小孙】" }
         ];
-
-        document.getElementById('contact-wrapper').addEventListener('mouseenter', () => document.getElementById('contact-panel').classList.add('show'));
-        document.getElementById('contact-wrapper').addEventListener('mouseleave', () => document.getElementById('contact-panel').classList.remove('show'));
-
-        const container = document.getElementById('work-container');
-        container.innerHTML = workData.map(work => `
-            <div class="glass-card work-row hover-effect tilt-card">
-                <div class="work-left">
-                    <div class="company-logo">
-                        <img src="${work.logo}" alt="${work.company} Logo">
-                    </div>
-                    <div class="work-info">
-                        <div class="work-title">${work.company}</div>
-                        <div class="work-short-desc">${work.shortDesc}</div>
-                        <div class="work-desc">${work.desc}</div>
+        document.getElementById('work-container').innerHTML = data.map(w => `
+            <div class="work-row">
+                <div style="display:flex; align-items:flex-start;">
+                    <div class="company-logo"><img src="${w.logo}" alt="logo"></div>
+                    <div>
+                        <div class="work-title">${w.company}</div>
+                        <div class="work-short">${w.short}</div>
+                        <div class="work-desc">${w.desc}</div>
                     </div>
                 </div>
                 <div class="work-right">
-                    <div class="work-role">${work.role}</div>
-                    <div class="work-time">${work.time}</div>
+                    <div class="work-role">${w.role}</div>
+                    <div class="work-time">${w.time}</div>
                 </div>
-            </div>
-        `).join('');
-
-        document.querySelectorAll('.tilt-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left, y = e.clientY - rect.top;
-                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -2; 
-                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 2;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-            card.addEventListener('mouseleave', () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`);
-        });
+            </div>`).join('');
     </script>
 </body>
 </html>
