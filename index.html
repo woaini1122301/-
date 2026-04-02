@@ -6,195 +6,96 @@
     <title>DAVID's Space | 空间计算美学</title>
     <style>
         :root {
-            --bg-color: #000000;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.65);
-            --accent-color: #ffcc00; 
-            --glass-border: rgba(255, 255, 255, 0.07);
+            --bg-color: #000000; --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.65);
+            --accent-color: #ffcc00; --glass-border: rgba(255, 255, 255, 0.07);
             --contact-panel-bg: rgba(10, 10, 15, 0.95); 
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-primary); overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background: #000; }
+        
+        .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; background: #000000; overflow: hidden; }
+        .aurora-light { position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%), radial-gradient(circle at 90% 10%, rgba(80, 30, 0, 0.1), transparent 40%); filter: blur(80px); animation: aurora-move 20s ease-in-out infinite alternate; }
+        @keyframes aurora-move { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.05) translate(-15px, 15px); } }
+        #particle-nebula { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            overflow: hidden; 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
-            background: #000; 
-        }
-
-        /* 空间背景与特效层 */
-        .aurora-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -3; background: #000000; overflow: hidden;
-        }
-        .aurora-light {
-            position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
-            background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%),
-                        radial-gradient(circle at 90% 10%, rgba(80, 30, 0, 0.1), transparent 40%);
-            filter: blur(80px);
-            animation: aurora-move 20s ease-in-out infinite alternate;
-        }
-        @keyframes aurora-move {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.05) translate(-15px, 15px); }
-        }
-
-        /* 核心 Canvas：高密度黑洞吸积盘 */
-        #particle-nebula {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2; 
-        }
-
-        /* 顶部导航栏 - 新增“关于我” */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-        .nav-container {
-            display: flex; justify-content: space-between; align-items: center;
-            max-width: 1400px; margin: 0 auto; padding: 18px 40px;
-        }
-        .nav-logo a {
-            font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-            text-decoration: none; color: rgba(255,255,255,0.8); transition: all 0.3s ease;
-        }
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 18px 40px; }
+        .nav-logo a { font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.8); transition: 0.3s; }
         .nav-logo a:hover { text-shadow: 0 0 15px rgba(255, 204, 0, 0.7); color: #fff; }
-
         .nav-links { display: flex; gap: 35px; }
-        .nav-links a {
-            color: var(--text-secondary); text-decoration: none;
-            font-size: 14px; font-weight: 500; transition: all 0.3s ease; position: relative; padding: 4px 0;
-        }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; position: relative; padding: 4px 0; }
         .nav-links a:hover { color: var(--text-primary); }
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
-            background-color: var(--accent-color); transition: width 0.3s ease;
-        }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background-color: var(--accent-color); transition: 0.3s; }
         .nav-links a:hover::after { width: 100%; }
 
         .nav-contact-wrapper { position: relative; }
-        .nav-contact-trigger {
-            color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 500; 
-            transition: color 0.3s; padding: 5px 10px; border-radius: 4px;
-        }
-        .nav-contact-trigger:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
-        
-        .nav-contact-panel {
-            position: absolute; top: calc(100% + 15px); right: 0; width: 280px; padding: 25px;
-            background: var(--contact-panel-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            opacity: 0; pointer-events: none; visibility: hidden;
-            transform: translateY(10px); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.8);
-        }
-        .nav-contact-panel.show { opacity: 1; pointer-events: auto; visibility: visible; transform: translateY(0); }
+        .nav-contact-trigger { color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 500; padding: 5px 10px; }
+        .nav-contact-panel { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; padding: 25px; background: var(--contact-panel-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; backdrop-filter: blur(20px); opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.4s; box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.8); }
+        .nav-contact-panel.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .contact-item { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; }
-        .contact-item:last-child { margin-bottom: 0; }
-        .contact-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255, 204, 0, 0.15); border: 1px solid rgba(255, 204, 0, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-size: 12px; font-weight: bold; }
-        .contact-info { font-size: 14px; color: var(--text-primary); text-align: left; }
-        .contact-info div { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
-        .contact-info a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
-        .contact-info a:hover { text-decoration: underline; color: var(--accent-color); }
+        .contact-info div { color: var(--text-secondary); font-size: 12px; }
+        .contact-info a { color: var(--text-primary); text-decoration: none; font-size: 14px; }
 
-        /* 首页文字布局 */
         main { padding: 90px 5% 0; max-width: 1250px; margin: 0 auto; height: 100vh; position: relative; z-index: 10; display: flex; align-items: center; }
-        .hero { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; pointer-events: none; }
-        
-        .line-1 { 
-            font-size: 72px; font-weight: 700; margin-bottom: 5px; letter-spacing: -2px; 
-            background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            opacity: 0; animation: fadeInDown 0.8s ease forwards;
-        }
-        
-        /* 打字机特效容器 */
-        .line-2 { 
-            font-size: 56px; font-weight: 500; color: var(--accent-color); 
-            letter-spacing: -1px; min-height: 70px;
-        }
-        
-        /* 光标闪烁动画 */
+        .hero { display: flex; flex-direction: column; align-items: flex-start; pointer-events: none; }
+        .line-1 { font-size: 72px; font-weight: 700; margin-bottom: 5px; letter-spacing: -2px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0; animation: fadeInDown 0.8s ease forwards; }
+        .line-2 { font-size: 56px; font-weight: 500; color: var(--accent-color); letter-spacing: -1px; min-height: 70px; }
         .cursor { display: inline-block; width: 4px; height: 50px; background-color: var(--accent-color); vertical-align: middle; margin-left: 5px; animation: blink 1s step-end infinite; }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
-
     <div class="aurora-bg"><div class="aurora-light"></div></div>
     <canvas id="particle-nebula"></canvas>
-
     <nav>
         <div class="nav-container">
             <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
             <div class="nav-links">
                 <a href="about.html">关于我</a>
+                <a href="portfolio.html">作品集</a>
                 <a href="work.html">工作履历</a>
                 <a href="projects.html">项目经验</a>
             </div>
             <div class="nav-contact-wrapper" id="contact-wrapper">
                 <a class="nav-contact-trigger">与我联系</a>
                 <div class="nav-contact-panel" id="contact-panel">
-                    <div class="contact-item">
-                        <div class="contact-icon">Mail</div>
-                        <div class="contact-info">
-                            <div>官方邮件</div><a href="mailto:david@email.com">david@email.com</a> 
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">Phone</div>
-                        <div class="contact-info">
-                            <div>移动电话</div><a href="tel:13800000000">+86 138 0000 0000</a> 
-                        </div>
-                    </div>
+                    <div class="contact-item"><div class="contact-info"><div>官方邮件</div><a href="mailto:david@email.com">david@email.com</a></div></div>
+                    <div class="contact-item"><div class="contact-info"><div>移动电话</div><a href="tel:13800000000">+86 138 0000 0000</a></div></div>
                 </div>
             </div>
         </div>
     </nav>
-
     <main>
         <div class="hero">
-            <h1 class="line-1">Hi! I’m David Kang</h1> 
+            <h1 class="line-1">hi, I’m David Kang</h1> 
             <div class="line-2"><span id="typewriter"></span><span class="cursor"></span></div>
         </div>
     </main>
-
     <script>
-        // 联系面板交互
         const contactWrapper = document.getElementById('contact-wrapper');
         const contactPanel = document.getElementById('contact-panel');
         contactWrapper.addEventListener('mouseenter', () => contactPanel.classList.add('show'));
         contactWrapper.addEventListener('mouseleave', () => contactPanel.classList.remove('show'));
 
-        // 打字机特效逻辑
-        const textToType = "Nice to meet you";
+        const textToType = "nice to meet you";
         const typewriterEl = document.getElementById('typewriter');
         let typeIndex = 0;
-
-        // 等待第一行淡入完成后再开始打字
         setTimeout(() => {
             const typingInterval = setInterval(() => {
                 if (typeIndex < textToType.length) {
                     typewriterEl.innerHTML += textToType.charAt(typeIndex);
                     typeIndex++;
-                } else {
-                    clearInterval(typingInterval);
-                }
-            }, 100); // 打字速度，数字越小越快
+                } else { clearInterval(typingInterval); }
+            }, 100);
         }, 800);
 
-        // ================= 核心：黑洞吸积盘特效 =================
         const canvas = document.getElementById('particle-nebula');
         const ctx = canvas.getContext('2d');
         let width, height;
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-
         const particles = [];
         const numParticles = 1500; 
-
         class Particle {
             constructor() { this.init(); }
             init() {
@@ -202,87 +103,39 @@
                 const coreRadius = Math.random() * width * 0.15 + width * 0.03;
                 const edgeRadius = Math.pow(Math.random(), 2) * width * 1.5; 
                 const radius = Math.random() < 0.8 ? coreRadius : edgeRadius;
-                
                 this.rawX = radius * Math.cos(theta);
-                this.rawY = (Math.random() * 2 - 1) * width * 0.015; // 极扁平
+                this.rawY = (Math.random() * 2 - 1) * width * 0.015;
                 this.rawZ = Math.random() * width * 2 - width; 
                 this.size = Math.random() * 2.5 + 0.5; 
-                
                 const colors = ['rgba(255, 180, 0, ', 'rgba(255, 220, 100, ', 'rgba(255, 255, 255, '];
                 this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
                 this.speed = Math.random() * 0.0006 + 0.0001; 
             }
             update(time) {
                 const angle = time * this.speed;
-                const cosA = Math.cos(angle);
-                const sinA = Math.sin(angle);
-                
-                const x = this.rawX * cosA - this.rawZ * sinA;
-                const z = this.rawX * sinA + this.rawZ * cosA;
-                const y = this.rawY;
-
+                const x = this.rawX * Math.cos(angle) - this.rawZ * Math.sin(angle);
+                const z = this.rawX * Math.sin(angle) + this.rawZ * Math.cos(angle);
                 const tilt = 0.5;
-                const tiltedY = y * Math.cos(tilt) - z * Math.sin(tilt);
-                const tiltedZ = y * Math.sin(tilt) + z * Math.cos(tilt);
-
-                const fov = width * 1.0; 
-                const scale = fov / (fov + tiltedZ);
-                
-                const centerX = width * 0.75; 
-                const centerY = height * 0.6;
-                this.px = centerX + x * scale;
-                this.py = centerY + tiltedY * scale;
-
+                const tiltedY = this.rawY * Math.cos(tilt) - z * Math.sin(tilt);
+                const tiltedZ = this.rawY * Math.sin(tilt) + z * Math.cos(tilt);
+                const scale = width / (width + tiltedZ);
+                this.px = width * 0.75 + x * scale;
+                this.py = height * 0.6 + tiltedY * scale;
                 this.finalSize = this.size * scale;
                 this.alpha = Math.max(0.1, Math.min(0.9, scale * 0.7)); 
-
-                if (mouseX !== null && mouseY !== null) {
-                    const dx = this.px - mouseX, dy = this.py - mouseY;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    const intersectRadius = 150; 
-                    if (dist < intersectRadius) {
-                        const force = (intersectRadius - dist) / intersectRadius;
-                        this.alpha += force * 0.3;
-                        this.finalSize *= (1 + force * 0.2);
-                    }
-                }
             }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.px, this.py, this.finalSize, 0, Math.PI * 2);
-                ctx.fillStyle = this.colorPrefix + this.alpha + ')';
-                ctx.fill();
-            }
+            draw() { ctx.beginPath(); ctx.arc(this.px, this.py, this.finalSize, 0, Math.PI * 2); ctx.fillStyle = this.colorPrefix + this.alpha + ')'; ctx.fill(); }
         }
-
-        function initParticles() {
-            particles.length = 0; 
-            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
-        }
-
         function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            initParticles(); 
+            width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight;
+            particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle());
         }
-
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-
         resizeCanvas();
-
         let time = 0;
-        function renderNebula() {
-            ctx.clearRect(0, 0, width, height); 
-            time++; 
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update(time);
-                particles[i].draw();
-            }
-            requestAnimationFrame(renderNebula);
-        }
-        
-        renderNebula();
+        function render() { ctx.clearRect(0, 0, width, height); time++; for (let p of particles) { p.update(time); p.draw(); } requestAnimationFrame(render); }
+        render();
     </script>
 </body>
 </html>
