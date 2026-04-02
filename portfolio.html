@@ -11,7 +11,7 @@
             --contact-panel-bg: rgba(10, 10, 15, 0.95); 
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-color); color: var(--text-primary); overflow-x: hidden; font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; }
+        body { background-color: var(--bg-color); color: var(--text-primary); overflow-x: hidden; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; line-height: 1.6; }
 
         .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; background: #000000; overflow: hidden; }
         .aurora-light { position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%), radial-gradient(circle at 90% 10%, rgba(80, 30, 0, 0.1), transparent 40%); filter: blur(80px); animation: aurora-move 20s ease-in-out infinite alternate; }
@@ -30,39 +30,43 @@
 
         .page-header { text-align: center; margin-bottom: 50px; }
         .page-header h2 { font-size: 38px; font-weight: 700; margin-bottom: 10px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .page-header p { color: var(--text-secondary); font-weight: 300; }
 
-        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
-        .portfolio-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; cursor: pointer; transition: 0.4s; backdrop-filter: blur(20px); text-align: left; }
-        .portfolio-card:hover { transform: translateY(-5px); border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 10px 40px -10px rgba(255, 204, 0, 0.2); }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 25px; }
+        .portfolio-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; cursor: pointer; transition: 0.4s; backdrop-filter: blur(20px); text-align: left; height: 300px; display: flex; flex-direction: column; }
+        .portfolio-card:hover { transform: translateY(-5px); border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 10px 40px -10px rgba(255, 204, 0, 0.2); background: rgba(255,255,255,0.03); }
         
         .work-tag { font-size: 11px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; font-weight: 600; }
-        .work-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.4; }
-        .work-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .work-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.4; flex-grow: 0; }
+        .work-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; }
+        .work-footer { font-size: 12px; color: var(--accent-color); opacity: 0; transition: 0.3s; transform: translateX(-10px); }
+        .portfolio-card:hover .work-footer { opacity: 1; transform: translateX(0); }
 
         /* 详情页样式 */
         #work-detail { display: none; }
         .back-btn { display: inline-block; margin-bottom: 30px; color: var(--text-secondary); cursor: pointer; font-size: 14px; }
         .detail-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 30px; padding: 60px; backdrop-filter: blur(30px); }
         .detail-header { text-align: center; margin-bottom: 40px; }
-        .detail-title { font-size: 36px; margin-bottom: 15px; }
+        .detail-title { font-size: 36px; font-weight: 700; color: #fff; line-height: 1.3; }
         
-        /* 视频预览卡片 */
-        .video-preview-box { width: 100%; max-width: 800px; margin: 30px auto; border-radius: 20px; overflow: hidden; position: relative; background: #111; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; padding: 40px; }
-        .play-icon { width: 80px; height: 80px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 0 30px rgba(255, 204, 0, 0.4); }
-        .play-icon::after { content: ''; border-left: 20px solid #000; border-top: 12px solid transparent; border-bottom: 12px solid transparent; margin-left: 5px; }
-        .video-btn { background: #fff; color: #000; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; transition: 0.3s; }
-        .video-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px #fff; }
+        .media-preview-box { width: 100%; max-width: 800px; margin: 30px auto; border-radius: 20px; overflow: hidden; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; padding: 50px 30px; text-align: center; }
+        .play-icon { width: 70px; height: 70px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; box-shadow: 0 0 30px rgba(255, 204, 0, 0.3); }
+        .play-icon::after { content: ''; border-left: 18px solid #000; border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 5px; }
+        .xhs-icon { width: 70px; height: 70px; background: #ff2442; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: #fff; font-weight: 900; font-size: 24px; }
         
-        .detail-body { max-width: 800px; margin: 0 auto; line-height: 2; color: #ccc; font-weight: 300; }
-        .detail-body h3 { color: var(--accent-color); margin: 30px 0 15px; }
+        .action-btn { background: #fff; color: #000; padding: 14px 40px; border-radius: 40px; text-decoration: none; font-weight: 700; font-size: 15px; transition: 0.3s; display: inline-block; margin-top: 20px; }
+        .action-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255,255,255,0.3); }
+        
+        .detail-body { max-width: 850px; margin: 50px auto 0; line-height: 2.1; color: #ddd; font-weight: 300; font-size: 16px; }
+        .detail-body h3 { color: var(--accent-color); margin: 40px 0 15px; font-size: 22px; border-left: 4px solid var(--accent-color); padding-left: 15px; }
+        .detail-body p { margin-bottom: 20px; }
+        .detail-body strong { color: #fff; }
     </style>
 </head>
 <body>
     <div class="aurora-bg"><div class="aurora-light"></div></div>
     <nav>
         <div class="nav-container">
-            <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
+            <div class="nav-logo"><a href="index.html" style="color:#eee; text-decoration:none">DAVID's Space</a></div>
             <div class="nav-links">
                 <a href="about.html">关于我</a>
                 <a href="portfolio.html" class="active">作品集</a>
@@ -75,10 +79,9 @@
         <div id="list-container">
             <div class="page-header">
                 <h2>作品集集锦</h2>
-                <p>深度垂直内容、商业策略报告及视觉创意作品全方位展示。</p>
+                <p>沉淀深度垂直内容、商业决策逻辑及个人观察思考的实战结晶。</p>
             </div>
-            <div class="bento-grid" id="portfolio-grid">
-                </div>
+            <div class="bento-grid" id="portfolio-grid"></div>
         </div>
 
         <div id="work-detail">
@@ -88,7 +91,7 @@
                     <div class="work-tag" id="det-tag"></div>
                     <h1 class="detail-title" id="det-title"></h1>
                 </div>
-                <div id="det-video-box"></div>
+                <div id="det-media-box"></div>
                 <div class="detail-body" id="det-content"></div>
             </div>
         </div>
@@ -100,14 +103,55 @@
                 id: 1,
                 category: "深度测评 / 导购指南",
                 title: "2024年纯电汽车选购指南：如何避开买车“刺客”？",
-                desc: "针对2024年纯电汽车市场的深度复盘与导购，覆盖多价位区间核心车型，千万级播放量标杆作品。",
-                videoLink: "https://v.douyin.com/u005W5c504w/",
-                detail: `<h3>项目背景与初衷</h3>
-                作为资深汽车爱好者，我发现目前市面上很多测评偏向于参数化，而普通消费者更需要直观、避坑且具备决策参考价值的内容。
-                <h3>核心内容逻辑</h3>
-                1. **人群画像对齐**：针对刚需代步、家庭首选、性能极客三类人群进行精准车型匹配。
-                2. **痛点拆解**：深度解析续航达成率、车机智能化程度以及二手车残值等核心维度。
-                3. **商业成效**：该视频在抖音、小红书同步分发，全网播放量突破千万级，成功验证了“深度内容+选车决策”的IP闭环模型。`
+                desc: "针对2024年纯电市场的深度复盘，覆盖多价位核心车型，全网播放量突破千万级。",
+                type: "video",
+                link: "https://v.douyin.com/u005W5c504w/",
+                detail: `<h3>项目背景与初衷</h3>在智能电动车爆发的元年，消费者面临着前所未有的选择焦虑。我希望通过一套清晰的“决策模型”，帮助用户在参数深林中找到最适合自己的产品。<h3>内容商业逻辑</h3>1. **多维建模**：将续航达成率、智能驾驶等级、补能网络便利性及二手车残值作为核心评估维度。2. **人群精准匹配**：针对“刚需买菜、长途通勤、性能玩家”三类用户进行差异化推荐。3. **成效**：视频全网播放量过千万，不仅验证了深度内容的粘性，更实现了从内容到“帮你选车”业务的商业闭环。`
+            },
+            {
+                id: 2,
+                category: "硬核测评 / 瓦罐文化",
+                title: "奥迪 A6 Avant 深度测评：为什么它是瓦罐迷的终极信仰？",
+                desc: "深度解析 Avant 的设计语言与驾驶质感，探讨小众旅行车在国内市场的独特内核。",
+                type: "video",
+                link: "https://v.douyin.com/LFivsLzcdHY/",
+                detail: `<h3>内容洞察：小众审美的品牌共鸣</h3>Audi Avant 不仅仅是一辆车，它是对一种生活方式的表达。我试图探讨为什么在 SUV 盛行的年代，依然有人坚持这种“修长比例”。<h3>核心解析</h3>1. **美学设计**：分析其 D 柱倾角带来的视觉张力与空气动力学的平衡。2. **动态反馈**：还原其低重心底盘在弯道中的精准循迹性。3. **情绪价值**：通过镜头捕捉“瓦罐”在城市与郊外不同场景下的格调，引发垂直圈层的强烈认同。`
+            },
+            {
+                id: 3,
+                category: "自驾路书 / 电车生活",
+                title: "电车自驾新疆充电路书：挑战补能焦虑的极限探索",
+                desc: "还原新疆自驾补能全流程，手把手解决自驾游最大的痛点，极具实操参考价值。",
+                type: "video",
+                link: "https://v.douyin.com/_VOExVrYaFI/",
+                detail: `<h3>痛点解决：消除“里程焦虑”</h3>新疆路况复杂且充电设施分布不均。本作品通过实地踩点，为所有电车车主提供了一份“保姆级”补能地图。<h3>执行逻辑</h3>1. **实时补能记录**：记录不同品牌充电桩在极端温度下的功率表现。2. **无人区穿越方案**：详细规划独库公路等高难路线的剩余续航计算逻辑。3. **实用性回馈**：该路书被大量车主收藏，成为了自驾新疆的“必备干货”。`
+            },
+            {
+                id: 4,
+                category: "硬核科普 / 智能座舱",
+                title: "汽车车机芯片大揭秘：为什么 8155 之后，车机依然会卡顿？",
+                desc: "拆解车机芯片底层架构，通俗易懂地解释算力与用户体验的关系，建立理性决策标准。",
+                type: "video",
+                link: "https://v.douyin.com/Pq_gcdmFGCM/",
+                detail: `<h3>科普课题：剥开营销话术的外衣</h3>目前车厂都在卷芯片型号，但用户依然反馈“车机卡”。我通过底层技术视角分析了软件系统与硬件配置的错配问题。<h3>核心逻辑</h3>1. **硬件算力 vs 软件优化**：解释底层架构对响应速度的影响。2. **购车避坑**：教用户如何通过试驾时的几个特定操作，快速判断车机系统的真实流畅度。3. **科普价值**：帮助用户不再为单纯的硬件参数买单，提升了个人在垂直领域的专业影响力。`
+            },
+            {
+                id: 5,
+                category: "职场洞察 / 社会观察",
+                title: "外企：我拒绝聘用中国高管 —— 现象背后的冷思考",
+                desc: "基于职场 IP 视角，拆解跨国企业在华人才策略的深层逻辑变化，洞察就业风向标。",
+                type: "article",
+                link: "https://www.xiaohongshu.com/discovery/item/64a04dbb000000001203f20d",
+                detail: `<h3>深度复盘：国际化背景下的组织变迁</h3>本篇内容在小红书引发广泛讨论。核心探讨的是跨国企业在组织架构调整、地缘文化博弈中，对高层人才需求的范式转移。<h3>分析维度</h3>1. **决策权权重**：分析外企亚太区权力结构的演变。2. **合规与风险**：深度解读企业在当前环境下对高管背景的敏感度变迁。3. **职场启示**：为正在经历职业转型的中高层管理者提供了具有警示意义的全局视角。`
+            },
+            {
+                id: 6,
+                category: "社会思考 / 爆款内容",
+                title: "一生都不被允许休息的国人，这是为什么？",
+                desc: "从职场与生活平衡出发，探讨当代国人“焦虑根源”的内容，引发强烈共鸣。",
+                type: "article",
+                link: "https://www.xiaohongshu.com/discovery/item/64abfebd0000000031009108",
+                detail: `<h3>情绪捕捉：挖掘社会性的共鸣点</h3>作为一款爆款内容，其成功逻辑在于精准击中了当代职场人的“精神内耗”核心。<h3>核心叙事</h3>1. **文化寻根**：从社会心理学角度探讨“勤奋”背后的不安全感。2. **系统性困局**：解构职场竞争环境对个人休息权利的隐性剥夺。3. **内容价值**：通过文字的力量为读者提供情感宣泄口，建立极强的用户粘性与个人 IP 的人文深度。`
             }
         ];
 
@@ -118,6 +162,7 @@
                     <div class="work-tag">${w.category}</div>
                     <div class="work-title">${w.title}</div>
                     <div class="work-desc">${w.desc}</div>
+                    <div class="work-footer">查看深度复盘 →</div>
                 </div>
             `).join('');
         }
@@ -128,17 +173,24 @@
             document.getElementById('det-title').innerText = item.title;
             document.getElementById('det-content').innerHTML = item.detail;
             
-            // 视频展示逻辑
-            const videoBox = document.getElementById('det-video-box');
-            if(item.videoLink) {
-                videoBox.innerHTML = `
-                    <div class="video-preview-box">
+            const mediaBox = document.getElementById('det-media-box');
+            if(item.type === "video") {
+                mediaBox.innerHTML = `
+                    <div class="media-preview-box">
                         <div class="play-icon"></div>
-                        <p style="margin-bottom:20px; color:#aaa;">由于平台限制，请点击下方按钮跳转至 App 观看完整视频</p>
-                        <a href="${item.videoLink}" target="_blank" class="video-btn">立即前往观看视频</a>
+                        <p style="margin-bottom:20px; color:#aaa; font-size:14px;">视频作品需跳转至第三方平台观看</p>
+                        <a href="${item.link}" target="_blank" class="action-btn">立即前往观看视频</a>
                     </div>
                 `;
-            } else { videoBox.innerHTML = ''; }
+            } else {
+                mediaBox.innerHTML = `
+                    <div class="media-preview-box">
+                        <div class="xhs-icon">小红书</div>
+                        <p style="margin-bottom:20px; color:#aaa; font-size:14px;">图文内容已发布于小红书平台</p>
+                        <a href="${item.link}" target="_blank" class="action-btn" style="background:#ff2442; color:#fff; border:none;">阅读完整图文</a>
+                    </div>
+                `;
+            }
 
             document.getElementById('list-container').style.display = 'none';
             document.getElementById('work-detail').style.display = 'block';
