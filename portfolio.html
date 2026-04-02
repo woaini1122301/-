@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAVID's Space | 作品集</title>
+    <style>
+        :root {
+            --bg-color: #000000; --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.65);
+            --accent-color: #ffcc00; --glass-bg: rgba(255, 255, 255, 0.015); --glass-border: rgba(255, 255, 255, 0.06);
+            --contact-panel-bg: rgba(10, 10, 15, 0.95); 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-primary); overflow-x: hidden; font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; }
+
+        .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; background: #000000; overflow: hidden; }
+        .aurora-light { position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%), radial-gradient(circle at 90% 10%, rgba(80, 30, 0, 0.1), transparent 40%); filter: blur(80px); animation: aurora-move 20s ease-in-out infinite alternate; }
+        @keyframes aurora-move { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.05) translate(-15px, 15px); } }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 18px 40px; }
+        .nav-logo a { font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.8); transition: 0.3s; }
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; position: relative; padding: 4px 0; }
+        .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--accent-color); }
+
+        main { padding: 110px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .page-header { text-align: center; margin-bottom: 50px; }
+        .page-header h2 { font-size: 38px; font-weight: 700; margin-bottom: 10px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .page-header p { color: var(--text-secondary); font-weight: 300; }
+
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .portfolio-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; cursor: pointer; transition: 0.4s; backdrop-filter: blur(20px); text-align: left; }
+        .portfolio-card:hover { transform: translateY(-5px); border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 10px 40px -10px rgba(255, 204, 0, 0.2); }
+        
+        .work-tag { font-size: 11px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; font-weight: 600; }
+        .work-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.4; }
+        .work-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* 详情页样式 */
+        #work-detail { display: none; }
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--text-secondary); cursor: pointer; font-size: 14px; }
+        .detail-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 30px; padding: 60px; backdrop-filter: blur(30px); }
+        .detail-header { text-align: center; margin-bottom: 40px; }
+        .detail-title { font-size: 36px; margin-bottom: 15px; }
+        
+        /* 视频预览卡片 */
+        .video-preview-box { width: 100%; max-width: 800px; margin: 30px auto; border-radius: 20px; overflow: hidden; position: relative; background: #111; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; padding: 40px; }
+        .play-icon { width: 80px; height: 80px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 0 30px rgba(255, 204, 0, 0.4); }
+        .play-icon::after { content: ''; border-left: 20px solid #000; border-top: 12px solid transparent; border-bottom: 12px solid transparent; margin-left: 5px; }
+        .video-btn { background: #fff; color: #000; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; transition: 0.3s; }
+        .video-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px #fff; }
+        
+        .detail-body { max-width: 800px; margin: 0 auto; line-height: 2; color: #ccc; font-weight: 300; }
+        .detail-body h3 { color: var(--accent-color); margin: 30px 0 15px; }
+    </style>
+</head>
+<body>
+    <div class="aurora-bg"><div class="aurora-light"></div></div>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">DAVID's Space</a></div>
+            <div class="nav-links">
+                <a href="about.html">关于我</a>
+                <a href="portfolio.html" class="active">作品集</a>
+                <a href="work.html">工作履历</a>
+                <a href="projects.html">项目经验</a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div id="list-container">
+            <div class="page-header">
+                <h2>作品集集锦</h2>
+                <p>深度垂直内容、商业策略报告及视觉创意作品全方位展示。</p>
+            </div>
+            <div class="bento-grid" id="portfolio-grid">
+                </div>
+        </div>
+
+        <div id="work-detail">
+            <div class="back-btn" onclick="closeDetail()">← 返回作品列表</div>
+            <div class="detail-card">
+                <div class="detail-header">
+                    <div class="work-tag" id="det-tag"></div>
+                    <h1 class="detail-title" id="det-title"></h1>
+                </div>
+                <div id="det-video-box"></div>
+                <div class="detail-body" id="det-content"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const portfolioData = [
+            {
+                id: 1,
+                category: "深度测评 / 导购指南",
+                title: "2024年纯电汽车选购指南：如何避开买车“刺客”？",
+                desc: "针对2024年纯电汽车市场的深度复盘与导购，覆盖多价位区间核心车型，千万级播放量标杆作品。",
+                videoLink: "https://v.douyin.com/u005W5c504w/",
+                detail: `<h3>项目背景与初衷</h3>
+                作为资深汽车爱好者，我发现目前市面上很多测评偏向于参数化，而普通消费者更需要直观、避坑且具备决策参考价值的内容。
+                <h3>核心内容逻辑</h3>
+                1. **人群画像对齐**：针对刚需代步、家庭首选、性能极客三类人群进行精准车型匹配。
+                2. **痛点拆解**：深度解析续航达成率、车机智能化程度以及二手车残值等核心维度。
+                3. **商业成效**：该视频在抖音、小红书同步分发，全网播放量突破千万级，成功验证了“深度内容+选车决策”的IP闭环模型。`
+            }
+        ];
+
+        function renderList() {
+            const grid = document.getElementById('portfolio-grid');
+            grid.innerHTML = portfolioData.map(w => `
+                <div class="portfolio-card" onclick="openDetail(${w.id})">
+                    <div class="work-tag">${w.category}</div>
+                    <div class="work-title">${w.title}</div>
+                    <div class="work-desc">${w.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        function openDetail(id) {
+            const item = portfolioData.find(x => x.id === id);
+            document.getElementById('det-tag').innerText = item.category;
+            document.getElementById('det-title').innerText = item.title;
+            document.getElementById('det-content').innerHTML = item.detail;
+            
+            // 视频展示逻辑
+            const videoBox = document.getElementById('det-video-box');
+            if(item.videoLink) {
+                videoBox.innerHTML = `
+                    <div class="video-preview-box">
+                        <div class="play-icon"></div>
+                        <p style="margin-bottom:20px; color:#aaa;">由于平台限制，请点击下方按钮跳转至 App 观看完整视频</p>
+                        <a href="${item.videoLink}" target="_blank" class="video-btn">立即前往观看视频</a>
+                    </div>
+                `;
+            } else { videoBox.innerHTML = ''; }
+
+            document.getElementById('list-container').style.display = 'none';
+            document.getElementById('work-detail').style.display = 'block';
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function closeDetail() {
+            document.getElementById('work-detail').style.display = 'none';
+            document.getElementById('list-container').style.display = 'block';
+        }
+
+        window.onload = renderList;
+    </script>
+</body>
+</html>
