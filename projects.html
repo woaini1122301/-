@@ -37,8 +37,7 @@
         .nav-contact-panel.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
         main { padding: 90px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        
         .page-header-centered { margin-top: 15px; margin-bottom: 35px; text-align: center; display: flex; flex-direction: column; align-items: center; }
         .page-header-centered h2 { font-size: 38px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .page-header-centered p { font-size: 15px; color: var(--text-secondary); max-width: 650px; font-weight: 300; line-height: 1.8; }
@@ -57,7 +56,7 @@
         .proj-more { align-self: flex-end; font-size: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 6px; opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; padding-top: 15px; }
         .project-card:hover .proj-more { opacity: 1; transform: translateX(0); }
 
-        /* --- 详情页沉浸式排版 --- */
+        /* --- 详情页沉浸式样式 --- */
         #project-detail { display: none; }
         .back-btn { display: inline-block; margin-bottom: 30px; color: var(--text-secondary); cursor: pointer; font-size: 14px; transition: 0.3s; }
         .back-btn:hover { color: #fff; }
@@ -67,12 +66,12 @@
         .detail-meta span { color: var(--text-secondary); font-size: 15px; }
         .detail-meta strong { color: var(--accent-color); font-weight: 500; margin-right: 8px; }
 
-        .detail-content { max-width: 900px; margin: 0 auto; text-align: left; line-height: 2; color: #eee; font-weight: 300; }
-        .detail-content h3 { color: var(--accent-color); font-size: 20px; margin: 40px 0 15px; font-weight: 600; border-left: 3px solid var(--accent-color); padding-left: 15px; }
-        .detail-content p { margin-bottom: 18px; }
+        .detail-content { max-width: 900px; margin: 0 auto; text-align: left; line-height: 2.1; color: #eee; font-weight: 300; }
+        .detail-content h3 { color: var(--accent-color); font-size: 22px; margin: 45px 0 20px; font-weight: 600; border-left: 4px solid var(--accent-color); padding-left: 15px; }
+        .detail-content p { margin-bottom: 20px; opacity: 0.95; }
         .detail-content strong { color: #fff; font-weight: 600; }
-        .detail-content ul { margin: 15px 0 25px; padding-left: 20px; }
-        .detail-content li { margin-bottom: 10px; list-style: circle; color: #ccc; }
+        .detail-content ul { margin: 20px 0 30px; padding-left: 20px; }
+        .detail-content li { margin-bottom: 12px; list-style: square; color: #ddd; }
     </style>
 </head>
 <body>
@@ -101,7 +100,7 @@
         <div id="projects-list-container">
             <div class="page-header-centered">
                 <h2>项目经验</h2>
-                <p>精选 29 个全链路实战案例，涵盖数字化增长、品牌全案及 IP 孵化等核心领域。</p>
+                <p>精选 29 个全链路实战案例，深度涵盖数字化增长、品牌全案及 IP 孵化等核心领域。</p>
             </div>
             <div class="filter-bar" id="filter-container">
                 <button class="filter-btn active" onclick="filterProjects('全部')">全部</button>
@@ -131,183 +130,221 @@
     </main>
 
     <script>
-        // 【严格清点：29 个案例一个都不少】
+        // 【严格恢复顺序：29 个案例大满贯】
         const projectsData = [
             // ================= 整合营销 (8个) =================
             { 
-                id: 1, category: "整合营销", title: "【代码与咖啡】GitLab × 瑞幸咖啡：ToB 跨界营销破圈全案", company: "GitLab", time: "2024", role: "营销负责人", 
-                desc: "针对程序员核心受众，实现 ToB 科技品牌与大众消费品牌的跨界联名，驱动新产品线冷启动。", 
-                detail: `<h3>项目背景：如何让 ToB 品牌拥有大众感？</h3>
-                瑞幸咖啡在白领群体中拥有极致的渗透率，而程序员作为 GitLab 的核心用户，也是瑞幸的高频消费者。我们在新 SaaS 产品上市初期，旨在通过联名降低 ToB 品牌的认知门槛，增加私域互动。
-                <h3>核心策略：软件园“精准捕鱼”计划</h3>
-                1. **线下渗透**：在全国核心软件园区（如北京西二旗、上海张江、成都天府软件园）大规模铺设展陈。
-                2. **权益闭环**：发起线上打卡挑战赛，覆盖抖音、视频号。用户通过试用 GitLab 新产品或分享职场故事，即可领取瑞幸咖啡券。
-                3. **私域留存**：打卡成功的流量全部引导至私域社群，建立“GitLab 是最懂程序员的品牌”这一心智。
-                <h3>最终成果</h3>活动期间，产品申请率环比提升 **140%**，私域社群单周净增精准粉丝超万人。`
+                id: 1, category: "整合营销", 
+                title: "【风味成都】抖音城市级现象营销事件策划", 
+                company: "字节跳动", time: "2019", role: "项目统筹", 
+                desc: "深度挖掘成都地域文化基因，联动本地百余家餐饮品牌与头部KOL，引爆城市话题声量。", 
+                detail: `<h3>项目愿景与战略布局</h3>成都作为抖音在全国的战略重镇，旨在利用十一黄金周出行高峰，打造“城市即秀场”的案例，刺激广告主预算并拉动本地消费。<h3>核心执行逻辑</h3>1. **S级内容创作**：联合成都老字号与地标（太古里、宽窄巷子等），拍摄纪录片，将“安逸生活”与平台深度绑定。2. **线上线下闭环**：发起挑战赛，线下设计“打卡路书”，点亮商户点位可兑换满减券。<h3>项目成果</h3>斩获 **3 亿+** 全网曝光量，荣获 **2020 广告门最佳社会营销奖**。`
             },
             { 
-                id: 2, category: "整合营销", title: "【风味成都】抖音城市级现象营销事件策划", company: "字节跳动", time: "2019", role: "项目统筹", 
-                desc: "深度挖掘成都地域文化基因，联动百余家餐饮品牌与头部KOL，引爆城市级话题声量。", 
-                detail: `<h3>项目愿景：打造城市流量黑洞</h3>
-                利用十一黄金周的出行高峰，联合成都老字号与地标，拍摄电影质感的《风味成都》系列纪录片。
-                <h3>实施步骤</h3>
-                - **线上：** 发起 #风味成都 挑战赛，利用定制贴纸引导全民参与。
-                - **线下：** 创新设计“打卡路书”。用户必须在合作商户处打卡点亮，兑换满减券，直接带动商户 **100% 以上** 的客流增长。
-                <h3>荣誉</h3>获得 **2020 年广告门最佳社会营销奖**，全网曝光量突破 **3 亿+**。`
+                id: 2, category: "整合营销", 
+                title: "【代码与咖啡】GitLab × 瑞幸咖啡：跨界联名破圈全案", 
+                company: "GitLab", time: "2024", role: "营销负责人", 
+                desc: "针对程序员核心受众，实现科技品牌与消费品牌的联名，利用瑞幸势能驱动新产品冷启动。", 
+                detail: `<h3>项目背景：打破 ToB 认知边界</h3>当时瑞幸咖啡热度极高且恰好是我们的客户。在新 SaaS 产品上线期，我们旨在触达核心程序员群体。<h3>实施步骤</h3>1. **软件园精准截流**：在全国核心软件园（西二旗、张江、天府软件园）铺设线下展陈。2. **打卡权益闭环**：通过抖音、视频号发起互动，完成打卡即可领取咖啡券。3. **私域激活**：将流量引入私域群进行长效互动。<h3>核心数据</h3>产品申请率环比提升 **140%**，成功建立“GitLab 最懂程序员”品牌心智。`
             },
             { 
-                id: 3, category: "整合营销", title: "【今日宜】西打酒新品上市：新锐酒饮全渠道心智渗透", company: "独立项目", time: "2023", role: "营销主理", 
+                id: 3, category: "整合营销", 
+                title: "【今日宜】西打酒新品上市：新锐酒饮全渠道推广方案", 
+                company: "独立项目", time: "2023", role: "营销主理", 
                 desc: "针对年轻群体“情绪饮酒”趋势，制定从人群洞察到全渠道动销的整合方案。", 
-                detail: "锁定审美敏感的都市独居青年，在小红书打造 #今日宜独处 话题，联动 50+ 博主。线上打通天猫/抖音闭环，线下同步入驻调性餐酒吧，上市首月即冲入细分赛道销量前十。" 
+                detail: `<h3>项目洞察：年轻人为什么喝酒？</h3>调研发现 Z 世代饮酒已转向“自我疗愈”。【今日宜】定位为低度、无负担的情绪伙伴。<h3>执行策略</h3>在小红书打造 #今日宜独处 话题，联动 50+ 博主，线上打通天猫/抖音闭环，线下入驻精品餐酒吧，上市首月即冲入细分赛道销量前十。`
             },
             { 
-                id: 4, category: "整合营销", title: "泸州老窖“高光”品牌年度传播：定义新中产轻奢白酒", company: "千行你我", time: "2021", role: "品牌负责人", 
-                desc: "作为泸州老窖第三增长曲线，针对新中产人群打造“轻奢主义”白酒品牌。", 
-                detail: "确立 “GOGOON” 品牌概念，主打极简设计与高端光瓶酒。通过与 MINI 汽车、GQ 实验室进行调性联合，将白酒消费融入咖啡、艺术等生活方式，助力高光成为高端光瓶酒领导品牌。" 
+                id: 4, category: "整合营销", 
+                title: "泸州老窖“高光”品牌年度传播：定义轻奢白酒心智", 
+                company: "千行你我", time: "2021", role: "项目统筹", 
+                desc: "作为泸州老窖第三增长曲线，针对新中产人群打造“轻奢主义”白酒品牌，实现年轻化突围。", 
+                detail: `<h3>传播课题：满足新中产“审美红利”</h3>确立 “GOGOON” 品牌概念。通过与 MINI 汽车、GQ 实验室联名，将白酒融入艺术与自驾生活。利用线上就会、圈层活动快速触达核心种子用户，助力高光成为高端光瓶酒领导品牌。`
             },
             { 
-                id: 5, category: "整合营销", title: "“叫叫学院”小红书专项增长：母婴圈层的创意雷达种草", company: "辰木互动", time: "2020", role: "营销策划", 
-                desc: "针对在线教育赛道，利用独家“创意雷达”系统，精准触达母婴宝妈受众。", 
-                detail: "深挖产品在思考力、表达力上的优势，转化为宝妈听得懂的焦虑解药。建立 KOL/KOC 蜂窝矩阵，10 月份搜索量同比增长 **321%**，成功塑造母婴社区专业心智。" 
+                id: 5, category: "整合营销", 
+                title: "“叫叫学院”小红书专项增长：创意雷达内容营销全案", 
+                company: "辰木互动", time: "2020", role: "营销策划", 
+                desc: "针对在线教育赛道，利用独家“创意雷达”系统，精准触达母婴受众，实现高效率转化。", 
+                detail: `<h3>母婴圈层穿透策略</h3>叫叫学院需要低成本获客。我们深挖产品在“思考力、表达力”上的优势。<h3>核心动作</h3>建立 KOL/KOC 蜂窝矩阵，定制真实反馈型笔记。在 10 月份搜索量同比增长 **321%**，塑造了母婴社区内的专业阅读品牌形象。`
             },
             { 
-                id: 6, category: "整合营销", title: "新疆喀纳斯“神秘阿勒泰”：现象级目的地营销全案", company: "文旅项目", time: "2021", role: "项目策划", 
-                desc: "策划现象级文旅方案，利用雪场垂直场景与社交媒体跨界联动。", 
-                detail: "联合美图秀秀定制“阿勒泰之蓝”滤镜，驱动大规模拍照裂变；发掘喀纳斯文化，与腾讯游戏打造虚拟现实结合的“打卡路书”，雪场单季客流量增长 **120%**。" 
+                id: 6, category: "整合营销", 
+                title: "新疆喀纳斯“神秘阿勒泰”：目的地现象级营销全案", 
+                company: "文旅项目", time: "2021", role: "项目策划", 
+                desc: "策划现象级文旅方案，利用雪场垂直场景与社交媒体跨界联动，驱动流量双爆发。", 
+                detail: `<h3>打造中国滑雪“麦加”</h3>联合美图秀秀定制“阿勒泰之蓝”滤镜，利用拍照刚需驱动裂变；与腾讯游戏打造虚拟与现实结合的“打卡路书”。<h3>成果</h3>全网曝光突破 3 亿次，雪场客流量增长 **120%**，荣获 2020 广告门最佳社会营销奖。`
             },
             { 
-                id: 7, category: "整合营销", title: "思念食品“新年儿童养成计划”节日营销", company: "独立项目", time: "2021", role: "项目策划", 
-                desc: "负责春节节点营销，以“儿童成长”为情感切入点，提升品牌在家庭场景的情感链接。", 
-                detail: "以儿童成长为情感切入点，通过内容植入与互动玩法，提升品牌在家庭消费场景中的情感链接。" 
+                id: 7, category: "整合营销", 
+                title: "思念食品“新年儿童养成计划”节日营销", 
+                company: "独立项目", time: "2021", role: "策划", 
+                desc: "以“儿童成长”为情感切入点，提升品牌在家庭消费场景的情感链接。", 
+                detail: "负责春节节点营销，以“儿童成长”为情感切入点，通过内容植入与互动玩法，提升品牌在家庭消费场景中的情感链接。" 
             },
             { 
-                id: 8, category: "整合营销", title: "UBRAS品牌线上全链路整合营销方案", company: "独立项目", time: "2021", role: "项目策划", 
-                desc: "深度参与知名内衣品牌的数字化增长策略，优化全路径ROI实现品效合一。", 
-                detail: "优化从社交媒体种草到电商平台转化的全路径 ROI，通过精准投放与内容共创实现品效合一。" 
+                id: 8, category: "整合营销", 
+                title: "UBRAS品牌线上全链路整合营销方案", 
+                company: "独立项目", time: "2021", role: "策划", 
+                desc: "深度参与知名内衣品牌数字化增长，优化全路径 ROI 实现品效合一。", 
+                detail: "优化从社交媒体种草到电商平台转化的全路径 ROI，通过精准投放实现商业成效。" 
             },
 
             // ================= 品牌运营 (7个) =================
             { 
-                id: 9, category: "品牌运营", title: "【觅山】新消费青梅酒：从0到1商业化变现全案", company: "Deep深氪", time: "2022", role: "品牌主理", 
+                id: 9, category: "品牌运营", 
+                title: "【觅山】新消费青梅酒：从0到1商业化变现全案", 
+                company: "Deep深氪", time: "2022", role: "品牌主理", 
                 desc: "定位年轻女性微醺经济，主导视觉美学与全域营销闭环，实现品牌高溢价占位。", 
-                detail: `<h3>底层策略逻辑</h3>确立了“山野与城市、自然与自我”的情感连接。打破传统圆瓶设计，采用极简瓶身，使其具备“自传播”社交属性。
-                <h3>跨界降维打击</h3>主导与 **New Balance** 的跨界联名，将青梅酒植入运动健康生活方式，联名产品上线一周即售罄，品牌互动率提升 **300%**。`
+                detail: `<h3>底层策略逻辑</h3>确立了“山野与城市”的情感连接。打破传统圆瓶设计，采用极简瓶身。主导与 **New Balance** 跨界联名，将青梅酒植入运动生活方式，品牌互动率提升 **300%**。`
             },
             { 
-                id: 10, category: "品牌运营", title: "华为荣耀《影像情书》：科技品牌的情感化内容驱动", company: "千行你我", time: "2021", role: "品牌策划", 
-                desc: "以情感化叙事赋能科技产品属性，TVC 播放量超 8000 万，并斩获金瞳奖金奖。", 
-                detail: "拍摄微电影级别的《影像情书》，通过声音记录恋人点滴，将手机音效表现力融入情感冲突。通过开屏截流、话题撬动，斩获 **2020 金瞳奖金奖**。" 
+                id: 10, category: "品牌运营", 
+                title: "华为荣耀《影像情书》：科技品牌的情感化内容驱动", 
+                company: "千行你我", time: "2021", role: "策划", 
+                desc: "以情感化叙事赋能科技属性，TVC 播放量超 8000 万，并斩获金瞳奖金奖。", 
+                detail: "拍摄微电影级别的《影像情书》，通过声音记录恋人点滴。通过开屏截流、话题撬动，斩获 **2020 金瞳奖金奖**。" 
             },
             { 
-                id: 11, category: "品牌运营", title: "悦木之源 Origins《越探索，悦探索》：沉浸式溯源营销", company: "项目主创", time: "2021", role: "策划统筹", 
-                desc: "以长白山溯源探秘为核心，打造明星、KOL 与消费者共同参与的沉浸式品牌故事。", 
-                detail: "邀请艺人窦骁带领团队深入长白山丛林。通过纪录片式营销，将“探索”与产品功效深度绑定，全网获得超 **8000 万次** 播放。" 
+                id: 11, category: "品牌运营", 
+                title: "悦木之源 Origins《越探索，越探索》：沉浸式溯源营销", 
+                company: "项目主创", time: "2021", role: "策划统筹", 
+                desc: "以长白山溯源探秘为核心，打造明星、KOL 参与的沉浸式品牌故事。", 
+                detail: "邀请艺人窦骁深入长白山丛林拍摄纪录片，将“探索不止”的品牌精神与产品功效深度绑定。全网播放超 8000 万，斩获 **2020 金瞳奖金奖**。" 
             },
             { 
-                id: 12, category: "品牌运营", title: "【阿斯顿马丁之夜】超豪华品牌高端圈层营销", company: "千行你我", time: "2021", role: "执行总监", 
+                id: 12, category: "品牌运营", 
+                title: "【阿斯顿马丁之夜】超豪华品牌高端圈层营销", 
+                company: "千行你我", time: "2021", role: "执行总监", 
                 desc: "面向高净值人群，打造兼具私密性与奢华感的品鉴晚宴，强化品牌尊贵感。", 
                 detail: "面向高净值人群，打造兼具私密性与奢华感的品鉴晚宴，强化品牌尊贵感。" 
             },
             { 
-                id: 13, category: "品牌运营", title: "【久未见】高端酱酒品牌从0到1全案孵化", company: "Deep深氪", time: "2023", role: "品牌主理", 
-                desc: "聚焦高端商务宴请场景，主导品牌命名、故事包装及上市策略。", 
-                detail: "实现新品上市的快速冷启动与高客单价转化。提炼差异化价值主张，通过私董会、品鉴晚宴进行深度体验营销。" 
+                id: 13, category: "品牌运营", 
+                title: "【久未见】高端酱酒品牌从0到1全案孵化", 
+                company: "Deep深氪", time: "2023", role: "品牌主理", 
+                desc: "主导品牌命名、故事包装及上市策略，实现新品快速冷启动与高客单转化。", 
+                detail: "提炼差异化价值主张，通过私董会、品鉴晚宴进行深度体验营销，实现新品上市冷启动。" 
             },
             { 
-                id: 14, category: "品牌运营", title: "企业核心高管恶意舆情危机独立处置项目", company: "保密", time: "项目期间", role: "公关负责人", 
-                desc: "在 7 天内平息针对高管的突发性恶意攻击，确保核心客户零流失。", 
-                detail: "通过“紧急下架封禁、法务严正声明、24小时监控对冲、媒体稿件压制”的四维修权策略，严控负面内容发酵，确保了核心大客户的零流失。" 
+                id: 14, category: "品牌运营", 
+                title: "企业核心高管恶意舆情危机独立处置项目", 
+                company: "保密", time: "项目期间", role: "负责人", 
+                desc: "在 7 天内平息针对高管的突发性恶意舆情，严控负面，确保核心客户零流失。", 
+                detail: "通过法律声明、24小时监控及媒体压制组合拳，迅速平息风波，确保业务平稳运行。" 
             },
             { 
-                id: 15, category: "品牌运营", title: "GitLab CodeRider（AI编程助手）全球首发GTM项目", company: "GitLab", time: "2025", role: "GTM操盘手", 
-                desc: "主导 AI 产品上市策略，利用 PLG 模式驱动用户获取与爆发式增长。", 
-                detail: "在开发者社区建立技术领先心智，实现新品上线初期的爆发式增长。主导 AI 驱动型产品的 Go-to-Market 策略。" 
+                id: 15, category: "品牌运营", 
+                title: "GitLab CodeRider 全球首发 GTM 项目", 
+                company: "GitLab", time: "2025", role: "GTM操盘手", 
+                desc: "主导 AI 产品上市策略，利用 PLG 模式驱动用户获取与心智建立。", 
+                detail: "主导 AI 驱动型产品的 Go-to-Market 策略，在开发者社区建立技术领先心智。" 
             },
 
             // ================= 市场增长 (8个) =================
             { 
-                id: 16, category: "市场增长", title: "MEB 11.11 全网狂欢节：双链路整合增长策略", company: "MEB美尔贝", time: "2020", role: "项目总指挥", 
+                id: 16, category: "市场增长", 
+                title: "【GitLab】DevOps 核心产品线数字化增长策略", 
+                company: "GitLab", time: "2024-2025", role: "营销经理", 
+                desc: "针对信创背景，通过 SEM/SEO 与 MarTech 工具链构建获客闭环，业绩翻倍增长。", 
+                detail: `<h3>挑战：打破本土化信任危机</h3>国内用户对安全合规存在顾虑。<h3>增长逻辑</h3>1. **精准截流**：深挖“代码安全、信创安全”关键词进行 SEM/SEO。2. **官网转化引擎**：重构行业专属解决方案入口。<h3>战绩</h3>销售业绩实现 **100% 翻倍增长**，整体 **ROI 稳定在 10 以上**。`
+            },
+            { 
+                id: 17, category: "市场增长", 
+                title: "【MEB美尔贝】医美全域全链路精细化线上获客体系", 
+                company: "MEB美尔贝", time: "2020-2021", role: "运营经理", 
+                desc: "打通公域到私域的获客漏斗，整合多渠道内容种草，大幅压降 CPA。", 
+                detail: "布局百度、微博、小红书全域内容，建立 MCN 合作矩阵。驱动高客单价项目转化与复购。" 
+            },
+            { 
+                id: 18, category: "市场增长", 
+                title: "MEB 11.11 全网狂欢节：双链路整合增长策略", 
+                company: "MEB美尔贝", time: "2020", role: "项目指挥", 
                 desc: "统筹 11 城场景化直播，单日 GMV 突破 8000 万，总销售额达成 3.2 亿。", 
-                detail: `<h3>销售策划：流量变现闭环</h3>联动十一座城市地标进行 11 天连续直播，消解审美疲劳。双十一当天深度绑定头部主播 **【土豆 Fancy】**。
-                <h3>招商成效</h3>面向全国 32 座城市制定差异化包裹，吸纳 500w+ 现金投资及千万级资源置换。总 GMV 达成 **3.2 亿**。`
+                detail: "场景化移动直播，绑定头部主播土豆 Fancy。面向 32 城招商，单日 GMV 破 **8000w**。" 
             },
             { 
-                id: 17, category: "市场增长", title: "【GitLab】DevOps 核心产品线数字化增长：本土化突围战", company: "GitLab", time: "2024-2025", role: "营销经理", 
-                desc: "针对信创背景下的信任壁垒，通过 SEM/SEO 与数字化工具构建获客闭环。", 
-                detail: `<h3>增长方法论</h3>以 SEM 和 SEO 为抓手，针对“代码安全、国产化替代”等关键词深度截流高意向商机。
-                <h3>核心战绩</h3>产品线销售业绩实现 **100% 翻倍增长**，整体投放 **ROI 稳定在 10 以上**，成功占位核心行业头部标杆。`
+                id: 19, category: "市场增长", 
+                title: "大健康医疗“名医+爆品”破局策略与整合BD方案", 
+                company: "MEB美尔贝", time: "2020", role: "市场经理", 
+                desc: "深度绑定名医打造爆品，开拓跨行业生态合作，驱动营收持续增长。", 
+                detail: "深度绑定行业名医打造差异化爆品，开拓跨行业生态 BD 合作。" 
             },
             { 
-                id: 18, category: "市场增长", title: "【MEB美尔贝】医美全域全链路精细化线上获客体系", company: "MEB美尔贝", time: "2020-2021", role: "运营经理", 
-                desc: "打通从公域曝光到私域线索沉淀的获客漏斗，整合多渠道种草大幅压降 CPA。", 
-                detail: "布局全域内容营销，通过“名医+王牌爆品”差异化策略进行精准投放，驱动高客单价项目转化。" 
-            },
-            { 
-                id: 19, category: "市场增长", title: "大健康医疗“名医+爆品”破局策略与整合BD方案", company: "MEB美尔贝", time: "2020", role: "市场经理", 
-                desc: "深度绑定行业名医打造差异化爆品，开拓跨行业生态 BD 合作驱动营收增长。", 
-                detail: "深度绑定行业名医打造差异化爆品，开拓跨行业生态 BD 合作，驱动营收增长。" 
-            },
-            { 
-                id: 20, category: "市场增长", title: "【GitLab】官网精细化运营与全链路转化率优化 (CRO)", company: "GitLab", time: "2025", role: "营销经理", 
+                id: 20, category: "市场增长", 
+                title: "【GitLab】官网运营与全链路转化率优化 (CRO)", 
+                company: "GitLab", time: "2025", role: "经理", 
                 desc: "主导官网页面重构与 A/B 测试，大幅提升注册转化与 Demo 申请率。", 
-                detail: "主导官网页面重构与 A/B 测试，大幅提升注册转化与 Demo 申请率。" 
+                detail: "主导官网页面重构与 A/B 测试，大幅提升注册转化率。" 
             },
             { 
-                id: 21, category: "市场增长", title: "【GitLab】大中华区核心社区运营与用户活跃度提升", company: "GitLab", time: "2025", role: "营销经理", 
-                desc: "搭建开发者活跃体系，通过 Webinar 与 Meetup 增强社区粘性与商业转化。", 
-                detail: "搭建开发者活跃体系，通过 Webinar 与 Meetup 增强社区粘性与商业转化。" 
+                id: 21, category: "市场增长", 
+                title: "【GitLab】大中华区社区运营与用户活跃度提升", 
+                company: "GitLab", time: "2025", role: "经理", 
+                desc: "通过系列 Webinar 与 Meetup 增强社区粘性与商业线索转化。", 
+                detail: "搭建开发者活跃体系，通过 Meetup 等形式增强社区粘性。" 
             },
             { 
-                id: 22, category: "市场增长", title: "【字节跳动】四川本地生活/商家生态系统精细化运营", company: "字节跳动", time: "2019", role: "运营主管", 
-                desc: "赋能区域商家掌握短视频营销工具，构建健康的本地化商业生态链。", 
-                detail: "赋能区域商家掌握短视频营销工具，构建健康的本地化商业生态链。" 
+                id: 22, category: "市场增长", 
+                title: "【字节跳动】四川本地生活/商家生态精细化运营", 
+                company: "字节跳动", time: "2019", role: "运营主管", 
+                desc: "赋能区域商家掌握短视频工具，构建健康的本地商业生态链。", 
+                detail: "赋能区域商家掌握营销工具，构建健康的本地化商业生态链。" 
             },
             { 
-                id: 23, category: "市场增长", title: "【全民福利会】全生命周期产品运营与拉新裂变方案", company: "保密", time: "2020", role: "产品运营", 
-                desc: "负责 App 端内促活与留存体系搭建，策划拉新裂变活动实现用户倍增。", 
-                detail: "负责 App 端内促活与留存体系搭建，策划拉新裂变活动实现用户倍增。" 
+                id: 23, category: "市场增长", 
+                title: "【全民福利会】全生命周期拉新裂变方案", 
+                company: "保密", time: "2020", role: "运营", 
+                desc: "负责 App 端内促活与留存体系，策划拉新活动实现用户倍增。", 
+                detail: "负责端内促活与留存体系搭建，策划拉新裂变活动实现用户增长。" 
             },
 
             // ================= 新媒体 (6个) =================
             { 
-                id: 24, category: "新媒体", title: "【一芳在散步】370万级美业标杆 IP 孵化与商业赋能", company: "个人IP", time: "项目期间", role: "IP主理人", 
-                desc: "去教学化、人格化叙事，成功孵化 370 万粉丝 IP，并链接 YSL、花西子等头部品牌。", 
-                detail: `<h3>底层策略：高势能内容矩阵</h3>打造“职场菁英、女明星幕后、霸道主理人”人设，捕捉女性受众心理。
-                <h3>最终成果数据</h3>总粉丝突破 **370万**，全站**平均点赞稳定在 25万+**。成功赋能体系内合作伙伴，证明了规模化复制美业影响力的能力。`
+                id: 24, category: "新媒体", 
+                title: "【一芳在散步】370万级美业标杆 IP 孵化与商业赋能", 
+                company: "个人IP", time: "项目期间", role: "IP主理人", 
+                desc: "去教学化叙事，成功孵化 370 万粉丝 IP，链接 YSL 等头部合作。", 
+                detail: `<h3>底层策略：高势能内容矩阵</h3>打造“女明星日常、霸道总裁”人设。<h3>最终成果</h3>粉丝突破 **370万**，平均点赞 **25万+**。与 YSL、花西子深度合作。`
             },
             { 
-                id: 25, category: "新媒体", title: "字节跳动区域官号运营：基于 B 端生态的商业增值架构", company: "字节跳动", time: "2019-2020", role: "运营负责人", 
-                desc: "首创广告客户梯度增值策略，大幅提升充值意愿，荣获优秀运营奖。", 
-                detail: `<h3>商业创新：充值梯度增值策略</h3>
-                针对不同充值量级的客户，赠送差异化的官号公信力资源包：
-                - **初级：** 品牌软文/推介。
-                - **中级：** 广告植入/宣传长文。
-                - **高级：** 专人采访、活动曝光、官号矩阵联合发声。
-                <h3>成效</h3>实现了单月粉丝净增 **10w+**，荣获 **字节跳动华南区域优秀运营奖**。`
+                id: 25, category: "新媒体", 
+                title: "字节区域官号运营：基于 B 端生态的商业增值架构", 
+                company: "字节跳动", time: "2019-2020", role: "负责人", 
+                desc: "首创充值梯度增值策略（软文/采访/文章），大幅提升充值意愿。", 
+                detail: `<h3>商业创新：增值赋能体系</h3>针对充值客户赠送对应服务包（中级广告植入/高级专人采访及活动曝光）。<h3>成果</h3>单月头条阅读量 **3000万+**，荣获 **华南区域优秀运营奖**。`
             },
             { 
-                id: 26, category: "新媒体", title: "【万能的小孙】百万级职场 IP 全链路孵化与变现", company: "独立项目", time: "2020", role: "IP主理人", 
-                desc: "精准定位差异化人设，粉丝量突破百万级，单条视频最高曝光达数千万。", 
-                detail: "打造极具共情力的职场人设，利用千川投流配合编导方法论，粉丝突破百万级，打通私域社群与知识付费变现。" 
+                id: 26, category: "新媒体", 
+                title: "【万能的小孙】百万级职场 IP 全链路孵化与变现", 
+                company: "个人IP", time: "2020", role: "IP主理人", 
+                desc: "从0到1操盘职场 IP，粉丝突破百万，打通私域与知识付费变现。", 
+                detail: "打造共情力职场人设，粉丝量突破百万级，打通商业闭环。" 
             },
             { 
-                id: 27, category: "新媒体", title: "生活类 IP“机器人十七”从0-1孵化与变现", company: "个人IP", time: "项目期间", role: "IP主理人", 
-                desc: "通过差异化人设构建与精准内容选题，跑通“内容引流-私域沉淀-商业变现”闭环。", 
-                detail: "通过差异化人设构建与精准内容选题，跑通“内容引流-私域沉淀-商业变现”的全闭环。" 
+                id: 27, category: "新媒体", 
+                title: "生活类 IP“机器人十七”从0-1孵化与变现", 
+                company: "个人IP", time: "项目期间", role: "主理人", 
+                desc: "通过差异化内容选题，跑通“流量-私域-变现”闭环。", 
+                detail: "跑通“内容引流-私域沉淀-商业变现”的全闭环。" 
             },
             { 
-                id: 28, category: "新媒体", title: "“Dkk”汽车垂直领域自媒体运营（测评与自驾）", company: "个人IP", time: "项目期间", role: "IP主理人", 
-                desc: "深耕专业车辆测评与高品质内容，建立高粘性垂直粉丝社群。", 
-                detail: "独立运营汽车垂类账号，深耕专业车辆测评与高品质自驾内容，建立高粘性的垂直粉丝社群。" 
+                id: 28, category: "新媒体", 
+                title: "“Dkk”汽车垂直领域自媒体运营（测评与自驾）", 
+                company: "个人IP", time: "项目期间", role: "主理人", 
+                desc: "深耕专业车辆测评与内容呈现，建立高粘性粉丝社群。", 
+                detail: "独立运营汽车垂类账号，建立高粘性的垂直粉丝社群。" 
             },
             { 
-                id: 29, category: "新媒体", title: "GitLab 官方视频账号创意策划与增长运营", company: "GitLab", time: "项目期间", role: "项目统筹", 
-                desc: "负责技术官方视频布局，将硬核技术干货进行“消费级”转化。", 
-                detail: "负责技术社区官方视频内容的战略布局，将硬核技术干货进行“消费级”转化，通过创意策划提升品牌认知度。" 
+                id: 29, category: "新媒体", 
+                title: "GitLab 官方视频账号创意策划与增长运营", 
+                company: "GitLab", time: "项目期间", role: "项目统筹", 
+                desc: "负责技术社区官方视频布局，将硬核技术干货进行消费级转化。", 
+                detail: "负责视频内容战略布局，提升品牌在开发者圈层的认知度。" 
             }
         ];
 
-        // 交互逻辑：轮询算法展示
+        // 交互逻辑：轮询算法保持分类错开
         function renderProjects(category = '全部') {
             const grid = document.getElementById('projects-grid');
             let displayData = [];
