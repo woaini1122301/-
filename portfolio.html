@@ -17,11 +17,11 @@
         .aurora-light { position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; background: radial-gradient(circle at center, rgba(100, 50, 0, 0.15), transparent 60%), radial-gradient(circle at 90% 10%, rgba(80, 30, 0, 0.1), transparent 40%); filter: blur(80px); animation: aurora-move 20s ease-in-out infinite alternate; }
         @keyframes aurora-move { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.05) translate(-15px, 15px); } }
 
-        /* 导航栏重构：使用Grid实现绝对居中 */
+        /* 导航栏：Grid实现绝对居中 */
         nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.04); }
         .nav-container { 
             display: grid; 
-            grid-template-columns: 1fr auto 1fr; /* 左侧占位、中间菜单、右侧等宽占位 */
+            grid-template-columns: 1fr auto 1fr; 
             align-items: center; 
             max-width: 1400px; 
             margin: 0 auto; 
@@ -35,36 +35,64 @@
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--accent-color); }
 
-        /* 右侧占位容器，确保中间内容能真正居中 */
         .nav-placeholder { justify-self: end; font-size: 14px; color: var(--text-secondary); }
 
-        main { padding: 110px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
+        /* 主体容器放宽至 1350px，给 4 个卡片充足的空间 */
+        main { padding: 110px 5% 60px; max-width: 1350px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .page-header { text-align: center; margin-bottom: 40px; }
         .page-header h2 { font-size: 38px; font-weight: 700; margin-bottom: 10px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* 分类筛选栏 */
-        .filter-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; }
+        .filter-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; flex-wrap: wrap; }
         .filter-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary); padding: 8px 24px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-size: 14px; }
         .filter-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .filter-btn.active { background: var(--accent-color); color: #000; font-weight: 600; border-color: var(--accent-color); }
 
-        /* 作品网格：严格一行四个 */
-        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
+        /* 作品网格：强制一行四个，并防溢出撑爆 */
+        .bento-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, minmax(0, 1fr)); 
+            gap: 20px; 
+            width: 100%;
+        }
         
-        .portfolio-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; cursor: pointer; transition: 0.4s; backdrop-filter: blur(20px); text-align: left; height: 380px; display: flex; flex-direction: column; }
+        .portfolio-card { 
+            background: var(--glass-bg); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            padding: 18px; 
+            cursor: pointer; 
+            transition: 0.4s; 
+            backdrop-filter: blur(20px); 
+            text-align: left; 
+            height: 380px; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; /* 绝对防止文字过长撑爆Grid轨道 */
+        }
         .portfolio-card:hover { transform: translateY(-5px); border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 10px 40px -10px rgba(255, 204, 0, 0.2); background: rgba(255,255,255,0.03); }
         
-        /* 封面图占位区 */
-        .card-cover { width: 100%; height: 160px; border-radius: 16px; margin-bottom: 20px; overflow: hidden; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        /* 封面图 */
+        .card-cover { width: 100%; height: 160px; border-radius: 12px; margin-bottom: 18px; overflow: hidden; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .card-cover img { width: 100%; height: 100%; object-fit: cover; }
         .card-cover-placeholder { color: rgba(255,255,255,0.2); font-size: 12px; letter-spacing: 2px; }
 
         .work-tag { font-size: 11px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .work-tag::before { content: ''; width: 6px; height: 6px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); }
-        .work-title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 10px; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .work-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .work-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
+        .work-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; }
+
+        /* 响应式保护：小屏幕自动折行 */
+        @media (max-width: 1200px) {
+            .bento-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 600px) {
+            .bento-grid { grid-template-columns: 1fr; }
+        }
 
         /* 详情页样式 */
         #work-detail { display: none; }
@@ -144,7 +172,7 @@
             {
                 id: 12, category: "视频",
                 title: "华为荣耀品牌 TVC《影像情书》",
-                desc: "将科技参数化为跨越时空的浪漫故事，引发海量共鸣，全网播放量破8000万。",
+                desc: "将科技参数化为浪漫故事，引发海量共鸣，全网播放量破8000万。",
                 type: "video", link: "https://pan.baidu.com/s/10It2a-0pgZiv00xlNcl0lQ?pwd=dkkd",
                 cover: "./images/port_honor.jpg",
                 detail: `<h3>项目背景</h3>华为荣耀新机上市的重磅品牌微电影。我们需要跳出传统的“拼配置”营销套路，建立科技产品的温度感。<h3>创意核心</h3>用声音记录生活点滴，以情感共鸣替代冷冰冰的参数说教。该片不仅成功引发大规模社媒自发传播，更斩获金瞳奖金奖。`
@@ -152,7 +180,7 @@
             {
                 id: 13, category: "视频",
                 title: "中国移动信息流广告",
-                desc: "针对不同圈层受众的精准信息流投放素材，有效压降获客成本，提升核心业务转化率。",
+                desc: "精准信息流投放素材，有效压降获客成本，提升核心业务转化率。",
                 type: "video", link: "https://pan.baidu.com/s/1mnmFuK-Yoxxdsp9CZlQL0A?pwd=dkkd",
                 cover: "./images/port_cmcc.jpg",
                 detail: `<h3>项目策略</h3>根据大数据描绘的人群画像，提取核心痛点，制作高完播率、强引导性的短视频信息流广告素材。<h3>投放成效</h3>极大地优化了前 3 秒流失率，有效压降了信息流平台的单客获客成本（CPA），提升了中国移动相关业务的办理转化。`
@@ -168,7 +196,7 @@
             {
                 id: 2, category: "视频",
                 title: "奥迪 A6 Avant 深度测评",
-                desc: "深度解析 A6 Avant 的设计语言与驾驶质感，探讨旅行车生活美学。",
+                desc: "深度解析设计语言与驾驶质感，探讨旅行车生活美学。",
                 type: "video", link: "https://v.douyin.com/LFivsLzcdHY/",
                 cover: "./images/port_avant.jpg",
                 detail: `<h3>内容洞察</h3>探讨 SUV 盛行年代下，小众审美对生活方式的坚持。<h3>核心解析</h3>1. **美学设计**：分析 D 柱倾角与视觉张力。2. **动态反馈**：还原低重心底盘的驾驶质感。3. **情绪价值**：捕捉“瓦罐”独特的圈层格调。`
@@ -176,7 +204,7 @@
             {
                 id: 3, category: "视频",
                 title: "电车自驾新疆充电路书",
-                desc: "实测新疆自驾补能全流程，手把手解决自驾游最大痛点，极具实操价值。",
+                desc: "实测新疆自驾补能全流程，手把手解决自驾游最大痛点。",
                 type: "video", link: "https://v.douyin.com/_VOExVrYaFI/",
                 cover: "./images/port_xinjiang.jpg",
                 detail: `<h3>痛点解决</h3>通过实地踩点，为电车车主提供新疆“保姆级”补能地图。<h3>执行逻辑</h3>记录不同品牌充电桩在极温下的功率，规划高难路线续航计算，被大量车主收藏。`
@@ -184,7 +212,7 @@
             {
                 id: 4, category: "视频",
                 title: "车机芯片大揭秘：为什么 8155 依然卡",
-                desc: "拆解车机芯片底层架构，通俗解释算力与体验关系，建立理性决策标准。",
+                desc: "拆解车机芯片底层架构，通俗解释算力与体验关系。",
                 type: "video", link: "https://v.douyin.com/Pq_gcdmFGCM/",
                 cover: "./images/port_chip.jpg",
                 detail: `<h3>科普课题</h3>解析软硬件错配问题，教用户通过特定操作判断系统真实流畅度，不再为硬件参数盲目买单。`
@@ -211,8 +239,8 @@
             // ================= 策划案类 =================
             {
                 id: 7, category: "策划案",
-                title: "叫叫学院小红书全链路营销策划方案",
-                desc: "深度运用独家“创意雷达”系统，实现母婴圈层的高效率种草与增长。",
+                title: "叫叫学院小红书全链路营销案",
+                desc: "深度运用独家“创意雷达”系统，实现母婴圈层的高效种草。",
                 type: "proposal", link: "#",
                 cover: "./images/port_jiaojiao.jpg",
                 detail: `<h3>核心策略</h3>基于母婴用户痛点，深挖“思考力”差异化卖点。<h3>执行亮点</h3>建立 KOL/KOC 蜂窝矩阵，通过 6 大创意方向截流，实现搜索量同比增长 **321%**。`
@@ -236,7 +264,7 @@
             {
                 id: 10, category: "策划案",
                 title: "悦木之源 Origins 长白山溯源营销",
-                desc: "长白山丛林纪录片式营销，将成分故事转化为沉浸式探索之旅。",
+                desc: "丛林纪录片式营销，将成分故事转化为沉浸式探索之旅。",
                 type: "proposal", link: "#",
                 cover: "./images/port_origins.jpg",
                 detail: `<h3>创意核心</h3>窦骁带队丛林探秘，强化“探索不止”品牌基因。全网播放量突破 **8000 万**。`
@@ -252,11 +280,14 @@
             grid.innerHTML = filteredData.map(w => `
                 <div class="portfolio-card" onclick="openDetail(${w.id})">
                     <div class="card-cover">
-                        <img src="${w.cover}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                        <div class="card-cover-placeholder" style="display:none;">COVER PREVIEW</div>
+                        <img src="${w.cover}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="card-cover-placeholder" style="display:none; width:100%; height:100%; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            <span>NO IMAGE</span>
+                        </div>
                     </div>
                     <div class="work-tag">${w.category}</div>
-                    <div class="work-title">${w.title}</div>
+                    <div class="work-title" title="${w.title}">${w.title}</div>
                     <div class="work-desc">${w.desc}</div>
                 </div>
             `).join('');
