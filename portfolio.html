@@ -36,7 +36,7 @@
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--accent-color); }
 
         /* 右侧占位容器，确保中间内容能真正居中 */
-        .nav-placeholder { justify-self: end; }
+        .nav-placeholder { justify-self: end; font-size: 14px; color: var(--text-secondary); }
 
         main { padding: 110px 5% 60px; max-width: 1250px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -44,20 +44,29 @@
         .page-header { text-align: center; margin-bottom: 40px; }
         .page-header h2 { font-size: 38px; font-weight: 700; margin-bottom: 10px; background: linear-gradient(180deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
+        /* 分类筛选栏 */
         .filter-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; }
         .filter-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary); padding: 8px 24px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-size: 14px; }
         .filter-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .filter-btn.active { background: var(--accent-color); color: #000; font-weight: 600; border-color: var(--accent-color); }
 
-        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 25px; }
-        .portfolio-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px; cursor: pointer; transition: 0.4s; backdrop-filter: blur(20px); text-align: left; height: 280px; display: flex; flex-direction: column; }
-        .portfolio-card:hover { transform: translateY(-5px); border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 10px 40px -10px rgba(255, 204, 0, 0.2); }
+        /* 作品网格：严格一行四个 */
+        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
         
-        .work-tag { font-size: 11px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .work-tag::before { content: ''; width: 6px; height: 6px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); }
-        .work-title { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.4; }
-        .work-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .portfolio-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; cursor: pointer; transition: 0.4s; backdrop-filter: blur(20px); text-align: left; height: 380px; display: flex; flex-direction: column; }
+        .portfolio-card:hover { transform: translateY(-5px); border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 10px 40px -10px rgba(255, 204, 0, 0.2); background: rgba(255,255,255,0.03); }
+        
+        /* 封面图占位区 */
+        .card-cover { width: 100%; height: 160px; border-radius: 16px; margin-bottom: 20px; overflow: hidden; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .card-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .card-cover-placeholder { color: rgba(255,255,255,0.2); font-size: 12px; letter-spacing: 2px; }
 
+        .work-tag { font-size: 11px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .work-tag::before { content: ''; width: 6px; height: 6px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); }
+        .work-title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 10px; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .work-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* 详情页样式 */
         #work-detail { display: none; }
         .back-btn { display: inline-block; margin-bottom: 30px; color: var(--text-secondary); cursor: pointer; font-size: 14px; }
         .detail-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 30px; padding: 60px; backdrop-filter: blur(30px); }
@@ -70,7 +79,7 @@
         .xhs-icon { width: 70px; height: 70px; background: #ff2442; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: #fff; font-weight: 900; font-size: 24px; }
         .ppt-icon { width: 70px; height: 70px; background: #d04423; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: #fff; font-weight: 900; font-size: 24px; }
         
-        .action-btn { background: #fff; color: #000; padding: 14px 40px; border-radius: 40px; text-decoration: none; font-weight: 700; font-size: 15px; transition: 0.3s; display: inline-block; }
+        .action-btn { background: #fff; color: #000; padding: 14px 40px; border-radius: 40px; text-decoration: none; font-weight: 700; font-size: 15px; transition: 0.3s; display: inline-block; margin-top: 20px; }
         .action-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255,255,255,0.3); }
         
         .detail-body { max-width: 850px; margin: 50px auto 0; line-height: 2.1; color: #ddd; font-weight: 300; font-size: 16px; }
@@ -88,7 +97,7 @@
                 <a href="work.html">工作履历</a>
                 <a href="projects.html">项目经验</a>
             </div>
-            <div class="nav-placeholder"></div>
+            <div class="nav-placeholder">Contact: david@email.com</div>
         </div>
     </nav>
     <main>
@@ -123,74 +132,113 @@
 
     <script>
         const portfolioData = [
+            // ================= 视频类 =================
+            {
+                id: 11, category: "视频",
+                title: "小龙坎品牌广告",
+                desc: "深度结合品牌调性，打造具有极强视觉冲击力与食欲感的品牌 TVC。",
+                type: "video", link: "https://pan.baidu.com/s/1sQkhDpXcYWOLAW9rmpPy9g?pwd=dkkk",
+                cover: "./images/port_xiaolongkan.jpg",
+                detail: `<h3>项目背景</h3>为头部餐饮品牌小龙坎量身打造的品牌广告，旨在强化火锅品类的头部心智，拉近与年轻消费者的距离。<h3>视觉表达</h3>通过红油滚烫的视觉张力和充满江湖气息的镜头语言，传递纯正的川味火锅体验。用极致的高清特写激发观众的食欲感。`
+            },
+            {
+                id: 12, category: "视频",
+                title: "华为荣耀品牌 TVC《影像情书》",
+                desc: "将科技参数化为跨越时空的浪漫故事，引发海量共鸣，全网播放量破8000万。",
+                type: "video", link: "https://pan.baidu.com/s/10It2a-0pgZiv00xlNcl0lQ?pwd=dkkd",
+                cover: "./images/port_honor.jpg",
+                detail: `<h3>项目背景</h3>华为荣耀新机上市的重磅品牌微电影。我们需要跳出传统的“拼配置”营销套路，建立科技产品的温度感。<h3>创意核心</h3>用声音记录生活点滴，以情感共鸣替代冷冰冰的参数说教。该片不仅成功引发大规模社媒自发传播，更斩获金瞳奖金奖。`
+            },
+            {
+                id: 13, category: "视频",
+                title: "中国移动信息流广告",
+                desc: "针对不同圈层受众的精准信息流投放素材，有效压降获客成本，提升核心业务转化率。",
+                type: "video", link: "https://pan.baidu.com/s/1mnmFuK-Yoxxdsp9CZlQL0A?pwd=dkkd",
+                cover: "./images/port_cmcc.jpg",
+                detail: `<h3>项目策略</h3>根据大数据描绘的人群画像，提取核心痛点，制作高完播率、强引导性的短视频信息流广告素材。<h3>投放成效</h3>极大地优化了前 3 秒流失率，有效压降了信息流平台的单客获客成本（CPA），提升了中国移动相关业务的办理转化。`
+            },
             {
                 id: 1, category: "视频",
-                title: "2024年纯电汽车选购指南：如何避开买车“刺客”？",
-                desc: "针对2024年纯电市场的深度复盘与导购决策模型，全网播放量突破千万级。",
+                title: "2024年纯电汽车选购指南",
+                desc: "纯电市场的深度复盘与导购决策模型，全网播放量突破千万级。",
                 type: "video", link: "https://v.douyin.com/u005W5c504w/",
+                cover: "./images/port_ev2024.jpg",
                 detail: `<h3>项目背景</h3>在智能电动车爆发的元年，帮助用户在参数深林中找到最适合自己的产品。<h3>内容逻辑</h3>1. **多维建模**：将续航、智驾、补能及残值作为评估维度。2. **人群匹配**：针对刚需、通勤、玩家三类用户推荐。3. **成效**：验证了“深度内容+选车决策”的商业闭环。`
             },
             {
                 id: 2, category: "视频",
-                title: "奥迪 A6 Avant 深度测评：瓦罐迷的终极信仰",
+                title: "奥迪 A6 Avant 深度测评",
                 desc: "深度解析 A6 Avant 的设计语言与驾驶质感，探讨旅行车生活美学。",
                 type: "video", link: "https://v.douyin.com/LFivsLzcdHY/",
+                cover: "./images/port_avant.jpg",
                 detail: `<h3>内容洞察</h3>探讨 SUV 盛行年代下，小众审美对生活方式的坚持。<h3>核心解析</h3>1. **美学设计**：分析 D 柱倾角与视觉张力。2. **动态反馈**：还原低重心底盘的驾驶质感。3. **情绪价值**：捕捉“瓦罐”独特的圈层格调。`
             },
             {
                 id: 3, category: "视频",
-                title: "电车自驾新疆充电路书：挑战补能焦虑极限",
+                title: "电车自驾新疆充电路书",
                 desc: "实测新疆自驾补能全流程，手把手解决自驾游最大痛点，极具实操价值。",
                 type: "video", link: "https://v.douyin.com/_VOExVrYaFI/",
+                cover: "./images/port_xinjiang.jpg",
                 detail: `<h3>痛点解决</h3>通过实地踩点，为电车车主提供新疆“保姆级”补能地图。<h3>执行逻辑</h3>记录不同品牌充电桩在极温下的功率，规划高难路线续航计算，被大量车主收藏。`
             },
             {
                 id: 4, category: "视频",
-                title: "车机芯片大揭秘：为什么 8155 依然会卡顿？",
+                title: "车机芯片大揭秘：为什么 8155 依然卡",
                 desc: "拆解车机芯片底层架构，通俗解释算力与体验关系，建立理性决策标准。",
                 type: "video", link: "https://v.douyin.com/Pq_gcdmFGCM/",
+                cover: "./images/port_chip.jpg",
                 detail: `<h3>科普课题</h3>解析软硬件错配问题，教用户通过特定操作判断系统真实流畅度，不再为硬件参数盲目买单。`
             },
+
+            // ================= 文章类 =================
             {
                 id: 5, category: "文章",
-                title: "外企：我拒绝聘用中国高官 —— 现象背后的冷思考",
+                title: "外企：我拒绝聘用中国高官",
                 desc: "基于职场视角，拆解跨国企业在华人才策略的深层逻辑变化。",
                 type: "article", link: "https://www.xiaohongshu.com/discovery/item/64a04dbb000000001203f20d",
+                cover: "./images/port_foreign.jpg",
                 detail: `<h3>深度复盘</h3>探讨跨国企业组织架构调整及人才需求范式转移。<h3>分析维度</h3>1. **决策权权重变迁**。2. **合规与风险敏感度**。3. **职场启示**。`
             },
             {
                 id: 6, category: "文章",
-                title: "一生都不被允许休息的国人，这是为什么？",
+                title: "一生都不被允许休息的国人，为什么？",
                 desc: "从职场与生活平衡出发，探讨当代国人焦虑根源，引发强烈社会共鸣。",
                 type: "article", link: "https://www.xiaohongshu.com/discovery/item/64abfebd0000000031009108",
+                cover: "./images/port_rest.jpg",
                 detail: `<h3>情绪捕捉</h3>击中当代职场人精神内耗核心，从社会心理学角度探讨“勤奋”背后的不安全感与系统困局。`
             },
+
+            // ================= 策划案类 =================
             {
                 id: 7, category: "策划案",
                 title: "叫叫学院小红书全链路营销策划方案",
                 desc: "深度运用独家“创意雷达”系统，实现母婴圈层的高效率种草与增长。",
                 type: "proposal", link: "#",
+                cover: "./images/port_jiaojiao.jpg",
                 detail: `<h3>核心策略</h3>基于母婴用户痛点，深挖“思考力”差异化卖点。<h3>执行亮点</h3>建立 KOL/KOC 蜂窝矩阵，通过 6 大创意方向截流，实现搜索量同比增长 **321%**。`
             },
             {
                 id: 8, category: "策划案",
-                title: "高光 GOGOON 品牌年度传播全案规划",
+                title: "高光 GOGOON 品牌年度传播全案",
                 desc: "定义“新轻奢主义”白酒，实现传统酒企在年轻精英圈层的降维打击。",
                 type: "proposal", link: "#",
+                cover: "./images/port_gogoon.jpg",
                 detail: `<h3>品牌占位</h3>确立“品味表达”重于“应酬工具”。<h3>跨界动作</h3>联合 MINI 汽车、GQ 实验室，打造高净值精英俱乐部，通过线下品鉴深度获客。`
             },
             {
                 id: 9, category: "策划案",
-                title: "新疆喀纳斯 & 阿勒泰滑雪场目的地运营方案",
+                title: "新疆喀纳斯 & 阿勒泰滑雪场目的地运营",
                 desc: "视觉美学驱动的文旅革命：美图定制滤镜 + 腾讯游戏跨界联动。",
                 type: "proposal", link: "#",
+                cover: "./images/port_aletai.jpg",
                 detail: `<h3>文旅变革</h3>通过“美图滤镜”解决拍照刚需，联合“腾讯游戏”打造打卡路书。<h3>成效</h3>全网曝光突破 3 亿次，单季客流增长 **120%**。`
             },
             {
                 id: 10, category: "策划案",
-                title: "悦木之源 Origins 灵芝水长白山溯源营销案",
+                title: "悦木之源 Origins 长白山溯源营销",
                 desc: "长白山丛林纪录片式营销，将成分故事转化为沉浸式探索之旅。",
                 type: "proposal", link: "#",
+                cover: "./images/port_origins.jpg",
                 detail: `<h3>创意核心</h3>窦骁带队丛林探秘，强化“探索不止”品牌基因。全网播放量突破 **8000 万**。`
             }
         ];
@@ -203,10 +251,13 @@
             const filteredData = category === '全部' ? portfolioData : portfolioData.filter(d => d.category === category);
             grid.innerHTML = filteredData.map(w => `
                 <div class="portfolio-card" onclick="openDetail(${w.id})">
+                    <div class="card-cover">
+                        <img src="${w.cover}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <div class="card-cover-placeholder" style="display:none;">COVER PREVIEW</div>
+                    </div>
                     <div class="work-tag">${w.category}</div>
                     <div class="work-title">${w.title}</div>
                     <div class="work-desc">${w.desc}</div>
-                    <div style="font-size:12px; color:var(--accent-color); margin-top:20px;">点击查看详情 →</div>
                 </div>
             `).join('');
         }
@@ -221,7 +272,7 @@
                 mediaBox.innerHTML = `
                     <div class="media-preview-box">
                         <div class="play-icon"></div>
-                        <p style="margin-bottom:20px; color:#aaa; font-size:14px;">视频作品需跳转至第三方平台观看</p>
+                        <p style="margin-bottom:20px; color:#aaa; font-size:14px;">视频作品包含外部链接，请前往目标平台或网盘观看</p>
                         <a href="${item.link}" target="_blank" class="action-btn">立即前往观看视频</a>
                     </div>`;
             } else if(item.type === "article") {
@@ -229,14 +280,14 @@
                     <div class="media-preview-box">
                         <div class="xhs-icon">小红书</div>
                         <p style="margin-bottom:20px; color:#aaa; font-size:14px;">图文内容已发布于小红书平台</p>
-                        <a href="${item.link}" target="_blank" class="action-btn" style="background:#ff2442; color:#fff;">阅读完整图文</a>
+                        <a href="${item.link}" target="_blank" class="action-btn" style="background:#ff2442; color:#fff; border:none;">阅读完整图文</a>
                     </div>`;
             } else {
                 mediaBox.innerHTML = `
                     <div class="media-preview-box">
                         <div class="ppt-icon">PDF</div>
-                        <p style="margin-bottom:20px; color:#aaa; font-size:14px;">策划案受保护，如需查看完整 PPT 请联系我</p>
-                        <a href="mailto:david@email.com" class="action-btn" style="background:var(--accent-color); color:#000;">申请查看完整方案</a>
+                        <p style="margin-bottom:20px; color:#aaa; font-size:14px;">策划案受保护，如需查看完整版请联系我获取提取码</p>
+                        <a href="mailto:david@email.com" class="action-btn" style="background:var(--accent-color); color:#000; border:none;">申请查看完整方案</a>
                     </div>`;
             }
             document.getElementById('list-container').style.display = 'none';
