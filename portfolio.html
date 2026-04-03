@@ -37,7 +37,7 @@
 
         .nav-placeholder { justify-self: end; font-size: 14px; color: var(--text-secondary); }
 
-        /* 主体容器放宽至 1350px，给 4 个卡片充足的空间 */
+        /* 主体容器 */
         main { padding: 110px 5% 60px; max-width: 1350px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10; animation: fadeIn 0.6s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -49,7 +49,7 @@
         .filter-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .filter-btn.active { background: var(--accent-color); color: #000; font-weight: 600; border-color: var(--accent-color); }
 
-        /* 作品网格：强制一行四个，并防溢出撑爆 */
+        /* 作品网格：强制一行四个 */
         .bento-grid { 
             display: grid; 
             grid-template-columns: repeat(4, minmax(0, 1fr)); 
@@ -69,11 +69,11 @@
             height: 380px; 
             display: flex; 
             flex-direction: column; 
-            min-width: 0; /* 绝对防止文字过长撑爆Grid轨道 */
+            min-width: 0; 
         }
         .portfolio-card:hover { transform: translateY(-5px); border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 10px 40px -10px rgba(255, 204, 0, 0.2); background: rgba(255,255,255,0.03); }
         
-        /* 封面图 */
+        /* 封面图占位区 */
         .card-cover { width: 100%; height: 160px; border-radius: 12px; margin-bottom: 18px; overflow: hidden; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .card-cover img { width: 100%; height: 100%; object-fit: cover; }
         .card-cover-placeholder { color: rgba(255,255,255,0.2); font-size: 12px; letter-spacing: 2px; }
@@ -83,16 +83,10 @@
         .work-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
         .work-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; }
 
-        /* 响应式保护：小屏幕自动折行 */
-        @media (max-width: 1200px) {
-            .bento-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        }
-        @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        }
-        @media (max-width: 600px) {
-            .bento-grid { grid-template-columns: 1fr; }
-        }
+        /* 响应式保护 */
+        @media (max-width: 1200px) { .bento-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        @media (max-width: 900px) { .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 600px) { .bento-grid { grid-template-columns: 1fr; } }
 
         /* 详情页样式 */
         #work-detail { display: none; }
@@ -166,7 +160,7 @@
                 title: "小龙坎品牌广告",
                 desc: "深度结合品牌调性，打造具有极强视觉冲击力与食欲感的品牌 TVC。",
                 type: "video", link: "https://pan.baidu.com/s/1sQkhDpXcYWOLAW9rmpPy9g?pwd=dkkk",
-                cover: "./images/port_xiaolongkan.jpg",
+                cover: "./caseimg/1.png", // 对应 1.png
                 detail: `<h3>项目背景</h3>为头部餐饮品牌小龙坎量身打造的品牌广告，旨在强化火锅品类的头部心智，拉近与年轻消费者的距离。<h3>视觉表达</h3>通过红油滚烫的视觉张力和充满江湖气息的镜头语言，传递纯正的川味火锅体验。用极致的高清特写激发观众的食欲感。`
             },
             {
@@ -174,7 +168,7 @@
                 title: "华为荣耀品牌 TVC《影像情书》",
                 desc: "将科技参数化为浪漫故事，引发海量共鸣，全网播放量破8000万。",
                 type: "video", link: "https://pan.baidu.com/s/10It2a-0pgZiv00xlNcl0lQ?pwd=dkkd",
-                cover: "./images/port_honor.jpg",
+                cover: "./caseimg/2.png", // 对应 2.png
                 detail: `<h3>项目背景</h3>华为荣耀新机上市的重磅品牌微电影。我们需要跳出传统的“拼配置”营销套路，建立科技产品的温度感。<h3>创意核心</h3>用声音记录生活点滴，以情感共鸣替代冷冰冰的参数说教。该片不仅成功引发大规模社媒自发传播，更斩获金瞳奖金奖。`
             },
             {
@@ -182,7 +176,7 @@
                 title: "中国移动信息流广告",
                 desc: "精准信息流投放素材，有效压降获客成本，提升核心业务转化率。",
                 type: "video", link: "https://pan.baidu.com/s/1mnmFuK-Yoxxdsp9CZlQL0A?pwd=dkkd",
-                cover: "./images/port_cmcc.jpg",
+                cover: "./caseimg/3.png", // 对应 3.png
                 detail: `<h3>项目策略</h3>根据大数据描绘的人群画像，提取核心痛点，制作高完播率、强引导性的短视频信息流广告素材。<h3>投放成效</h3>极大地优化了前 3 秒流失率，有效压降了信息流平台的单客获客成本（CPA），提升了中国移动相关业务的办理转化。`
             },
             {
@@ -190,7 +184,7 @@
                 title: "2024年纯电汽车选购指南",
                 desc: "纯电市场的深度复盘与导购决策模型，全网播放量突破千万级。",
                 type: "video", link: "https://v.douyin.com/u005W5c504w/",
-                cover: "./images/port_ev2024.jpg",
+                cover: "./caseimg/4.png", // 对应 4.png
                 detail: `<h3>项目背景</h3>在智能电动车爆发的元年，帮助用户在参数深林中找到最适合自己的产品。<h3>内容逻辑</h3>1. **多维建模**：将续航、智驾、补能及残值作为评估维度。2. **人群匹配**：针对刚需、通勤、玩家三类用户推荐。3. **成效**：验证了“深度内容+选车决策”的商业闭环。`
             },
             {
@@ -198,7 +192,7 @@
                 title: "奥迪 A6 Avant 深度测评",
                 desc: "深度解析设计语言与驾驶质感，探讨旅行车生活美学。",
                 type: "video", link: "https://v.douyin.com/LFivsLzcdHY/",
-                cover: "./images/port_avant.jpg",
+                cover: "./caseimg/5.png", // 对应 5.png
                 detail: `<h3>内容洞察</h3>探讨 SUV 盛行年代下，小众审美对生活方式的坚持。<h3>核心解析</h3>1. **美学设计**：分析 D 柱倾角与视觉张力。2. **动态反馈**：还原低重心底盘的驾驶质感。3. **情绪价值**：捕捉“瓦罐”独特的圈层格调。`
             },
             {
@@ -206,7 +200,7 @@
                 title: "电车自驾新疆充电路书",
                 desc: "实测新疆自驾补能全流程，手把手解决自驾游最大痛点。",
                 type: "video", link: "https://v.douyin.com/_VOExVrYaFI/",
-                cover: "./images/port_xinjiang.jpg",
+                cover: "./caseimg/6.png", // 对应 6.png
                 detail: `<h3>痛点解决</h3>通过实地踩点，为电车车主提供新疆“保姆级”补能地图。<h3>执行逻辑</h3>记录不同品牌充电桩在极温下的功率，规划高难路线续航计算，被大量车主收藏。`
             },
             {
@@ -214,7 +208,7 @@
                 title: "车机芯片大揭秘：为什么 8155 依然卡",
                 desc: "拆解车机芯片底层架构，通俗解释算力与体验关系。",
                 type: "video", link: "https://v.douyin.com/Pq_gcdmFGCM/",
-                cover: "./images/port_chip.jpg",
+                cover: "./caseimg/7.png", // 对应 7.png
                 detail: `<h3>科普课题</h3>解析软硬件错配问题，教用户通过特定操作判断系统真实流畅度，不再为硬件参数盲目买单。`
             },
 
@@ -224,7 +218,7 @@
                 title: "外企：我拒绝聘用中国高官",
                 desc: "基于职场视角，拆解跨国企业在华人才策略的深层逻辑变化。",
                 type: "article", link: "https://www.xiaohongshu.com/discovery/item/64a04dbb000000001203f20d",
-                cover: "./images/port_foreign.jpg",
+                cover: "./caseimg/8.png", // 对应 8.png
                 detail: `<h3>深度复盘</h3>探讨跨国企业组织架构调整及人才需求范式转移。<h3>分析维度</h3>1. **决策权权重变迁**。2. **合规与风险敏感度**。3. **职场启示**。`
             },
             {
@@ -232,7 +226,7 @@
                 title: "一生都不被允许休息的国人，为什么？",
                 desc: "从职场与生活平衡出发，探讨当代国人焦虑根源，引发强烈社会共鸣。",
                 type: "article", link: "https://www.xiaohongshu.com/discovery/item/64abfebd0000000031009108",
-                cover: "./images/port_rest.jpg",
+                cover: "./caseimg/9.png", // 对应 9.png
                 detail: `<h3>情绪捕捉</h3>击中当代职场人精神内耗核心，从社会心理学角度探讨“勤奋”背后的不安全感与系统困局。`
             },
 
@@ -242,7 +236,7 @@
                 title: "叫叫学院小红书全链路营销案",
                 desc: "深度运用独家“创意雷达”系统，实现母婴圈层的高效种草。",
                 type: "proposal", link: "#",
-                cover: "./images/port_jiaojiao.jpg",
+                cover: "./caseimg/10.png", // 对应 10.png
                 detail: `<h3>核心策略</h3>基于母婴用户痛点，深挖“思考力”差异化卖点。<h3>执行亮点</h3>建立 KOL/KOC 蜂窝矩阵，通过 6 大创意方向截流，实现搜索量同比增长 **321%**。`
             },
             {
@@ -250,7 +244,7 @@
                 title: "高光 GOGOON 品牌年度传播全案",
                 desc: "定义“新轻奢主义”白酒，实现传统酒企在年轻精英圈层的降维打击。",
                 type: "proposal", link: "#",
-                cover: "./images/port_gogoon.jpg",
+                cover: "./caseimg/11.png", // 对应 11.png
                 detail: `<h3>品牌占位</h3>确立“品味表达”重于“应酬工具”。<h3>跨界动作</h3>联合 MINI 汽车、GQ 实验室，打造高净值精英俱乐部，通过线下品鉴深度获客。`
             },
             {
@@ -258,7 +252,7 @@
                 title: "新疆喀纳斯 & 阿勒泰滑雪场目的地运营",
                 desc: "视觉美学驱动的文旅革命：美图定制滤镜 + 腾讯游戏跨界联动。",
                 type: "proposal", link: "#",
-                cover: "./images/port_aletai.jpg",
+                cover: "./caseimg/12.png", // 对应 12.png
                 detail: `<h3>文旅变革</h3>通过“美图滤镜”解决拍照刚需，联合“腾讯游戏”打造打卡路书。<h3>成效</h3>全网曝光突破 3 亿次，单季客流增长 **120%**。`
             },
             {
@@ -266,7 +260,7 @@
                 title: "悦木之源 Origins 长白山溯源营销",
                 desc: "丛林纪录片式营销，将成分故事转化为沉浸式探索之旅。",
                 type: "proposal", link: "#",
-                cover: "./images/port_origins.jpg",
+                cover: "./caseimg/13.png", // 对应 13.png
                 detail: `<h3>创意核心</h3>窦骁带队丛林探秘，强化“探索不止”品牌基因。全网播放量突破 **8000 万**。`
             }
         ];
@@ -283,7 +277,7 @@
                         <img src="${w.cover}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                         <div class="card-cover-placeholder" style="display:none; width:100%; height:100%; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                            <span>NO IMAGE</span>
+                            <span style="font-size: 10px; color: rgba(255,255,255,0.3);">NO IMAGE</span>
                         </div>
                     </div>
                     <div class="work-tag">${w.category}</div>
