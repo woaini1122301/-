@@ -52,7 +52,10 @@
         .filter-btn.active { background: rgba(255,255,255,0.08); color: var(--accent-color); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-        .project-card { height: 320px; display: flex; flex-direction: column; cursor: pointer; text-align: left; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 30px; transition: all 0.4s; }
+        
+        /* 仅修改此处：将 height 从 320px 改为 260px，padding 从 30px 改为 25px 以压缩空白 */
+        .project-card { height: 260px; display: flex; flex-direction: column; cursor: pointer; text-align: left; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; transition: all 0.4s; }
+        
         .project-card:hover { box-shadow: var(--project-shadow-hover); border-color: rgba(255, 204, 0, 0.15); background: rgba(255,255,255,0.025); transform: translateY(-3px); }
         .proj-category { font-size: 11px; color: var(--accent-color); font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 2px; }
         .proj-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; color: #fff; line-height: 1.4; }
@@ -248,7 +251,7 @@
                 **成果：** 商业合作零流失。`
             },
             { 
-                id: 15, category: "品牌运营", title: "GitLab CodeRider 全首发 GTM 项目", company: "GitLab", time: "2025", role: "GTM 操盘手", 
+                id: 15, category: "品牌运营", title: "GitLab CodeRider 全球首发 GTM 项目", company: "GitLab", time: "2025", role: "GTM 操盘手", 
                 desc: "主导 AI 产品上市策略，利用 PLG 模式驱动用户获取与心智建立。", 
                 detail: "主导 AI 驱动型产品的 Go-to-Market 策略。通过开发者社区的技术心智建立与裂变，实现上线初期的爆发式增长。" 
             },
